@@ -3,8 +3,9 @@ package com.btrapp.jklarfreader.objects;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public final class KlarfRecord {
 	public KlarfRecord(String name, String id) {
@@ -18,13 +19,19 @@ public final class KlarfRecord {
 	private List<KlarfList> lists = new ArrayList<>();
 	private List<KlarfRecord> records = new ArrayList<>();
 
+	public Optional<List<String>> findField(String name) {
+		return fields.entrySet().stream().filter(e->name.equalsIgnoreCase(e.getKey()))
+			.map(Entry::getValue)
+			.findFirst();
+	}
 	/**
 	 * A case-insensitive search to match a record by name.
 	 * @param name
 	 * @return
 	 */
-	public Stream<KlarfRecord> findRecordsByName(String name) {
-		return records.stream().filter(r->name.equalsIgnoreCase(r.getName()));
+	public List<KlarfRecord> findRecordsByName(String name) {
+		return records.stream().filter(r->name.equalsIgnoreCase(r.getName()))
+			.collect(Collectors.toList());
 	}
 	
 	/**
@@ -33,8 +40,9 @@ public final class KlarfRecord {
 	 * @param string
 	 * @return
 	 */
-	public Stream<KlarfList> findListByName(String name) {
-		return lists.stream().filter(r->name.equalsIgnoreCase(r.getName()));
+	public Optional<KlarfList> findListByName(String name) {
+		return lists.stream().filter(r->name.equalsIgnoreCase(r.getName()))
+				.findFirst();
 	}
 	
 	/**

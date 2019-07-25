@@ -1,5 +1,6 @@
 package com.btrapp.jklarfreader.objects;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,7 +22,7 @@ public class KlarfReader18IfFileExamplesTestCase {
 	private ObjectWriter writer = new ObjectMapper().writerWithDefaultPrettyPrinter();
 	public Optional<KlarfRecord> readTestKlarf() throws Exception {
 		KlarfParser18Pojo kp18 = new KlarfParser18Pojo();
-		new KlarfReader().parseKlarf(kp18, this.getClass().getResourceAsStream("simple18.klarf"));
+		KlarfReader.parseKlarf(kp18, this.getClass().getResourceAsStream("simple18.klarf"));
 		Optional<KlarfRecord> klarfRecordO = kp18.build();
 		return klarfRecordO;
 	}
@@ -92,9 +93,8 @@ public class KlarfReader18IfFileExamplesTestCase {
 		   
 		
 		//Check lists
-		List<KlarfList> classLookups = lotRecord.findListByName("ClassLookupList").collect(Collectors.toList());
-		assertEquals(1,classLookups.size());
-		KlarfList classLookup = classLookups.get(0);
+		KlarfList classLookup = lotRecord.findListByName("ClassLookupList").orElse(null);
+		assertNotNull(classLookup);
 		//Columns are right
 		assertEquals("CLASSNUMBER,CLASSNAME,CLASSCODE",toStr(classLookup.getColumnNames()));
 		assertEquals("int32,string,string",toStr(classLookup.getColumnTypes()));
