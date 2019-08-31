@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.btrapp.jklarfreader.KlarfReader;
+import com.btrapp.jklarfreader.KlarfReader.KlarfFormat;
 import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
+import com.btrapp.jklarfreader.objects.KlarfException;
 import com.btrapp.jklarfreader.objects.KlarfList;
 import com.btrapp.jklarfreader.objects.KlarfRecord;
 
@@ -27,6 +29,7 @@ public class KlarfReaderSpeedTest {
 			try (FileInputStream fis = new FileInputStream(f)) {
 				Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fis);
 				if (!klarf.isPresent()) {
+					//Is this a 1.8 klarf?
 					System.err.println("COuldn't read " + f.getAbsolutePath());
 				} else {
 					fileCount++;
@@ -40,6 +43,12 @@ public class KlarfReaderSpeedTest {
 							}
 						}
 					}
+				}
+			} catch (KlarfException ke) {
+				if (KlarfReader.findKlarfFormat(f) == KlarfFormat.UNSUPPORTED_FORMAT) {
+					System.out.println("File " + f.getAbsolutePath() + " doesn't appear to be the right format");
+				} else {
+					System.err.println("COuldn't read " + f.getAbsolutePath());
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

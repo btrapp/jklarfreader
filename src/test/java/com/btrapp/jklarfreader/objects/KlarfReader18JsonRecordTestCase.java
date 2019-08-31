@@ -4,9 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.StringReader;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +40,7 @@ public class KlarfReader18JsonRecordTestCase {
 				" } \n" +
 				"EndOfFile;";
 		KlarfParser18Pojo parser = new KlarfParser18Pojo();
-		Optional<KlarfRecord> kO = new KlarfReader18<KlarfRecord>(parser).readKlarf(new StringReader(record));
+		Optional<KlarfRecord> kO = new KlarfReader18<KlarfRecord>(parser).readKlarf(new ByteArrayInputStream(record.getBytes()));
 		assertTrue(kO.isPresent());
 		KlarfRecord node = kO.get();
 
@@ -75,7 +73,7 @@ public class KlarfReader18JsonRecordTestCase {
 				" } \n" +
 				"}\n" +
 				"EndOfFile;";
-		Optional<KlarfRecord> kO = new KlarfReader18(new KlarfParser18Pojo()).readKlarf(new BufferedReader(new StringReader(record)));
+		Optional<KlarfRecord> kO = new KlarfReader18<KlarfRecord>(new KlarfParser18Pojo()).readKlarf(new ByteArrayInputStream(record.getBytes()));
 		assertTrue(kO.isPresent());
 		KlarfRecord node = kO.get();
 		//		ObjectMapper m = new ObjectMapper();
@@ -117,7 +115,7 @@ public class KlarfReader18JsonRecordTestCase {
 				"}\n" +
 				"EndOfFile;";
 
-		Optional<KlarfRecord> kO = new KlarfReader18(new KlarfParser18Pojo()).readKlarf(new BufferedReader(new StringReader(record)));
+		Optional<KlarfRecord> kO = new KlarfReader18<KlarfRecord>(new KlarfParser18Pojo()).readKlarf(new ByteArrayInputStream(record.getBytes()));
 		assertTrue(kO.isPresent());
 		KlarfRecord node = kO.get();
 		//		ObjectMapper m = new ObjectMapper();

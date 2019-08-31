@@ -1,6 +1,8 @@
 package com.btrapp.jklarfreader;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,15 +14,11 @@ import com.btrapp.jklarfreader.objects.KlarfReader18;
 
 public class KlarfReader {
 	public static enum KlarfFormat {
-		V1_0, V1_2, V1_8
+		UNSUPPORTED_FORMAT, V1_0, V1_2, V1_8
 	}
 
 	public static <T> Optional<T> parseKlarf(KlarfParserIf18<T> parser, InputStream is) throws Exception {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-			return new KlarfReader18<T>(parser).readKlarf(br);
-		} catch (IOException e) {
-			throw (e);
-		}
+		return new KlarfReader18<T>(parser).readKlarf(is);
 	}
 	//	public boolean parseKlarf(KlarfParserIf12 parser, InputStream is) throws Exception {
 	//		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
@@ -31,7 +29,14 @@ public class KlarfReader {
 	//		return false;
 	//	}
 
-	public static KlarfFormat findKlarfFormat(BufferedReader br) throws IOException {
+	/**
+	 * Tries to determine if this looks *anything* like the expected Klarf format
+	 * 
+	 * @param br
+	 * @return
+	 * @throws IOException
+	 */
+	public static KlarfFormat findKlarfFormat(File f) throws IOException {
 		//Record FileRecord  "1.8"
 		//FileVersion 1 2;
 		Pattern pattern1_8 = Pattern.compile("Record\\s+FileRecord.*1\\.8.*");
@@ -39,22 +44,36 @@ public class KlarfReader {
 		Pattern pattern1_0 = Pattern.compile("FileVersion\\s+1\\s+0.*");
 		Matcher m;
 		String line;
-		while ((line = br.readLine()) != null) {
-			line = line.trim();
-			m = pattern1_8.matcher(line);
-			if (m.matches()) {
-				return KlarfFormat.V1_8;
-			}
-			m = pattern1_2.matcher(line);
-			if (m.matches()) {
-				return KlarfFormat.V1_2;
-			}
-			m = pattern1_0.matcher(line);
-			if (m.matches()) {
-				return KlarfFormat.V1_0;
+		int lineCount = 0;
+		try (FileInputStream fis = new FileInputStream(f)) {
+			//We need to be able to rewind this stream when we've detected
+			//System.out.println("HEAD: " + new String(header));
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(fis))) {
+				while ((line = br.readLine()) != null) {
+					line = line.trim();
+					m = pattern1_8.matcher(line);
+					if (m.matches()) {
+						return KlarfFormat.V1_8;
+					}
+					m = pattern1_2.matcher(line);
+					if (m.matches()) {
+						//return KlarfFormat.V1_2;
+						return KlarfFormat.UNSUPPORTED_FORMAT;
+					}
+					m = pattern1_0.matcher(line);
+					if (m.matches()) {
+						//return KlarfFormat.V1_0;
+						return KlarfFormat.UNSUPPORTED_FORMAT;
+					}
+					lineCount++;
+					if (lineCount > 50) {
+						//If we haven't found the record start in the first 50 lines, we probably aren't going to find it at all.
+						return KlarfFormat.UNSUPPORTED_FORMAT;
+					}
+				}
 			}
 		}
-		return null;
+		return KlarfFormat.UNSUPPORTED_FORMAT;
 
 	}
 }

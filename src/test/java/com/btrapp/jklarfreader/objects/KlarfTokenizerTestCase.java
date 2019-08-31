@@ -3,7 +3,7 @@ package com.btrapp.jklarfreader.objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.StringReader;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +15,15 @@ public class KlarfTokenizerTestCase {
 	public void testIntError() {
 		assertThrows(KlarfException.class,
 				() -> {
-					KlarfTokenizer kt = new KlarfTokenizer(new StringReader("A"));
+					KlarfTokenizer kt = new KlarfTokenizer(new ByteArrayInputStream("A".getBytes()));
 					kt.nextIntVal();
 					kt.close();
 				});
 	}
+
 	@Test
 	public void testQuotedStringsWork() throws Exception {
-		try (KlarfTokenizer kt = new KlarfTokenizer(new StringReader("A \"B;\" \"C{}\" \";D\""))) {
+		try (KlarfTokenizer kt = new KlarfTokenizer(new ByteArrayInputStream("A \"B;\" \"C{}\" \";D\"".getBytes()))) {
 			List<String> tokens = new ArrayList<>();
 			while (kt.nextToken()) {
 				tokens.add(kt.val());
@@ -37,7 +38,7 @@ public class KlarfTokenizerTestCase {
 
 	@Test
 	public void testTokening() throws Exception {
-		try (KlarfTokenizer kt = new KlarfTokenizer(new StringReader("A { \"Spaces\" \"Space, Comma\", } B  \t {1,2,3}"))) {
+		try (KlarfTokenizer kt = new KlarfTokenizer(new ByteArrayInputStream("A { \"Spaces\" \"Space, Comma\", } B  \t {1,2,3}".getBytes()))) {
 			List<String> tokens = new ArrayList<>();
 			while (kt.nextToken()) {
 				tokens.add(kt.val());
@@ -64,7 +65,7 @@ public class KlarfTokenizerTestCase {
 
 	@Test
 	public void testReadingEmptyQuotedStrings() throws Exception {
-		try (KlarfTokenizer kt = new KlarfTokenizer(new StringReader("A \"\" B\t\"C\" D \"\""))) {
+		try (KlarfTokenizer kt = new KlarfTokenizer(new ByteArrayInputStream("A \"\" B\t\"C\" D \"\"".getBytes()))) {
 			List<String> tokens = new ArrayList<>();
 			while (kt.nextToken()) {
 				tokens.add(kt.val());
@@ -82,7 +83,7 @@ public class KlarfTokenizerTestCase {
 
 	@Test
 	public void testTokeningJustCommas() throws Exception {
-		try (KlarfTokenizer kt = new KlarfTokenizer(new StringReader("A,B,C,\"D E\",\"F,G\""))) {
+		try (KlarfTokenizer kt = new KlarfTokenizer(new ByteArrayInputStream("A,B,C,\"D E\",\"F,G\"".getBytes()))) {
 			List<String> tokens = new ArrayList<>();
 			while (kt.nextToken()) {
 				tokens.add(kt.val());

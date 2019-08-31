@@ -3,6 +3,15 @@ package com.btrapp.jklarfreader;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * If you're familiar with XML parsing this inteface works a lot like the SAX based parser works.
+ * We call start/end methods for the more complex records (Records, Lists) and simpler add
+ * methods for the simpler records (Fields, List body rows)
+ * 
+ * @author btrapp
+ *
+ * @param <T>
+ */
 public interface KlarfParserIf18<T> {
 
 	/**

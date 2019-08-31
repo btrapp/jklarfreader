@@ -2,7 +2,8 @@ package com.btrapp.jklarfreader.objects;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -16,8 +17,8 @@ public class KlarfTokenizer implements AutoCloseable {
 	private String currentLine = "";
 	private List<String> tokens = new ArrayList<>();
 
-	KlarfTokenizer(Reader r) {
-		this.br = new BufferedReader(r);
+	KlarfTokenizer(InputStream is) {
+		this.br = new BufferedReader(new InputStreamReader(is));
 	}
 
 	protected String getCurrentLine() {

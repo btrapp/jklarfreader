@@ -14,15 +14,12 @@ import org.junit.jupiter.api.Test;
 
 import com.btrapp.jklarfreader.KlarfReader;
 import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class KlarfReader18IfFileExamplesTestCase {
-	private ObjectWriter writer = new ObjectMapper().writerWithDefaultPrettyPrinter();
 
 	private Optional<KlarfRecord> readTestKlarf() throws Exception {
 		KlarfParser18Pojo kp18 = new KlarfParser18Pojo();
-		new KlarfReader().parseKlarf(kp18, this.getClass().getResourceAsStream("simple18.klarf"));
+		KlarfReader.parseKlarf(kp18, this.getClass().getResourceAsStream("simple18.klarf"));
 		Optional<KlarfRecord> klarfRecordO = kp18.build();
 		return klarfRecordO;
 	}
@@ -69,27 +66,26 @@ public class KlarfReader18IfFileExamplesTestCase {
 		//
 		// Expected fields and values
 		//
-		Map<String, String> expectedFields = new HashMap<String, String>() {
-			{
-				put("DeviceID", "aDevice");
-				put("DiePitch", "5744150,5410203");
-				put("InspectionStationID", "NONE,A,B");
-				put("OrientationMarkLocation", "0");
-				put("RecipeID", "ARecipe,12-09-1971,02:08:00");
-				put("RecipeVersion", ",NONE,");
-				put("ResultTimestamp", "12-11-1971,12:32:22");
-				put("SampleOrientationMarkType", "NOTCH");
-				put("SampleSize", "300000000,0");
-				put("SampleType", "WAFER");
-				put("StepID", "AStepId");
-			}
-		};
+		Map<String, String> expectedFields = new HashMap<String, String>();
+		expectedFields.put("DeviceID", "aDevice");
+		expectedFields.put("DiePitch", "5744150,5410203");
+		expectedFields.put("InspectionStationID", "NONE,A,B");
+		expectedFields.put("OrientationMarkLocation", "0");
+		expectedFields.put("RecipeID", "ARecipe,12-09-1971,02:08:00");
+		expectedFields.put("RecipeVersion", ",NONE,");
+		expectedFields.put("ResultTimestamp", "12-11-1971,12:32:22");
+		expectedFields.put("SampleOrientationMarkType", "NOTCH");
+		expectedFields.put("SampleSize", "300000000,0");
+		expectedFields.put("SampleType", "WAFER");
+		expectedFields.put("StepID", "AStepId");
+
 		for (Map.Entry<String, String> e : expectedFields.entrySet()) {
 			String fieldName = e.getKey();
 			String fieldValue = e.getValue();
 			assertEquals(fieldValue, toStr(lotRecord.getFields().get(fieldName)), "Field " + fieldName + " matches expectation");
 		}
-		//NO surprise fields
+
+		//Make sure we don't have any fields we didn't expect
 		assertEquals(expectedFields.size(), lotRecord.getFields().size(), "Only expected fields are found");
 
 		//Check lists
