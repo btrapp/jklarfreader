@@ -6,19 +6,20 @@ import java.util.Optional;
 public interface KlarfParserIf18<T> {
 
 	/**
-	 * This is emitted when we see a new Record line.
+	 * This is called when we see a new Record line.
 	 * 
 	 * Ex: Record LotRecord "YourLot.Id" {
 	 * 
 	 * @param recordName
-	 * @param recordId (Blank if not provided in the Klarf)
+	 * @param recordId
+	 *            (Blank if not provided in the Klarf)
 	 */
 	public void startRecord(String recordName, String recordId);
 
 	public void endRecord();
 
 	/**
-	 * Emitted when a field is found.
+	 * Called when a field is found.
 	 * 
 	 * Ex: Field OrientationInstructions 1 {""}
 	 * 
@@ -29,12 +30,12 @@ public interface KlarfParserIf18<T> {
 	public void addField(String fieldName, int fieldCount, List<String> fieldValues);
 
 	/**
-	 * Emitted when a list definition is found.
+	 * Called when a list definition is found.
 	 * 
 	 * Ex: List DefectList {
-     *   Columns 42 { int32 DEFECTID,  int32 XREL,  int32 YREL,  .....  
-     *
-     * Embedded, simple lists (Like the "ImageList" defect attribute) are handled separately 
+	 * Columns 42 { int32 DEFECTID, int32 XREL, int32 YREL, .....
+	 *
+	 * Embedded, simple lists (Like the "ImageList" defect attribute) are handled separately
 	 * 
 	 * @param listName
 	 * @param colNames
@@ -46,12 +47,13 @@ public interface KlarfParserIf18<T> {
 
 	/**
 	 * Called each time a lists's row is found
+	 * 
 	 * @param row
 	 */
 	public void addListRow(List<Object> row);
 
 	public void endList();
-	
+
 	public Optional<T> build();
-	
+
 }

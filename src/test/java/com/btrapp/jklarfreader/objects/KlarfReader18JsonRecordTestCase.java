@@ -42,10 +42,10 @@ public class KlarfReader18JsonRecordTestCase {
 				" } \n" +
 				"EndOfFile;";
 		KlarfParser18Pojo parser = new KlarfParser18Pojo();
-		Optional<KlarfRecord> kO = new KlarfReader18(parser).readKlarf(new BufferedReader(new StringReader(record)));
+		Optional<KlarfRecord> kO = new KlarfReader18<KlarfRecord>(parser).readKlarf(new StringReader(record));
 		assertTrue(kO.isPresent());
 		KlarfRecord node = kO.get();
-		
+
 		//		ObjectMapper m = new ObjectMapper();
 		//		System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
 		assertEquals("FileRecord", node.getName());
@@ -116,7 +116,7 @@ public class KlarfReader18JsonRecordTestCase {
 				" Field F 1 {A}\n" +
 				"}\n" +
 				"EndOfFile;";
-		
+
 		Optional<KlarfRecord> kO = new KlarfReader18(new KlarfParser18Pojo()).readKlarf(new BufferedReader(new StringReader(record)));
 		assertTrue(kO.isPresent());
 		KlarfRecord node = kO.get();

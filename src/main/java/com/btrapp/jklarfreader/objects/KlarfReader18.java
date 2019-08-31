@@ -1,7 +1,7 @@
 package com.btrapp.jklarfreader.objects;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,15 +11,15 @@ import com.btrapp.jklarfreader.KlarfParserIf18;
 import com.btrapp.jklarfreader.objects.KlarfException.ExceptionCode;
 
 public class KlarfReader18<T> {
-	
+
 	private KlarfParserIf18<T> parser;
-	
+
 	public KlarfReader18(KlarfParserIf18<T> parser) {
 		super();
-		this.parser=parser;
+		this.parser = parser;
 	}
 
-	public Optional<T> readKlarf(BufferedReader br) throws Exception {
+	public Optional<T> readKlarf(Reader br) throws Exception {
 		KlarfTokenizer st = new KlarfTokenizer(br);
 		read(st);
 		return parser.build();

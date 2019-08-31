@@ -10,22 +10,26 @@ import com.btrapp.jklarfreader.KlarfReader;
 import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Read18 {
+public class KlarfReaderSpeedTest {
 	public static void main(String[] args) throws Exception {
-		KlarfReader kr = new KlarfReader();
 		File dir = new File("/home/btrapp/Dropbox/3600-13ED/examplesDoNotUpload/");
 
 		long startMs = Instant.now().toEpochMilli();
+		int klarfCount = 0;
 		for (File klarfF : dir.listFiles()) {
-			System.out.println(klarfF.getAbsolutePath());
 			if (!klarfF.getName().startsWith("18"))
 				continue;
+			System.out.println(klarfF.getAbsolutePath());
 			KlarfParser18Pojo parser = new KlarfParser18Pojo();
-			Optional<KlarfRecord> klarf = kr.parseKlarf(parser, new FileInputStream(klarfF));
-			FileWriter fw = new FileWriter(new File("/tmp/" + klarfF.getName() + ".json"));
-			new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(fw, klarf.get());
+			Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(parser, new FileInputStream(klarfF));
+			try (FileWriter fw = new FileWriter(new File("/tmp/" + klarfF.getName() + ".json"))) {
+				new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(fw, klarf.get());
+				klarfCount++;
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 		long endMs = Instant.now().toEpochMilli();
-		System.out.println("Reading " + dir.listFiles().length + " took " + (endMs - startMs) + " ms");
+		System.out.println("Reading " + klarfCount + " took " + (endMs - startMs) + " ms");
 	}
 }

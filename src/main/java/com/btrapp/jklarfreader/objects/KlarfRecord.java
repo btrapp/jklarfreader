@@ -6,6 +6,29 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * 
+ * @author btrapp
+ */
+
+/*
+ * Example:
+ * 
+ * Record WaferRecord "FirstWaferId" {
+ * Field DieOrigin 2 {0, 0}
+ * Field OrientationInstructions 1 {""}
+ * }
+ * 
+ * Would map to:
+ * 
+ * name: "WaferRecord"
+ * id: "FirstWaferId"
+ * fields: {
+ * "DieOrigin" : ["0","0"],
+ * "OrientationInstructions" : [""]
+ * }
+ * 
+ */
 public final class KlarfRecord {
 	public KlarfRecord(String name, String id) {
 		this.name = name;
@@ -20,36 +43,38 @@ public final class KlarfRecord {
 
 	/**
 	 * A case-insensitive search to match a record by name.
+	 * 
 	 * @param name
 	 * @return
 	 */
 	public Stream<KlarfRecord> findRecordsByName(String name) {
-		return records.stream().filter(r->name.equalsIgnoreCase(r.getName()));
+		return records.stream().filter(r -> name.equalsIgnoreCase(r.getName()));
 	}
-	
+
 	/**
-	 * A case-insensitive search to find a list by name.  I suppose it could be listed
-	 *  twice, so return a stream.
+	 * A <b>case-insensitive</b> search to find a list by name. Multiple records could
+	 * match, so return a stream.
+	 * 
 	 * @param string
 	 * @return
 	 */
 	public Stream<KlarfList> findListByName(String name) {
-		return lists.stream().filter(r->name.equalsIgnoreCase(r.getName()));
+		return lists.stream().filter(r -> name.equalsIgnoreCase(r.getName()));
 	}
-	
+
 	/**
-	 * A case-insensitive search to match a record by name and an ID
+	 * A <b>case-insensitive</b> search to match a record by name and an ID
+	 * 
 	 * @param name
 	 * @return
 	 */
 	public Optional<KlarfRecord> findRecordByNameAndId(String name, String id) {
 		return records.stream()
-				.filter(r->name.equalsIgnoreCase(r.getName()))
-				.filter(r->id.equalsIgnoreCase(r.getId()))
+				.filter(r -> name.equalsIgnoreCase(r.getName()))
+				.filter(r -> id.equalsIgnoreCase(r.getId()))
 				.findFirst();
 	}
-	
-	
+
 	public String getName() {
 		return name;
 	}

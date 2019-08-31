@@ -14,23 +14,24 @@ import com.btrapp.jklarfreader.objects.KlarfRecord;
  * An implementation of the KlarfParterIf18 interface which emits a Plain Old Java Object
  * 
  * You may use this class directly or build your own parser using it as a guideline.
+ * 
+ * 
  * @author btrapp
  *
  */
 public class KlarfParser18Pojo implements KlarfParserIf18<KlarfRecord> {
 
 	/*
-	 * We need a stack as we need to sorta work our way into inner records 
-	 * and back & forward a few times until we're all done.  
+	 * We need a stack as we need to sorta work our way into inner records
+	 * and back & forward a few times until we're all done.
 	 */
 	private Deque<KlarfRecord> recordStack = new ArrayDeque<>();
 	//Holds information about the list as we move from definition to contents
 	private KlarfList workingList = null;
 
 	public KlarfParser18Pojo() {
+		super();
 	}
-
-	
 
 	@Override
 	public void startRecord(String recordName, String recordId) {

@@ -23,7 +23,7 @@ public class KlarfTokenizer implements AutoCloseable {
 	protected String getCurrentLine() {
 		return currentLine;
 	}
-	
+
 	protected boolean nextToken() throws IOException {
 		if (!tokens.isEmpty()) {
 			token = tokens.remove(0);
@@ -108,8 +108,9 @@ public class KlarfTokenizer implements AutoCloseable {
 
 	@Override
 	public void close() throws Exception {
-		if (br != null)
+		if (br != null) {
 			br.close();
+		}
 	}
 
 	public String nextVal() throws IOException {
