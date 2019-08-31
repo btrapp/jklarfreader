@@ -93,7 +93,7 @@ public class KlarfReader18IfFileExamplesTestCase {
 		assertEquals(expectedFields.size(), lotRecord.getFields().size(), "Only expected fields are found");
 
 		//Check lists
-		List<KlarfList> classLookups = lotRecord.findListByName("ClassLookupList").collect(Collectors.toList());
+		List<KlarfList> classLookups = lotRecord.findListsByName("ClassLookupList");
 		assertEquals(1, classLookups.size());
 		KlarfList classLookup = classLookups.get(0);
 		//Columns are right

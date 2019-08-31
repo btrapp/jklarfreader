@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 /**
  * 
@@ -47,8 +47,8 @@ public final class KlarfRecord {
 	 * @param name
 	 * @return
 	 */
-	public Stream<KlarfRecord> findRecordsByName(String name) {
-		return records.stream().filter(r -> name.equalsIgnoreCase(r.getName()));
+	public List<KlarfRecord> findRecordsByName(String name) {
+		return records.stream().filter(r -> name.equalsIgnoreCase(r.getName())).collect(Collectors.toList());
 	}
 
 	/**
@@ -58,8 +58,8 @@ public final class KlarfRecord {
 	 * @param string
 	 * @return
 	 */
-	public Stream<KlarfList> findListByName(String name) {
-		return lists.stream().filter(r -> name.equalsIgnoreCase(r.getName()));
+	public List<KlarfList> findListsByName(String name) {
+		return lists.stream().filter(r -> name.equalsIgnoreCase(r.getName())).collect(Collectors.toList());
 	}
 
 	/**
@@ -72,6 +72,19 @@ public final class KlarfRecord {
 		return records.stream()
 				.filter(r -> name.equalsIgnoreCase(r.getName()))
 				.filter(r -> id.equalsIgnoreCase(r.getId()))
+				.findFirst();
+	}
+
+	/**
+	 * A <b>case-insensitive</b> search to find a field
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public Optional<List<String>> findField(String name) {
+		return fields.entrySet().stream()
+				.filter(e -> name.equalsIgnoreCase(e.getKey()))
+				.map(e -> e.getValue())
 				.findFirst();
 	}
 

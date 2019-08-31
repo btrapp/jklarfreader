@@ -14,35 +14,40 @@ import com.btrapp.jklarfreader.objects.KlarfRecord;
 
 public class KlarfReaderSpeedTest {
 	public static void main(String[] args) throws Exception {
+		if (args[0] == null) {
+			System.err.println("Please pass a path to a directory of Klarf files");
+			System.exit(1);
+		}
 		File testKlarfDir = new File(args[0]);
 		int fileCount = 0;
 		int defectCount = 0;
-		
+
 		Instant start = Instant.now();
-		for (File f: testKlarfDir.listFiles()) {
-			if (f.getName().startsWith("18")) {
-				try (FileInputStream fis = new FileInputStream(f)) {
-					Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fis);
-					if (!klarf.isPresent()) {
-						System.err.println("COuldn't read "+f.getAbsolutePath());
-					} else {
-						fileCount++;
-						KlarfRecord klarfRecord = klarf.get();
-						List<String> fileTimestamp = klarfRecord.findField("FileTimestamp").orElse(Collections.emptyList());
-						for (KlarfRecord lotRecord: klarfRecord.findRecordsByName("LotRecord")) {
-							for (KlarfRecord waferRecord: lotRecord.findRecordsByName("WaferRecord")) {
-								KlarfList defects = waferRecord.findListByName("DefectList").orElse(new KlarfList());
-								defectCount += defects.size();
+		for (File f : testKlarfDir.listFiles()) {
+			try (FileInputStream fis = new FileInputStream(f)) {
+				Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fis);
+				if (!klarf.isPresent()) {
+					System.err.println("COuldn't read " + f.getAbsolutePath());
+				} else {
+					fileCount++;
+					KlarfRecord klarfRecord = klarf.get();
+					List<String> fileTimestamp = klarfRecord.findField("FileTimestamp").orElse(Collections.emptyList());
+					for (KlarfRecord lotRecord : klarfRecord.findRecordsByName("LotRecord")) {
+						for (KlarfRecord waferRecord : lotRecord.findRecordsByName("WaferRecord")) {
+							List<KlarfList> defects = waferRecord.findListsByName("DefectList");
+							for (KlarfList list : defects) {
+								defectCount += list.size();
 							}
 						}
 					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+
 		}
 		long deltaMs = Instant.now().toEpochMilli() - start.toEpochMilli();
-		System.out.println("Read "+fileCount+" klarfs with "+defectCount+" defects in "+deltaMs+" ms");
+		System.out.println("Read " + fileCount + " klarfs with " + defectCount + " defects in " + deltaMs + " ms");
 	}
 }
