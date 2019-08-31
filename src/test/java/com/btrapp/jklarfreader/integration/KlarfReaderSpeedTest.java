@@ -3,6 +3,8 @@ package com.btrapp.jklarfreader.integration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import com.btrapp.jklarfreader.KlarfReader;
@@ -20,18 +22,19 @@ public class KlarfReaderSpeedTest {
 		for (File f: testKlarfDir.listFiles()) {
 			if (f.getName().startsWith("18")) {
 				try (FileInputStream fis = new FileInputStream(f)) {
-					KlarfParser18Pojo parser = new KlarfParser18Pojo();
-					Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(parser, fis);
+					Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fis);
 					if (!klarf.isPresent()) {
 						System.err.println("COuldn't read "+f.getAbsolutePath());
 					} else {
 						fileCount++;
-						defectCount += klarf.get()
-							.findRecordsByName("LotRecord")
-							.flatMap(lr->lr.findRecordsByName("WaferRecord"))
-							.flatMap(wr->wr.findListByName("DefectList"))
-							.mapToInt(KlarfList::size)
-							.sum();
+						KlarfRecord klarfRecord = klarf.get();
+						List<String> fileTimestamp = klarfRecord.findField("FileTimestamp").orElse(Collections.emptyList());
+						for (KlarfRecord lotRecord: klarfRecord.findRecordsByName("LotRecord")) {
+							for (KlarfRecord waferRecord: lotRecord.findRecordsByName("WaferRecord")) {
+								KlarfList defects = waferRecord.findListByName("DefectList").orElse(new KlarfList());
+								defectCount += defects.size();
+							}
+						}
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
