@@ -37,9 +37,8 @@ public class KlarfReaderSpeedTest {
 					List<String> fileTimestamp = klarfRecord.findField("FileTimestamp").orElse(Collections.emptyList());
 					for (KlarfRecord lotRecord : klarfRecord.findRecordsByName("LotRecord")) {
 						for (KlarfRecord waferRecord : lotRecord.findRecordsByName("WaferRecord")) {
-							List<KlarfList> defects = waferRecord.findListsByName("DefectList");
-							for (KlarfList list : defects) {
-								defectCount += list.size();
+							for (KlarfList defectList : waferRecord.findListsByName("DefectList")) {
+								defectCount += defectList.size();
 							}
 						}
 					}
