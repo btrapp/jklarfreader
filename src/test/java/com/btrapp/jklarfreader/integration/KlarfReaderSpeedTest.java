@@ -3,8 +3,6 @@ package com.btrapp.jklarfreader.integration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import com.btrapp.jklarfreader.KlarfReader;
@@ -34,7 +32,7 @@ public class KlarfReaderSpeedTest {
 				} else {
 					fileCount++;
 					KlarfRecord klarfRecord = klarf.get();
-					List<String> fileTimestamp = klarfRecord.findField("FileTimestamp").orElse(Collections.emptyList());
+					//List<String> fileTimestamp = klarfRecord.findField("FileTimestamp").orElse(Collections.emptyList());
 					for (KlarfRecord lotRecord : klarfRecord.findRecordsByName("LotRecord")) {
 						for (KlarfRecord waferRecord : lotRecord.findRecordsByName("WaferRecord")) {
 							for (KlarfList defectList : waferRecord.findListsByName("DefectList")) {
