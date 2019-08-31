@@ -9,7 +9,7 @@ and libraries.  If you need/want the real deal, they're very good at what they d
 
 ### KlarfParser18Pojo 
 
-The KlarfParser18Pojo class is a simple java representation of the Klarf file layout, with KlarfRecord, KlarfList, and fields with each object. 
+The KlarfParser18Pojo class is a simple plain-old-java object representing the Klarf file layout, with KlarfRecord, KlarfList, and fields with each object. 
 
 ```
 Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), anInputStream);
@@ -25,12 +25,12 @@ if (klarf.isPresent()) {
 }
 ```
 
-KlarfParser18Pojo also seralizes nicely to Json using Jackson's ObjectMapper, if you so desire.
+KlarfParser18Pojo also serializes nicely to JSON using Jackson's ObjectMapper, if you so desire.
 
-## KlarfParerIf18
+## KlarfParserIf18
 
 You can also implement the KlarfParerIf18 interface using your own logic if you're looking for a more flexible way
 to process Klarfs.  If you only want to keep certain attributes, or if you want to be able to process data without having to 
-wait for the entire klarf to be loaded in memory, this may be a more appealing choice for you.  (You can this of this as acting like SAX based XML 
+wait for the entire Klarf to be loaded in memory, this may be a more appealing choice for you.  (You can this of this as acting like SAX based XML 
 parsing instead of DOM parsing)
 
