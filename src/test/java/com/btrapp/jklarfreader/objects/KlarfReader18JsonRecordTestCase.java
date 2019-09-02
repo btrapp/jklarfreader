@@ -100,6 +100,7 @@ public class KlarfReader18JsonRecordTestCase {
 		assertNotNull(nr2.getFields().get("G"));
 	}
 
+	@SuppressWarnings("boxing")
 	@Test
 	public void testSimpleLists() throws Exception {
 		String record = "Record FileRecord  \"1.8\" { \n" +
