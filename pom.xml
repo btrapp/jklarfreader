@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.github.btrapp</groupId>
+	<groupId>com.github.btrapp</groupId>
 	<artifactId>jklarfreader</artifactId>
 	<version>0.9</version>
 
@@ -20,7 +20,26 @@
 
 	<scm>
 		<url>https://github.com/btrapp/jklarfreader.git</url>
+		<connection>
+            scm:git:git://github.com/btrapp/jklarfreader.git
+        </connection>
+		<developerConnection>
+            scm:git:ssh://git@github.com:btrapp/jklarfreader.git
+        </developerConnection>
 	</scm>
+
+	<developers>
+		<developer>
+			<id>btrapp</id>
+			<name>Brian Trapp</name>
+			<email>btrapp@alum.rpi.edu</email>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+5</timezone>
+		</developer>
+	</developers>
 
 	<build>
 		<!-- http://maven.apache.org/pom.html#Plugin_Management -->
@@ -29,18 +48,81 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version>
+					<version>3.8.1</version>
 					<configuration>
 						<source>8</source>
 						<target>8</target>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.0</version>
+				</plugin>
+				<!-- start here: https://dzone.com/articles/publish-your-artifacts-to-maven-central 
+					https://github.com/sevntu-checkstyle/dsm-maven-plugin/wiki/Uploading-3rd-party-library-to-maven-central 
+					https://github.com/sevntu-checkstyle/dsm-maven-plugin/wiki/How-to-config-GPG-and-sign-artifact-with-it -->
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.6</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.2.1</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<phase>package</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>3.1.1</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<phase>package</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
+                </url>
+		</repository>
+	</distributionManagement>
 	<properties>
-		<junit.jupiter.version>5.4.0</junit.jupiter.version>
-		<junit.platform.version>1.5.1</junit.platform.version>
+		<junit.jupiter.version>5.5.2</junit.jupiter.version>
+		<junit.platform.version>1.5.2</junit.platform.version>
 	</properties>
 	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
 	<dependencies>
