@@ -42,10 +42,11 @@ public final class KlarfRecord {
 	private List<KlarfRecord> records = new ArrayList<>();
 
 	/**
-	 * A case-insensitive search to match a record by name.
+	 * A <b>case-insensitive</b> search to match a record by name.
 	 * 
 	 * @param name
-	 * @return
+	 *            the name of the record do find (WaferRecord)
+	 * @return all matching record objects
 	 */
 	public List<KlarfRecord> findRecordsByName(String name) {
 		return records.stream().filter(r -> name.equalsIgnoreCase(r.getName())).collect(Collectors.toList());
@@ -55,8 +56,9 @@ public final class KlarfRecord {
 	 * A <b>case-insensitive</b> search to find a list by name. Multiple records could
 	 * match, so return a stream.
 	 * 
-	 * @param string
-	 * @return
+	 * @param name
+	 *            the name of the list to find (DefectList)
+	 * @return all matching list objects
 	 */
 	public List<KlarfList> findListsByName(String name) {
 		return lists.stream().filter(r -> name.equalsIgnoreCase(r.getName())).collect(Collectors.toList());
@@ -66,7 +68,10 @@ public final class KlarfRecord {
 	 * A <b>case-insensitive</b> search to match a record by name and an ID
 	 * 
 	 * @param name
-	 * @return
+	 *            the name of the record to find (WaferRecord)
+	 * @param id
+	 *            the ID of the record to find (MyWafer.01)
+	 * @return the record
 	 */
 	public Optional<KlarfRecord> findRecordByNameAndId(String name, String id) {
 		return records.stream()
@@ -79,7 +84,8 @@ public final class KlarfRecord {
 	 * A <b>case-insensitive</b> search to find a field
 	 * 
 	 * @param name
-	 * @return
+	 *            the name of the field to find
+	 * @return the list of values
 	 */
 	public Optional<List<String>> findField(String name) {
 		return fields.entrySet().stream()

@@ -10,6 +10,12 @@ import com.btrapp.jklarfreader.objects.KlarfRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+/**
+ * A simple CLI to convert a klarf directly to JSON
+ * 
+ * @author btrapp
+ *
+ */
 public class KlarfToJson {
 	public static void main(String[] args) {
 		if (args.length != 2) {

@@ -12,6 +12,14 @@ import java.util.regex.Pattern;
 
 import com.btrapp.jklarfreader.objects.KlarfReader18;
 
+/**
+ * The static class used to kickoff a Klarf reading session
+ * 
+ * ex: KlarfRecord klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fileInputStream).get();
+ * 
+ * @author btrapp
+ *
+ */
 public class KlarfReader {
 	public static enum KlarfFormat {
 		UNSUPPORTED_FORMAT, V1_0, V1_2, V1_8
@@ -32,11 +40,13 @@ public class KlarfReader {
 	/**
 	 * Tries to determine if this looks *anything* like the expected Klarf format
 	 * 
-	 * @param br
-	 * @return
+	 * @param file
+	 *            The file to parse
+	 * @return the KlarfFormat enum
 	 * @throws IOException
+	 *             if any error
 	 */
-	public static KlarfFormat findKlarfFormat(File f) throws IOException {
+	public static KlarfFormat findKlarfFormat(File file) throws IOException {
 		//Record FileRecord  "1.8"
 		//FileVersion 1 2;
 		Pattern pattern1_8 = Pattern.compile("Record\\s+FileRecord.*1\\.8.*");
@@ -45,7 +55,7 @@ public class KlarfReader {
 		Matcher m;
 		String line;
 		int lineCount = 0;
-		try (FileInputStream fis = new FileInputStream(f)) {
+		try (FileInputStream fis = new FileInputStream(file)) {
 			//We need to be able to rewind this stream when we've detected
 			//System.out.println("HEAD: " + new String(header));
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(fis))) {

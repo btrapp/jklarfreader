@@ -12,6 +12,12 @@ import com.btrapp.jklarfreader.objects.KlarfException;
 import com.btrapp.jklarfreader.objects.KlarfList;
 import com.btrapp.jklarfreader.objects.KlarfRecord;
 
+/**
+ * Just used to see how fast we can run a bunch of klarfs through here
+ * 
+ * @author btrapp
+ *
+ */
 public class KlarfReaderSpeedTest {
 	public static void main(String[] args) throws Exception {
 		if (args[0] == null) {
