@@ -2,9 +2,26 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.btrapp</groupId>
+	<groupId>io.github.btrapp</groupId>
 	<artifactId>jklarfreader</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.9</version>
+
+	<name>io.github.btrapp:jklarfreader</name>
+	<description>Parent pom for the java Klarf reader</description>
+	<url>https://github.com/btrapp/jklarfreader</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/btrapp/jklarfreader.git</url>
+	</scm>
+
 	<build>
 		<!-- http://maven.apache.org/pom.html#Plugin_Management -->
 		<pluginManagement>
@@ -22,8 +39,8 @@
 		</pluginManagement>
 	</build>
 	<properties>
-	    <junit.jupiter.version>5.4.0</junit.jupiter.version>
-        <junit.platform.version>1.5.1</junit.platform.version>
+		<junit.jupiter.version>5.4.0</junit.jupiter.version>
+		<junit.platform.version>1.5.1</junit.platform.version>
 	</properties>
 	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
 	<dependencies>
