@@ -1,5 +1,11 @@
 package com.btrapp.jklarfreader.objects;
 
+/**
+ * An exception for when something's wrong with the Klarf format
+ * 
+ * @author btrapp
+ *
+ */
 public class KlarfException extends Exception {
 	private static final long serialVersionUID = -6451200672730727155L;
 

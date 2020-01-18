@@ -11,6 +11,7 @@ import java.util.Optional;
  * @author btrapp
  *
  * @param <T>
+ *            The class to emit
  */
 public interface KlarfParserIf18<T> {
 
@@ -20,8 +21,9 @@ public interface KlarfParserIf18<T> {
 	 * Ex: Record LotRecord "YourLot.Id" {
 	 * 
 	 * @param recordName
+	 *            (LotRecord)
 	 * @param recordId
-	 *            (Blank if not provided in the Klarf)
+	 *            (YourLot.ID or Blank if not provided in the Klarf)
 	 */
 	public void startRecord(String recordName, String recordId);
 
@@ -33,8 +35,11 @@ public interface KlarfParserIf18<T> {
 	 * Ex: Field OrientationInstructions 1 {""}
 	 * 
 	 * @param fieldName
+	 *            ex: OrientationInstructions
 	 * @param fieldCount
+	 *            ex: 1
 	 * @param fieldValues
+	 *            ex: [values arr]
 	 */
 	public void addField(String fieldName, int fieldCount, List<String> fieldValues);
 
@@ -47,10 +52,15 @@ public interface KlarfParserIf18<T> {
 	 * Embedded, simple lists (Like the "ImageList" defect attribute) are handled separately
 	 * 
 	 * @param listName
+	 *            ex: DefectList
 	 * @param colNames
+	 *            ex: [DEFECTID, XREL...]
 	 * @param colTypes
+	 *            ex: [int32, int32...]
 	 * @param colCount
+	 *            #cols expected
 	 * @param rowCount
+	 *            #rows expected
 	 */
 	public void startList(String listName, List<String> colNames, List<String> colTypes, int colCount, int rowCount);
 
@@ -58,6 +68,7 @@ public interface KlarfParserIf18<T> {
 	 * Called each time a lists's row is found
 	 * 
 	 * @param row
+	 *            the row to add
 	 */
 	public void addListRow(List<Object> row);
 

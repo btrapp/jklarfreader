@@ -91,8 +91,11 @@ public class KlarfTokenizer implements AutoCloseable {
 	 * Skips ahead to your requested string, **case insensitively**
 	 * 
 	 * @param str
+	 *            the string to parse
 	 * @throws IOException
+	 *             if the buffer fails
 	 * @throws KlarfException
+	 *             if the format doesn't match the klarf standard
 	 */
 	public void skipTo(String str) throws IOException, KlarfException {
 		while (!str.equalsIgnoreCase(val())) {
