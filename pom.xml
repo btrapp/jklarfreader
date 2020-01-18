@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.btrapp</groupId>
 	<artifactId>jklarfreader</artifactId>
-	<version>0.9</version>
+	<version>0.9-SNAPSHOT</version>
 
 	<name>io.github.btrapp:jklarfreader</name>
 	<description>Parent pom for the java Klarf reader</description>
@@ -124,6 +124,23 @@
 		<!-- http://maven.apache.org/pom.html#Plugin_Management -->
 		<plugins>
 			<plugin>
+				<groupId>com.coveo</groupId>
+				<artifactId>fmt-maven-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<filesNamePattern>.*\.java</filesNamePattern>
+					<skip>false</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
@@ -139,8 +156,8 @@
 				<version>2.22.0</version>
 			</plugin>
 
-			<!-- start here: https://dzone.com/articles/publish-your-artifacts-to-maven-central 
-				https://github.com/sevntu-checkstyle/dsm-maven-plugin/wiki/Uploading-3rd-party-library-to-maven-central 
+			<!-- start here: https://knowm.org/a-practical-guide-to-uploading-artifacts-to-maven-central/ 
+				https://dzone.com/articles/publish-your-artifacts-to-maven-central https://github.com/sevntu-checkstyle/dsm-maven-plugin/wiki/Uploading-3rd-party-library-to-maven-central 
 				https://github.com/sevntu-checkstyle/dsm-maven-plugin/wiki/How-to-config-GPG-and-sign-artifact-with-it -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -183,28 +200,10 @@
 					</execution>
 				</executions>
 			</plugin>
-             <plugin>
-                <groupId>com.coveo</groupId>
-                <artifactId>fmt-maven-plugin</artifactId>
-                <version>2.9</version>
-                <configuration>
-                    <filesNamePattern>.*\.java</filesNamePattern>
-                    <skip>false</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
 
 		</plugins>
 
 	</build>
-
 
 
 	<properties>
