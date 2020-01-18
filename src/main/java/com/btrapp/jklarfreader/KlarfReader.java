@@ -1,5 +1,6 @@
 package com.btrapp.jklarfreader;
 
+import com.btrapp.jklarfreader.objects.KlarfReader18;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,8 +10,6 @@ import java.io.InputStreamReader;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.btrapp.jklarfreader.objects.KlarfReader18;
 
 /**
  * The static class used to kickoff a Klarf reading session

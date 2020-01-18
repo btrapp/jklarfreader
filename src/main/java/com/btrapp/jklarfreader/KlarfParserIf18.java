@@ -59,13 +59,12 @@ public interface KlarfParserIf18<T> {
    */
   public void addListRow(List<Object> row);
 
-  /**
-   * Called when then end of the list is found
-   */
+  /** Called when then end of the list is found */
   public void endList();
 
   /**
    * Called at the very end of the Klarf
+   *
    * @return
    */
   public Optional<T> build();

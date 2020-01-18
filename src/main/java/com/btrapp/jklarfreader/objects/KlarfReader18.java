@@ -152,7 +152,7 @@ public class KlarfReader18<T> {
    * <p>Ex: Images 3 { "" "" "" "", "" "" "" "", "" "" "" ""}
    *
    * @param kt
-   * @return
+   * @return the inner list (all as strings)
    * @throws IOException
    * @throws KlarfException
    */
