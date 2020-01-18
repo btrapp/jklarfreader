@@ -1,6 +1,5 @@
 package com.btrapp.jklarfreader;
 
-import com.btrapp.jklarfreader.objects.KlarfReader18;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
