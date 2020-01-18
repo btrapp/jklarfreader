@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A Klarf list record.
- * Format 1.2 and below won't have columnTypes, and may or may not even have column names
- * 
+ * A Klarf list record. Format 1.2 and below won't have columnTypes, and may or may not even have
+ * column names
+ *
  * @author btrapp
- * 
  */
 
 /*
  * Example:
- * 
+ *
  * List DefectList
  * {
  * Columns 41 { int32 DEFECTID, int32 XREL, int32 YREL, int32 XINDEX, int32 YINDEX,
@@ -38,9 +37,9 @@ import java.util.List;
  * 0.0000 0.0000 0.0000 ;
  * }
  * }
- * 
+ *
  * Would map to:
- * 
+ *
  * name: "DefectList"
  * columnNames: ["DEFECTID","XREL",...,"DCIRANGE"]
  * coumnTypes: [int32,int32,...,float]
@@ -49,47 +48,47 @@ import java.util.List;
  * ...
  * [128,2782531,...,0.0000]
  * ]
- * 
+ *
  */
 public final class KlarfList {
-	private String name;
-	private List<String> columnNames;
-	private List<String> columnTypes;
-	private List<List<Object>> data = new ArrayList<>();
+  private String name;
+  private List<String> columnNames;
+  private List<String> columnTypes;
+  private List<List<Object>> data = new ArrayList<>();
 
-	public int size() {
-		return data.size();
-	}
+  public int size() {
+    return data.size();
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public List<String> getColumnNames() {
-		return columnNames;
-	}
+  public List<String> getColumnNames() {
+    return columnNames;
+  }
 
-	public void setColumnNames(List<String> columnNames) {
-		this.columnNames = columnNames;
-	}
+  public void setColumnNames(List<String> columnNames) {
+    this.columnNames = columnNames;
+  }
 
-	public List<String> getColumnTypes() {
-		return columnTypes;
-	}
+  public List<String> getColumnTypes() {
+    return columnTypes;
+  }
 
-	public void setColumnTypes(List<String> columnTypes) {
-		this.columnTypes = columnTypes;
-	}
+  public void setColumnTypes(List<String> columnTypes) {
+    this.columnTypes = columnTypes;
+  }
 
-	public List<List<Object>> getData() {
-		return data;
-	}
+  public List<List<Object>> getData() {
+    return data;
+  }
 
-	public void setData(List<List<Object>> data) {
-		this.data = data;
-	}
+  public void setData(List<List<Object>> data) {
+    this.data = data;
+  }
 }
