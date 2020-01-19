@@ -160,4 +160,26 @@ public class KlarfReader18JsonRecordTestCase {
 			node.reqList("AList", 2);
 		});
 	}
+
+	@Test
+	public void testReqNumberMethods() throws Exception {
+		String record = "Record FileRecord  \"1.8\" { \n"
+				+ " Field A 1 { 3.14 } \n"
+				+ " Field B 3 {3,1,4} \n"
+				+ " } \n"
+				+ "EndOfFile;";
+		Optional<KlarfRecord> kO = new KlarfReader18<KlarfRecord>(new KlarfParser18Pojo())
+				.readKlarf(new ByteArrayInputStream(record.getBytes()));
+		assertTrue(kO.isPresent());
+		KlarfRecord node = kO.get();
+		List<Double> fa = node.reqDoubleField("A", 1);
+		assertEquals(1, fa.size());
+		assertEquals(3.14, fa.get(0).doubleValue(), 0.001);
+		List<Integer> fb = node.reqIntField("B", 3);
+		assertEquals(3, fb.size());
+		assertEquals(3, fb.get(0));
+		assertEquals(1, fb.get(1));
+		assertEquals(4, fb.get(2));
+
+	}
 }
