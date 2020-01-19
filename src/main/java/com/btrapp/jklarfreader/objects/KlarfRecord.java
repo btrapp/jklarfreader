@@ -126,6 +126,7 @@ public final class KlarfRecord {
 	}
 
 	/**
+	 * requireList:
 	 * Find a list by name, ensures it has the requested length
 	 * 
 	 * @param name
@@ -148,6 +149,7 @@ public final class KlarfRecord {
 	}
 
 	/**
+	 * requireRecord:
 	 * Find a record by name, ensures it has the requested length
 	 * 
 	 * @param name
@@ -171,6 +173,7 @@ public final class KlarfRecord {
 	}
 
 	/**
+	 * requireField:
 	 * Finds a field by name, ensures it has the requested length
 	 * 
 	 * @param name
@@ -193,7 +196,7 @@ public final class KlarfRecord {
 	}
 
 	/**
-	 * All the logic of getField but adds in the requirement that all values parse to Double
+	 * All the logic of reqField but adds in the requirement that all values parse to Double
 	 * 
 	 * @param name
 	 *            the field (case insensitive)
@@ -215,7 +218,7 @@ public final class KlarfRecord {
 	}
 
 	/**
-	 * All the logic of getField but adds in the requirement that all values parse to Integer
+	 * All the logic of reqField but adds in the requirement that all values parse to Integer
 	 * 
 	 * @param name
 	 *            the field (case insensitive)
