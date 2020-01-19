@@ -90,16 +90,19 @@ public final class KlarfRecord {
 
 	/**
 	 * A <b>case-insensitive</b> search to find a field
+	 * 
+	 * If the field is not present an empty list is returned.
 	 *
 	 * @param name
 	 *            the name of the field to find
 	 * @return the list of values
 	 */
-	public Optional<List<String>> findField(String name) {
+	public List<String> findField(String name) {
 		return fields.entrySet().stream()
 				.filter(e -> name.equalsIgnoreCase(e.getKey()))
 				.map(e -> e.getValue())
-				.findFirst();
+				.findFirst()
+				.orElse(Collections.emptyList());
 	}
 
 	public String getName() {
@@ -178,15 +181,15 @@ public final class KlarfRecord {
 	 * @throws KlarfContentException
 	 */
 	public List<String> reqField(String name, int n) throws KlarfContentException {
-		Optional<List<String>> fieldVals = this.findField(name);
-		if ((!fieldVals.isPresent()) || (fieldVals.isEmpty())) {
+		List<String> fieldVals = this.findField(name);
+		if (fieldVals.isEmpty()) {
 			throw new KlarfContentException("Field " + name + " in record " + this.getName() + "/" + this.getId() + " is missing");
 		}
-		if (fieldVals.get().size() != n) {
+		if (fieldVals.size() != n) {
 			throw new KlarfContentException(
-					"Field " + name + " in record " + this.getName() + "/" + this.getId() + " has the wrong length (" + fieldVals.get().size() + " vs expected " + n + ")");
+					"Field " + name + " in record " + this.getName() + "/" + this.getId() + " has the wrong length (" + fieldVals.size() + " vs expected " + n + ")");
 		}
-		return fieldVals.get();
+		return fieldVals;
 	}
 
 	/**
