@@ -65,7 +65,7 @@ public interface KlarfParserIf18<T> {
   /**
    * Called at the very end of the Klarf
    *
-   * @return
+   * @return the record
    */
   public Optional<T> build();
 }
