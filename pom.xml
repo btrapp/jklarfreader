@@ -18,12 +18,7 @@
 
 	<scm>
 		<url>https://github.com/btrapp/jklarfreader.git</url>
-		<connection>
-            scm:git:git://github.com/btrapp/jklarfreader.git
-        </connection>
-		<developerConnection>
-            scm:git:ssh://git@github.com:btrapp/jklarfreader.git
-        </developerConnection>
+		<connection>scm:git:https://btrapp@github.com/btrapp/jklarfreader.git</connection>
 	  <tag>jklarfreader-0.9.3</tag>
   </scm>
 
