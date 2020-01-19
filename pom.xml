@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.btrapp</groupId>
 	<artifactId>jklarfreader</artifactId>
-	<version>0.9.3-SNAPSHOT</version>
+	<version>0.9.3</version>
 
 	<name>io.github.btrapp:jklarfreader</name>
 	<description>Parent pom for the java Klarf reader</description>
@@ -24,7 +24,7 @@
 		<developerConnection>
             scm:git:ssh://git@github.com:btrapp/jklarfreader.git
         </developerConnection>
-	  <tag>jklarfreader-0.9.1</tag>
+	  <tag>jklarfreader-0.9.3</tag>
   </scm>
 
 	<developers>
