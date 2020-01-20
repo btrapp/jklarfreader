@@ -71,7 +71,7 @@ public class KlarfParser18Pojo implements KlarfParserIf18<KlarfRecord> {
 		for (String colName : colNames) {
 			map.put(colName, new ArrayList<>(rowCount));
 		}
-		this.workingList.setData(map);
+		this.workingList.setColMap(map);
 	}
 
 	@Override

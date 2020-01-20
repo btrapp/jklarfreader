@@ -5,12 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.btrapp.jklarfreader.KlarfReader;
-import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
+
+import com.btrapp.jklarfreader.KlarfReader;
+import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 
 public class KlarfReader18JsonRecordTestCase {
 
@@ -159,14 +161,14 @@ public class KlarfReader18JsonRecordTestCase {
     assertTrue(listO.isPresent());
     assertEquals(List.of("Foo", "Bar"), listO.get().getColumnNames());
     assertEquals(List.of("int32", "float"), listO.get().getColumnTypes());
-    assertEquals(3, listO.get().getData().size());
-    assertEquals(42, listO.get().getData().get(0).get(0));
-    assertEquals(43, listO.get().getData().get(1).get(0));
-    assertEquals(44, listO.get().getData().get(2).get(0));
+    assertEquals(3, listO.get().size());
+    assertEquals(42, listO.get().getColumn("Foo").get(0));
+    assertEquals(43, listO.get().getColumn("Foo").get(1));
+    assertEquals(44, listO.get().getColumn("Foo").get(2));
     float tol = 0.1f;
-    assertEquals(1.0f, (Float) listO.get().getData().get(0).get(1), tol);
-    assertEquals(2.0f, (Float) listO.get().getData().get(1).get(1), tol);
-    assertEquals(3.0f, (Float) listO.get().getData().get(2).get(1), tol);
+    assertEquals(1.0f, (Float) listO.get().get("Bar", 0).orElse(0f), tol);
+    assertEquals(2.0f, (Float) listO.get().get("Bar", 1).orElse(0f), tol);
+    assertEquals(3.0f, (Float) listO.get().get("Bar", 2).orElse(0f), tol);
     assertEquals(1, node.reqList("AList", 1).size());
     assertThrows(
         KlarfContentException.class,

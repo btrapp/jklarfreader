@@ -58,11 +58,11 @@ public final class KlarfList {
 	private List<String> columnNames;
 	private List<String> columnTypes;
 	//Store the inner defects in a JSONLines format http://jsonlines.org/
-	private Map<String, List<Object>> data = new HashMap<>();
+	private Map<String, List<Object>> colMap = new HashMap<>();
 
 	public void addByIndex(int colIndex, Object value) {
 		String colName = columnNames.get(colIndex);
-		List<Object> list = data.get(colName);
+		List<Object> list = colMap.get(colName);
 		list.add(value);
 	}
 
@@ -77,7 +77,7 @@ public final class KlarfList {
 	 * @return the value (wrapped with optional)
 	 */
 	public Optional<Object> get(String col, int index) {
-		List<Object> theCol = data.get(col);
+		List<Object> theCol = colMap.get(col);
 		if (theCol == null) {
 			return Optional.empty();
 		}
@@ -91,7 +91,7 @@ public final class KlarfList {
 	public List<Object> asRow(int rowIndex) {
 		List<Object> row = new ArrayList<>(columnNames.size());
 		for (String c : columnNames) {
-			row.add(data.get(c).get(rowIndex));
+			row.add(colMap.get(c).get(rowIndex));
 		}
 		return row;
 	}
@@ -101,9 +101,9 @@ public final class KlarfList {
 	 * @return the number of rows in the list (uses the 1st item in the map)
 	 */
 	public int size() {
-		if (data.isEmpty())
+		if (colMap.isEmpty())
 			return 0;
-		return data.values().iterator().next().size();
+		return colMap.values().iterator().next().size();
 	}
 
 	public String getName() {
@@ -121,7 +121,7 @@ public final class KlarfList {
 	public void setColumnNames(List<String> columnNames) {
 		this.columnNames = columnNames;
 		for (String colName : columnNames) {
-			data.computeIfAbsent(colName, l -> new ArrayList<>());
+			colMap.computeIfAbsent(colName, l -> new ArrayList<>());
 		}
 	}
 
@@ -133,12 +133,18 @@ public final class KlarfList {
 		this.columnTypes = columnTypes;
 	}
 
-	public Map<String, List<Object>> getData() {
-		return data;
+	public Map<String, List<Object>> getColMap() {
+		return colMap;
 	}
 
-	public void setData(Map<String, List<Object>> data) {
-		this.data = data;
+	public void setColMap(Map<String, List<Object>> colMap) {
+		this.colMap = colMap;
 	}
+
+	public List<Object> getColumn(String colName) {
+		return this.colMap.get(colName);
+	}
+
+	
 
 }
