@@ -1,7 +1,10 @@
 package com.btrapp.jklarfreader.objects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A Klarf list record. Format 1.2 and below won't have columnTypes, and may or may not even have
@@ -43,52 +46,99 @@ import java.util.List;
  * name: "DefectList"
  * columnNames: ["DEFECTID","XREL",...,"DCIRANGE"]
  * coumnTypes: [int32,int32,...,float]
- * data: [
- * [2,1254960,...,0.0000]
- * ...
- * [128,2782531,...,0.0000]
- * ]
+ * data: {
+ * "DEFECTID" : [2, 3, 128],
+ * "XREL" : [ 1254960, 622162, 2782531]
+ * ..etc
+ * }
  *
  */
 public final class KlarfList {
-  private String name;
-  private List<String> columnNames;
-  private List<String> columnTypes;
-  private List<List<Object>> data = new ArrayList<>();
+	private String name;
+	private List<String> columnNames;
+	private List<String> columnTypes;
+	//Store the inner defects in a JSONLines format http://jsonlines.org/
+	private Map<String, List<Object>> data = new HashMap<>();
 
-  public int size() {
-    return data.size();
-  }
+	public void addByIndex(int colIndex, Object value) {
+		String colName = columnNames.get(colIndex);
+		List<Object> list = data.get(colName);
+		list.add(value);
+	}
 
-  public String getName() {
-    return name;
-  }
+	/**
+	 * A simple utility getter, handles missing col names and
+	 * array out of bound problems
+	 * 
+	 * @param col
+	 *            the column name to retrieve
+	 * @param index
+	 *            the index within that row
+	 * @return the value (wrapped with optional)
+	 */
+	public Optional<Object> get(String col, int index) {
+		List<Object> theCol = data.get(col);
+		if (theCol == null) {
+			return Optional.empty();
+		}
+		if (index < 0)
+			return Optional.empty();
+		if (index >= theCol.size())
+			return Optional.empty();
+		return Optional.ofNullable(theCol.get(index));
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public List<Object> asRow(int rowIndex) {
+		List<Object> row = new ArrayList<>(columnNames.size());
+		for (String c : columnNames) {
+			row.add(data.get(c).get(rowIndex));
+		}
+		return row;
+	}
 
-  public List<String> getColumnNames() {
-    return columnNames;
-  }
+	/**
+	 * 
+	 * @return the number of rows in the list (uses the 1st item in the map)
+	 */
+	public int size() {
+		if (data.isEmpty())
+			return 0;
+		return data.values().iterator().next().size();
+	}
 
-  public void setColumnNames(List<String> columnNames) {
-    this.columnNames = columnNames;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public List<String> getColumnTypes() {
-    return columnTypes;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public void setColumnTypes(List<String> columnTypes) {
-    this.columnTypes = columnTypes;
-  }
+	public List<String> getColumnNames() {
+		return columnNames;
+	}
 
-  public List<List<Object>> getData() {
-    return data;
-  }
+	public void setColumnNames(List<String> columnNames) {
+		this.columnNames = columnNames;
+		for (String colName : columnNames) {
+			data.computeIfAbsent(colName, l -> new ArrayList<>());
+		}
+	}
 
-  public void setData(List<List<Object>> data) {
-    this.data = data;
-  }
+	public List<String> getColumnTypes() {
+		return columnTypes;
+	}
+
+	public void setColumnTypes(List<String> columnTypes) {
+		this.columnTypes = columnTypes;
+	}
+
+	public Map<String, List<Object>> getData() {
+		return data;
+	}
+
+	public void setData(Map<String, List<Object>> data) {
+		this.data = data;
+	}
+
 }
