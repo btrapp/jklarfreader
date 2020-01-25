@@ -1,4 +1,4 @@
 0.9.4 - Changelog started
-0.9.5 - 2020-01-20 :
-  * Changed KlarfList to be organized like JsonLines format (http://jsonlines.org/) to eventually intersect
-    thinks like Spark nicer. 
+0.9.5 - 2020-01-20 : Changed KlarfList to be organized like JsonLines format (http://jsonlines.org/) to eventually intersect things like Spark nicer. 
+0.9.6 - 2020-01-25 : Fixed project description in the POM
+    
