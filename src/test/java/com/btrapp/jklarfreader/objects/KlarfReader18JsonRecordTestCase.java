@@ -5,14 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.btrapp.jklarfreader.KlarfReader;
+import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
-
-import com.btrapp.jklarfreader.KlarfReader;
-import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 
 public class KlarfReader18JsonRecordTestCase {
 
