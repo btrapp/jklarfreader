@@ -1,8 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.btrapp</groupId>
 	<artifactId>jklarfreader</artifactId>
-	<version>0.9.6-SNAPSHOT</version>
+	<version>0.9.5-SNAPSHOT</version>
 
 	<name>io.github.btrapp:jklarfreader</name>
 	<description>Parent pom for the java Klarf reader</description>
@@ -21,9 +23,11 @@
 		<connection>
             scm:git:git://github.com/btrapp/jklarfreader.git
         </connection>
-      <developerConnection>scm:git:git@github.com:btrapp/jklarfreader.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
+		<developerConnection>
+		    scm:git:git@github.com:btrapp/jklarfreader.git
+		</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 
 	<developers>
 		<developer>
@@ -151,9 +155,7 @@
 				<version>2.22.0</version>
 			</plugin>
 
-			<!-- start here: 
-			https://itnext.io/publishing-artifact-to-maven-central-b160634e5268
--->
+			<!-- start here: https://itnext.io/publishing-artifact-to-maven-central-b160634e5268 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
