@@ -1,6 +1,7 @@
 package com.btrapp.jklarfreader.objects;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,11 @@ import java.util.stream.Collectors;
  *
  */
 public final class KlarfRecord {
+  // Keep a zero-arg contstructor around so this can object can be created by the Jackson
+  // objectmapper
+  @SuppressWarnings("unused")
+  private KlarfRecord() {}
+
   public KlarfRecord(String name, String id) {
     this.name = name;
     this.id = id;
@@ -80,14 +86,17 @@ public final class KlarfRecord {
   /**
    * A <b>case-insensitive</b> search to find a field
    *
+   * <p>If the field is not present an empty list is returned.
+   *
    * @param name the name of the field to find
    * @return the list of values
    */
-  public Optional<List<String>> findField(String name) {
+  public List<String> findField(String name) {
     return fields.entrySet().stream()
         .filter(e -> name.equalsIgnoreCase(e.getKey()))
         .map(e -> e.getValue())
-        .findFirst();
+        .findFirst()
+        .orElse(Collections.emptyList());
   }
 
   public String getName() {
@@ -108,5 +117,154 @@ public final class KlarfRecord {
 
   public List<KlarfRecord> getRecords() {
     return records;
+  }
+
+  /**
+   * requireList: Find a list by name, ensures it has the requested length
+   *
+   * @param name the name of the list (case insensitve)
+   * @param n the exact length required.
+   * @return the matching lists
+   * @throws KlarfContentException if the list is missing or the length is unexpected
+   */
+  public List<KlarfList> reqList(String name, int n) throws KlarfContentException {
+    List<KlarfList> lists = findListsByName(name);
+    if (lists.isEmpty()) {
+      throw new KlarfContentException(
+          "List " + name + " in record " + this.getName() + "/" + this.getId() + " is missing");
+    }
+    if (lists.size() != n) {
+      throw new KlarfContentException(
+          "List "
+              + name
+              + " in record "
+              + this.getName()
+              + "/"
+              + this.getId()
+              + " has the wrong length ("
+              + lists.size()
+              + " vs expected "
+              + n
+              + ")");
+    }
+    return lists;
+  }
+
+  /**
+   * requireRecord: Find a record by name, ensures it has the requested length
+   *
+   * @param name the name of the record (case insensitve)
+   * @param n the exact length required.
+   * @return the matching records
+   * @throws KlarfContentException if the record is missing or the length is unexpected
+   */
+  public List<KlarfRecord> reqRecord(String name, int n) throws KlarfContentException {
+    List<KlarfRecord> records = findRecordsByName(name);
+    if (records.isEmpty()) {
+      throw new KlarfContentException(
+          "Record " + name + " in record " + this.getName() + "/" + this.getId() + " is missing");
+    }
+    if (records.size() != n) {
+      throw new KlarfContentException(
+          "Record "
+              + name
+              + " in record "
+              + this.getName()
+              + "/"
+              + this.getId()
+              + " has the wrong length ("
+              + records.size()
+              + " vs expected "
+              + n
+              + ")");
+    }
+    return records;
+  }
+
+  /**
+   * requireField: Finds a field by name, ensures it has the requested length
+   *
+   * @param name the field (case insensitive)
+   * @param n the required number of items
+   * @return the field contents (as a List &lt;String&gt; )
+   * @throws KlarfContentException if the field is missing or the length is unexpected
+   */
+  public List<String> reqField(String name, int n) throws KlarfContentException {
+    List<String> fieldVals = this.findField(name);
+    if (fieldVals.isEmpty()) {
+      throw new KlarfContentException(
+          "Field " + name + " in record " + this.getName() + "/" + this.getId() + " is missing");
+    }
+    if (fieldVals.size() != n) {
+      throw new KlarfContentException(
+          "Field "
+              + name
+              + " in record "
+              + this.getName()
+              + "/"
+              + this.getId()
+              + " has the wrong length ("
+              + fieldVals.size()
+              + " vs expected "
+              + n
+              + ")");
+    }
+    return fieldVals;
+  }
+
+  /**
+   * All the logic of reqField but adds in the requirement that all values parse to Double
+   *
+   * @param name the field (case insensitive)
+   * @param n the required number of items
+   * @return list of Doubles
+   * @throws KlarfContentException if the parse to double fails
+   */
+  public List<Double> reqDoubleField(String name, int n) throws KlarfContentException {
+    List<String> str = reqField(name, n);
+    if (str.isEmpty()) {
+      return Collections.emptyList();
+    }
+    try {
+      return str.stream().map(Double::parseDouble).collect(Collectors.toList());
+    } catch (Exception ex) {
+      throw new KlarfContentException(
+          "Record "
+              + this.getName()
+              + "/"
+              + this.getId()
+              + " field "
+              + name
+              + " could not be parsed to double: "
+              + str.toString());
+    }
+  }
+
+  /**
+   * All the logic of reqField but adds in the requirement that all values parse to Integer
+   *
+   * @param name the field (case insensitive)
+   * @param n the required number of items
+   * @return list of Integer
+   * @throws KlarfContentException KlarfContentException if the parse to integer fails
+   */
+  public List<Integer> reqIntField(String name, int n) throws KlarfContentException {
+    List<String> str = reqField(name, n);
+    if (str.isEmpty()) {
+      return Collections.emptyList();
+    }
+    try {
+      return str.stream().map(Integer::parseInt).collect(Collectors.toList());
+    } catch (Exception ex) {
+      throw new KlarfContentException(
+          "Record "
+              + this.getName()
+              + "/"
+              + this.getId()
+              + " field "
+              + name
+              + " could not be parsed to double: "
+              + str.toString());
+    }
   }
 }

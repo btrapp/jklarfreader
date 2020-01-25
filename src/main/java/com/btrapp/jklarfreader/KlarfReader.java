@@ -14,8 +14,7 @@ import java.util.regex.Pattern;
 /**
  * The static class used to kickoff a Klarf reading session
  *
- * <p>ex: KlarfRecord klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(),
- * fileInputStream).get();
+ * <p>ex: Optional&lt;KlarfRecord&gt; klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), is);
  *
  * @author btrapp
  */

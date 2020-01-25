@@ -1,8 +1,12 @@
 package com.btrapp.jklarfreader.objects;
 
 /**
- * An exception for when something's wrong with the Klarf format
+ * An exception for when something's wrong with the Klarf format itself (like a list length is
+ * wrong)
  *
+ * @see com.btrapp.jklarfreader.objects.KlarfContentException for when the format is correct but the
+ *     contents don't follow a business logic rule (like if you say ResultTimestamp is expected to
+ *     be a String of 2 items, but only 1 is present)
  * @author btrapp
  */
 public class KlarfException extends Exception {

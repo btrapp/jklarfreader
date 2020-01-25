@@ -2,14 +2,17 @@ package com.btrapp.jklarfreader.objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.btrapp.jklarfreader.KlarfReader;
-import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
+
+import com.btrapp.jklarfreader.KlarfReader;
+import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 
 public class KlarfReader18JsonRecordTestCase {
 
@@ -60,6 +63,12 @@ public class KlarfReader18JsonRecordTestCase {
     assertEquals("B C", fieldG.get(0));
     assertEquals("D", fieldG.get(1));
     assertEquals("E", fieldG.get(2));
+    assertEquals(3, node.reqField("G", 3).size());
+    assertThrows(
+        KlarfContentException.class,
+        () -> {
+          node.reqField("G", 2);
+        });
   }
 
   @Test
@@ -107,6 +116,13 @@ public class KlarfReader18JsonRecordTestCase {
     assertNotNull(nr1.getFields().get("G"));
     assertNotNull(nr2);
     assertNotNull(nr2.getFields().get("G"));
+
+    assertEquals(2, node.reqRecord("NestedRecord", 2).size());
+    assertThrows(
+        KlarfContentException.class,
+        () -> {
+          node.reqRecord("NestedRecord", 3);
+        });
   }
 
   @SuppressWarnings("boxing")
@@ -145,13 +161,42 @@ public class KlarfReader18JsonRecordTestCase {
     assertTrue(listO.isPresent());
     assertEquals(List.of("Foo", "Bar"), listO.get().getColumnNames());
     assertEquals(List.of("int32", "float"), listO.get().getColumnTypes());
-    assertEquals(3, listO.get().getData().size());
-    assertEquals(42, listO.get().getData().get(0).get(0));
-    assertEquals(43, listO.get().getData().get(1).get(0));
-    assertEquals(44, listO.get().getData().get(2).get(0));
+    assertEquals(3, listO.get().size());
+    assertEquals(42, listO.get().getColumn("Foo").get(0));
+    assertEquals(43, listO.get().getColumn("Foo").get(1));
+    assertEquals(44, listO.get().getColumn("Foo").get(2));
     float tol = 0.1f;
-    assertEquals(1.0f, (Float) listO.get().getData().get(0).get(1), tol);
-    assertEquals(2.0f, (Float) listO.get().getData().get(1).get(1), tol);
-    assertEquals(3.0f, (Float) listO.get().getData().get(2).get(1), tol);
+    assertEquals(1.0f, (Float) listO.get().get("Bar", 0).orElse(0f), tol);
+    assertEquals(2.0f, (Float) listO.get().get("Bar", 1).orElse(0f), tol);
+    assertEquals(3.0f, (Float) listO.get().get("Bar", 2).orElse(0f), tol);
+    assertEquals(1, node.reqList("AList", 1).size());
+    assertThrows(
+        KlarfContentException.class,
+        () -> {
+          node.reqList("AList", 2);
+        });
+  }
+
+  @Test
+  public void testReqNumberMethods() throws Exception {
+    String record =
+        "Record FileRecord  \"1.8\" { \n"
+            + " Field A 1 { 3.14 } \n"
+            + " Field B 3 {3,1,4} \n"
+            + " } \n"
+            + "EndOfFile;";
+    Optional<KlarfRecord> kO =
+        new KlarfReader18<KlarfRecord>(new KlarfParser18Pojo())
+            .readKlarf(new ByteArrayInputStream(record.getBytes()));
+    assertTrue(kO.isPresent());
+    KlarfRecord node = kO.get();
+    List<Double> fa = node.reqDoubleField("A", 1);
+    assertEquals(1, fa.size());
+    assertEquals(3.14, fa.get(0).doubleValue(), 0.001);
+    List<Integer> fb = node.reqIntField("B", 3);
+    assertEquals(3, fb.size());
+    assertEquals(3, fb.get(0));
+    assertEquals(1, fb.get(1));
+    assertEquals(4, fb.get(2));
   }
 }

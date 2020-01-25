@@ -29,8 +29,18 @@ KlarfParser18Pojo also serializes nicely to JSON using Jackson's ObjectMapper, i
 
 ## KlarfParserIf18
 
-You can also implement the KlarfParerIf18 interface using your own logic if you're looking for a more flexible way
+You can also implement the KlarfParserIf18 interface using your own logic if you're looking for a more flexible way
 to process Klarfs.  If you only want to keep certain attributes, or if you want to be able to process data without having to 
 wait for the entire Klarf to be loaded in memory, this may be a more appealing choice for you.  (You can this of this as acting like SAX based XML 
 parsing instead of DOM parsing)
+
+
+## Maven Artifact
+```
+<dependency>
+  <groupId>com.github.btrapp</groupId>
+  <artifactId>jklarfreader</artifactId>
+  <version>0.9.5</version>
+</dependency>
+```
 
