@@ -2,10 +2,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.btrapp</groupId>
 	<artifactId>jklarfreader</artifactId>
-	<version>0.9.6-SNAPSHOT</version>
+	<version>0.9.7-SNAPSHOT</version>
 
 	<name>io.github.btrapp:jklarfreader</name>
-	<description>Parent pom for the java Klarf reader</description>
+	<description>Library to read a 1.8 format Klarf file into JSON or a POJO</description>
 	<url>https://github.com/btrapp/jklarfreader</url>
 
 	<licenses>
@@ -102,10 +102,30 @@
 						</executions>
 					</plugin>
 					<plugin>
+<<<<<<< HEAD
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
 						<version>1.6.8</version>
 						<extensions>true</extensions>
+=======
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.2.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- Generates JavaDocs during package -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.2.0</version>
+>>>>>>> refs/remotes/origin/develop
 						<configuration>
 							<serverId>ossrh</serverId>
 							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
@@ -234,7 +254,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.10.2</version>
+			<version>2.10.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

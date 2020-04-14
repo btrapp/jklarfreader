@@ -117,15 +117,23 @@ public class KlarfTokenizer implements AutoCloseable {
     return val();
   }
 
-  public int nextIntVal() throws IOException, KlarfException {
+  public Integer nextIntVal() throws IOException, KlarfException {
     nextToken();
     return intVal();
   }
 
-  public int intVal() throws IOException, KlarfException {
+  private boolean isNa(String s) {
+    if (s.equalsIgnoreCase("NA")) return true;
+    return false;
+  }
+
+  public Integer intVal() throws IOException, KlarfException {
     String str = val();
+    if (isNa(str)) {
+      return null;
+    }
     try {
-      return Integer.parseInt(str);
+      return Integer.valueOf(str);
     } catch (NumberFormatException nfe) {
       throw new KlarfException(
           "Value '" + str + "' was expected to be an integer but was not.",
@@ -134,10 +142,11 @@ public class KlarfTokenizer implements AutoCloseable {
     }
   }
 
-  public float floatVal() throws IOException, KlarfException {
+  public Float floatVal() throws IOException, KlarfException {
     String str = val();
+    if (isNa(str)) return null;
     try {
-      return Float.parseFloat(str);
+      return Float.valueOf(str);
     } catch (NumberFormatException nfe) {
       throw new KlarfException(
           "Value '" + str + "' was expected to be an float but was not.",

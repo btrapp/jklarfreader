@@ -125,9 +125,9 @@ public class KlarfReader18<T> {
                 ExceptionCode.ListFormat);
           }
           if (colType.equalsIgnoreCase("int32")) {
-            row.add(Integer.valueOf(kt.intVal()));
+            row.add(kt.intVal());
           } else if (colType.equalsIgnoreCase("float")) {
-            row.add(Float.valueOf(kt.floatVal()));
+            row.add(kt.floatVal());
           } else if (colType.equalsIgnoreCase("string")) {
             row.add(kt.val());
           } else {

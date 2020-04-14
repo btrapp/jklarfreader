@@ -222,9 +222,6 @@ public final class KlarfRecord {
    */
   public List<Double> reqDoubleField(String name, int n) throws KlarfContentException {
     List<String> str = reqField(name, n);
-    if (str.isEmpty()) {
-      return Collections.emptyList();
-    }
     try {
       return str.stream().map(Double::parseDouble).collect(Collectors.toList());
     } catch (Exception ex) {
@@ -250,9 +247,6 @@ public final class KlarfRecord {
    */
   public List<Integer> reqIntField(String name, int n) throws KlarfContentException {
     List<String> str = reqField(name, n);
-    if (str.isEmpty()) {
-      return Collections.emptyList();
-    }
     try {
       return str.stream().map(Integer::parseInt).collect(Collectors.toList());
     } catch (Exception ex) {
