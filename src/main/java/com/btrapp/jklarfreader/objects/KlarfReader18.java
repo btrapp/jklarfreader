@@ -63,7 +63,7 @@ public class KlarfReader18<T> {
 
   protected void readField(KlarfTokenizer kt) throws KlarfException, IOException {
     String fieldName = kt.nextVal();
-    int fieldCount = kt.nextIntVal();
+    int fieldCount = kt.nextIntVal().intValue();
     List<String> fieldVals = new ArrayList<>(fieldCount);
     kt.skipTo("{");
     for (int i = 0; i < fieldCount; i++) {
@@ -78,7 +78,7 @@ public class KlarfReader18<T> {
   protected void readList(KlarfTokenizer kt) throws IOException, KlarfException {
     String listName = kt.nextVal();
     kt.skipTo("Columns");
-    int colCount = kt.nextIntVal();
+    int colCount = kt.nextIntVal().intValue();
     kt.skipTo("{");
     List<String> colTypes = new ArrayList<>();
     List<String> colNames = new ArrayList<>();
@@ -92,7 +92,7 @@ public class KlarfReader18<T> {
     //		System.out.println("Types: " + colTypes.toString());
     //		System.out.println("Columns: " + colNames.toString());
     kt.skipTo("Data");
-    int rowCount = kt.nextIntVal();
+    int rowCount = kt.nextIntVal().intValue();
     kt.skipTo("{");
 
     parser.startList(listName, colNames, colTypes, colCount, rowCount);

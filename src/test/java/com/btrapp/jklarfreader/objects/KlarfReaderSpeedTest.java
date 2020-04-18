@@ -5,7 +5,6 @@ import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -20,9 +19,9 @@ public class KlarfReaderSpeedTest {
       System.out.println(klarfF.getAbsolutePath());
       KlarfParser18Pojo parser = new KlarfParser18Pojo();
       Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(parser, new FileInputStream(klarfF));
-      try (FileWriter fw = new FileWriter(new File("/tmp/" + klarfF.getName() + ".json"))) {
-        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(fw, klarf.get());
-        klarfCount++;
+      File jsonFile = new File("/tmp/" + klarfF.getName() + ".json");
+      try {
+        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(jsonFile, klarf.get());
       } catch (Exception ex) {
         ex.printStackTrace();
       }

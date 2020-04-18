@@ -3,10 +3,10 @@ package com.btrapp.jklarfreader;
 import com.btrapp.jklarfreader.objects.KlarfReader18;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,7 +55,7 @@ public class KlarfReader {
     Matcher m;
     String line;
     int lineCount = 0;
-    try (FileInputStream fis = new FileInputStream(file)) {
+    try (InputStream fis = Files.newInputStream(file.toPath())) {
       // We need to be able to rewind this stream when we've detected
       // System.out.println("HEAD: " + new String(header));
       try (BufferedReader br = new BufferedReader(new InputStreamReader(fis))) {

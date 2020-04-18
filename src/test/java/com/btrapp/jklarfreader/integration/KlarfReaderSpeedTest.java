@@ -7,7 +7,8 @@ import com.btrapp.jklarfreader.objects.KlarfException;
 import com.btrapp.jklarfreader.objects.KlarfList;
 import com.btrapp.jklarfreader.objects.KlarfRecord;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -28,8 +29,8 @@ public class KlarfReaderSpeedTest {
 
     Instant start = Instant.now();
     for (File f : testKlarfDir.listFiles()) {
-      try (FileInputStream fis = new FileInputStream(f)) {
-        Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fis);
+      try (InputStream is = Files.newInputStream(f.toPath())) {
+        Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), is);
         if (!klarf.isPresent()) {
           // Is this a 1.8 klarf?
           System.err.println("COuldn't read " + f.getAbsolutePath());
