@@ -40,7 +40,7 @@ parsing instead of DOM parsing)
 <dependency>
   <groupId>com.github.btrapp</groupId>
   <artifactId>jklarfreader</artifactId>
-  <version>0.9.5</version>
+  <version>0.9.8</version>
 </dependency>
 ```
 
