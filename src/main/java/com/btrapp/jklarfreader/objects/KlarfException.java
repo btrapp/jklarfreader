@@ -20,6 +20,7 @@ public class KlarfException extends Exception {
   }
 
   private ExceptionCode code = ExceptionCode.GenericError;
+  private int lineNumber = -1;
 
   public KlarfException(String msg) {
     this(msg, null, ExceptionCode.GenericError);
@@ -32,9 +33,14 @@ public class KlarfException extends Exception {
                 ? ""
                 : " (At line " + kt.getLineNumber() + ": " + kt.getCurrentLine() + ")"));
     this.code = code;
+    this.lineNumber = kt.getLineNumber();
   }
 
   public ExceptionCode getCode() {
     return code;
+  }
+
+  public int getLineNumber() {
+    return lineNumber;
   }
 }

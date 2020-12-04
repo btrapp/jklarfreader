@@ -2,4 +2,4 @@
 0.9.5 - 2020-01-20 : Changed KlarfList to be organized like JsonLines format (http://jsonlines.org/) to eventually intersect things like Spark nicer. 
 0.9.6 - 2020-01-25 : Fixed project description in the POM
 0.9.7 - 2020-04-14 : KlarfLists can contain NAs in int32 and doubles, return null in those cases
-    
+0.9.8 - 2020-04-29 : KlarfRecord has proper addField,addList,addRecord methods instead of sketchy .getLists().add(x)

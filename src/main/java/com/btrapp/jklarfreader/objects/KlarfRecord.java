@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,7 @@ public final class KlarfRecord {
   private List<KlarfRecord> records = new ArrayList<>();
 
   /**
-   * Adds a recrod to the record
+   * Adds a record to the record
    *
    * @param record
    */
@@ -135,16 +136,23 @@ public final class KlarfRecord {
     return id;
   }
 
-  public LinkedHashMap<String, List<String>> getFields() {
-    return fields;
+  /**
+   * Returns an Immutable LinkedHashMap
+   *
+   * @return
+   */
+  public Map<String, List<String>> getFields() {
+    return Collections.unmodifiableMap(fields);
   }
 
+  /** @return Immutable list of lists */
   public List<KlarfList> getLists() {
-    return lists;
+    return Collections.unmodifiableList(lists);
   }
 
+  /** @return Immunable list of records */
   public List<KlarfRecord> getRecords() {
-    return records;
+    return Collections.unmodifiableList(records);
   }
 
   /**
