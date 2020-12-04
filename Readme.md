@@ -35,12 +35,19 @@ wait for the entire Klarf to be loaded in memory, this may be a more appealing c
 parsing instead of DOM parsing)
 
 
+## Command-line utility
+
+There's a simple command line utility to validate a klarf, and optionally convert it to json:
+
+java -jar jklarfreader-0.9.9.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
+
+
 ## Maven Artifact
 ```
 <dependency>
   <groupId>com.github.btrapp</groupId>
   <artifactId>jklarfreader</artifactId>
-  <version>0.9.8</version>
+  <version>0.9.9/version>
 </dependency>
 ```
 
