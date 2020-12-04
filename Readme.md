@@ -47,7 +47,7 @@ java -jar jklarfreader-0.9.9.jar /path/to/klarf.klarf (optional: /path/to/klarf.
 <dependency>
   <groupId>com.github.btrapp</groupId>
   <artifactId>jklarfreader</artifactId>
-  <version>0.9.9/version>
+  <version>0.9.9</version>
 </dependency>
 ```
 
