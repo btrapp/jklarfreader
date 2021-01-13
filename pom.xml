@@ -24,7 +24,7 @@
 		<developerConnection>
             scm:git:git@github.com:btrapp/jklarfreader.git
         </developerConnection>
-		<tag>jklarfreader-0.9.8</tag>
+		<tag>jklarfreader-0.9.10-SNAPSHOT</tag>
 	</scm>
 
 	<developers>
