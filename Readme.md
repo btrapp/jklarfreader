@@ -40,7 +40,7 @@ parsing instead of DOM parsing)
 There's a simple command line utility to validate a klarf, and optionally convert it to json:
 
 ```
-java -jar jklarfreader-0.9.9.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
+java -jar jklarfreader-0.9.12.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
 ```
 
 ## Maven Artifact
@@ -48,7 +48,7 @@ java -jar jklarfreader-0.9.9.jar /path/to/klarf.klarf (optional: /path/to/klarf.
 <dependency>
   <groupId>com.github.btrapp</groupId>
   <artifactId>jklarfreader</artifactId>
-  <version>0.9.9</version>
+  <version>0.9.12</version>
 </dependency>
 ```
 
