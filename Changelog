@@ -4,3 +4,4 @@
 0.9.7 - 2020-04-14 : KlarfLists can contain NAs in int32 and doubles, return null in those cases
 0.9.8 - 2020-04-29 : KlarfRecord has proper addField,addList,addRecord methods instead of sketchy .getLists().add(x)
 0.9.12 - 2021-01-14 : addField renamed to setField to better match behavior
+0.9.13 - 2021-02-10 : add simple write support, if parsing to KlarfRecord

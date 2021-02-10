@@ -197,4 +197,43 @@ public class KlarfReader18JsonRecordTestCase {
     assertEquals(1, fb.get(1));
     assertEquals(4, fb.get(2));
   }
+
+  @Test
+  public void testQuoting() throws Exception {
+    String record =
+        "Record ARecord  \"1.8\"\n"
+            + "{\n"
+            + "  Field SingleLineNo 1 {0}\n"
+            + "  Field SingleLineYes 1 {\"Apple\"}\n"
+            + "  Field SingleLineMixed 2 {\"2\",3}\n"
+            + "  Field MultiLineNo 3 {00\n"
+            + "    ,11\n"
+            + "    ,22\n"
+            + "    }\n"
+            + "  Field MultiLineYes 3 {\"A\",\n"
+            + "    \"B\",\n"
+            + "    \"C\"}\n"
+            + "  Field MultiLineMixed 4 {\"1\"\n"
+            + "    ,\"2\",3\n"
+            + "    ,4}\n"
+            + "}\n"
+            + "EndOfFile;";
+    Optional<KlarfRecord> kO =
+        new KlarfReader18<KlarfRecord>(new KlarfParser18Pojo())
+            .readKlarf(new ByteArrayInputStream(record.getBytes()));
+    assertTrue(kO.isPresent());
+    KlarfRecord node = kO.get();
+    assertTrue(node.getFields().containsKey("SingleLineNo"));
+    assertEquals(false, node.isQuotedField("SingleLineNo"));
+    assertTrue(node.getFields().containsKey("SingleLineYes"));
+    assertEquals(true, node.isQuotedField("SingleLineYes"));
+    assertTrue(node.getFields().containsKey("SingleLineMixed"));
+    assertEquals(true, node.isQuotedField("SingleLineMixed"));
+    assertTrue(node.getFields().containsKey("MultiLineNo"));
+    assertEquals(false, node.isQuotedField("MultiLineNo"));
+    assertTrue(node.getFields().containsKey("MultiLineYes"));
+    assertEquals(true, node.isQuotedField("MultiLineYes"));
+    assertTrue(node.getFields().containsKey("MultiLineMixed"));
+    assertEquals(true, node.isQuotedField("MultiLineMixed"));
+  }
 }

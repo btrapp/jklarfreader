@@ -1,0 +1,84 @@
+Record FileRecord "1.8"
+{
+   Record LotRecord "aLot"
+   {
+      Field DeviceID 1 {"aDevice"}
+      Field DiePitch 2 {7270960, 6559460}
+      Field InspectionStationID 3 {"fasdfdsa", "asdf", "asdf"}
+      Field ClassificationSource 1 {"SCAN"}
+      Field OrientationMarkLocation 1 {0}
+      Field InspectionOrientation 1 {"DOWN"}
+      Field RecipeID 3 {"afdsfdsa", "2000-01-10", "15:04:44"}
+      Field ResultTimestamp 2 {"2000-01-30", "15:40:57"}
+      Field SampleOrientationMarkType 1 {"NOTCH"}
+      Field OrientationInstructions 1 {"Front"}
+      Field CoordinatesMirrored 1 {"NO"}
+      Field SampleSize 2 {300000000, 0}
+      Field SampleType 1 {"WAFER"}
+      Field StepID 1 {"fdsafasdfdsa"}
+      Record WaferRecord "aWafer"
+      {
+         Field DieOrigin 2 {0, 0}
+         Field DieStreetCenter 2 {0, 0}
+         Field ResultTimestamp 2 {"2000-01-30", "15:40:57"}
+         Field SampleCenterLocation 2 {175480, -179730}
+         Field SlotNumber 1 {3}
+         Field WaferScribe 1 {"aWaferScribe"}
+         List CustomWaferList
+         {
+            Columns 2 { string NAME, string VALUE }
+            Data 1
+            {
+               "OPERATORID" "UNKNOWN";
+            }
+         }
+         List DefectList
+         {
+            Columns 26 { int32 DEFECTID, int32 XREL, int32 YREL, int32 XINDEX, int32 YINDEX, double GDSX, double GDSY, int32 XSIZE, int32 YSIZE, float DEFECTAREA, int32 DSIZE, int32 CLUSTERNUMBER, int32 TEST, int32 REVIEWSAMPLE, int32 ROUGHBINNUMBER, int32 CLASSNUMBER, int32 MACROSIGCLASS, int32 SAMPLEBINNUMBER, int32 AUTOOFFSEMCLASS, int32 FINEBINNUMBER, int32 ADDERFLAG, int32 UNCONFIGUREDADDERFLAG, int32 REPEATER, int32 TOOLREPEATER, int32 CAREAREAGROUPCODE, ImageList IMAGEINFO }
+            Data 6
+            {
+               2 7243340 1952050 -2 -9 21725264.1 21690424.9 310 310 10010 321 0 1 1 11 0 0 1 0 0 1 1 0 0 113 Images 3 { "a/path/here" "JPG" 1 "Patch", "a/path/there" "JPG" 1 "Patch", "a/path/anywhere" "JPG" 1 "dummy" };
+               5 7238010 801050 -2 8 21719934.1 861064.9 320 250 10010 322 0 1 0 11 0 401 1 0 0 1 1 0 0 113 N;
+               11 3439420 2434380 -2 -7 17921319.1 2494395 11930 1810 20320000 11943 0 1 0 11 0 0 1 0 0 1 1 0 20 113 N;
+               12 3577010 4058730 -2 -7 18058929.1 4118715 7950 1820 9240000 7962 0 1 1 11 0 0 1 0 0 1 1 0 0 113 Images 3 { "a/path/here2" "JPG" 1 "Patch", "a/path/there2" "JPG" 1 "Patch", "a/path/anywhere2" "JPG" 1 "dummy" };
+               15 2985470 6240470 -2 3 17467394 19419420 630 580 10040 643 0 1 0 11 0 0 1 0 0 1 1 0 0 111 N;
+               16 2810580 1488020 -2 3 17292509.1 14666830 700 1220 30040 1221 25 1 0 11 0 0 1 0 0 1 1 0 0 113 N;
+            }
+         }
+         Record TestRecord "1"
+         {
+            Field AreaPerTest 1 {11912300000000000}
+            Field InspectionTest 2 {1, "1"}
+            List SampleTestPlanList
+            {
+               Columns 2 { int32 XINDEX, int32 YINDEX }
+               Data 1
+               {
+                  0 0;
+               }
+            }
+         }
+         Record SummaryRecord
+         {
+            List FullWaferSummaryList
+            {
+               Columns 1 { float INSPAREA }
+               Data 1
+               {
+                  11912300000000000;
+               }
+            }
+         }
+      }
+      List ClassLookupList
+      {
+         Columns 3 { int32 CLASSNUMBER, string CLASSNAME, string CLASSCODE }
+         Data 1
+         {
+            0 "Not Classified" "";
+         }
+      }
+   }
+   Field FileTimestamp 2 {"2021-01-01", "01:00:00"}
+}
+EndOfFile;

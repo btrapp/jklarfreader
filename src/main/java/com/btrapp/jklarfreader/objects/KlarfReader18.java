@@ -66,13 +66,16 @@ public class KlarfReader18<T> {
     int fieldCount = kt.nextIntVal().intValue();
     List<String> fieldVals = new ArrayList<>(fieldCount);
     kt.skipTo("{");
+    boolean isQuoted = false;
     for (int i = 0; i < fieldCount; i++) {
       if (i > 0) kt.skipTo(",");
       kt.nextToken();
       fieldVals.add(kt.val());
+      if (kt.isQuoted()) // Turn this true if any fieldVal is quoted in the source
+      isQuoted = true;
     }
     kt.skipTo("}");
-    parser.setField(fieldName, fieldCount, fieldVals);
+    parser.setField(fieldName, fieldCount, fieldVals, isQuoted);
   }
 
   protected void readList(KlarfTokenizer kt) throws IOException, KlarfException {

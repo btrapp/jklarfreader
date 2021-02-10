@@ -2,10 +2,12 @@ package com.btrapp.jklarfreader.objects;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /** @author btrapp */
@@ -42,6 +44,8 @@ public final class KlarfRecord {
   private String name; // ex: FileRecord, LotRecord, WaferRecord...
   private String id = ""; // 1.8  (Some Records don't have an ID.  Use a blank string for those)
   private LinkedHashMap<String, List<String>> fields = new LinkedHashMap<>();
+  private Set<String> quotedFields =
+      new HashSet<>(); // Which fields shoudl be surrounded by quotes?
   private List<KlarfList> lists = new ArrayList<>();
   private List<KlarfRecord> records = new ArrayList<>();
 
@@ -68,9 +72,12 @@ public final class KlarfRecord {
    *
    * @param fieldName
    * @param fieldValue
+   * @param isQuoted - true if this field was originally (or should) be quoted "like" "this"
    */
-  public void setField(String fieldName, List<String> fieldValue) {
+  public void setField(String fieldName, List<String> fieldValue, boolean isQuoted) {
     this.fields.put(fieldName, fieldValue);
+    if (isQuoted) quotedFields.add(fieldName);
+    else quotedFields.remove(fieldName);
   }
 
   /**
@@ -126,6 +133,15 @@ public final class KlarfRecord {
         .map(e -> e.getValue())
         .findFirst()
         .orElse(Collections.emptyList());
+  }
+
+  /**
+   * A <b>case-insensitive</b> search to see if a field is quoted
+   *
+   * @return the quote state
+   */
+  public boolean isQuotedField(String fieldName) {
+    return this.quotedFields.contains(fieldName);
   }
 
   public String getName() {
@@ -293,7 +309,7 @@ public final class KlarfRecord {
               + this.getId()
               + " field "
               + name
-              + " could not be parsed to double: "
+              + " could not be parsed to int: "
               + str.toString());
     }
   }

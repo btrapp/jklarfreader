@@ -54,8 +54,9 @@ public class KlarfParser18Pojo implements KlarfParserIf18<KlarfRecord> {
   }
 
   @Override
-  public void setField(String fieldName, int fieldCount, List<String> fieldValues) {
-    this.recordStack.getLast().setField(fieldName, fieldValues);
+  public void setField(
+      String fieldName, int fieldCount, List<String> fieldValues, boolean isQuoted) {
+    this.recordStack.getLast().setField(fieldName, fieldValues, isQuoted);
   }
 
   @Override

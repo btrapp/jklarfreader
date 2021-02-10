@@ -33,8 +33,11 @@ public interface KlarfParserIf18<T> {
    * @param fieldName ex: OrientationInstructions
    * @param fieldCount ex: 1
    * @param fieldValues ex: [values arr]
+   * @param isQuoted true if the field should be surrounded by quotation marks ["like this"
+   *     "example"]
    */
-  public void setField(String fieldName, int fieldCount, List<String> fieldValues);
+  public void setField(
+      String fieldName, int fieldCount, List<String> fieldValues, boolean isQuoted);
 
   /**
    * Called when a list definition is found.

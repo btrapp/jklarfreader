@@ -13,8 +13,10 @@ public class KlarfTokenizer implements AutoCloseable {
   private int lineNumber = 1;
   private BufferedReader br;
   private String token = null;
+  private Boolean quotedFlag = null;
   private String currentLine = "";
   private List<String> tokens = new ArrayList<>();
+  private List<Boolean> quotedFlags = new ArrayList<>();
 
   KlarfTokenizer(InputStream is) {
     this.br = new BufferedReader(new InputStreamReader(is));
@@ -27,6 +29,7 @@ public class KlarfTokenizer implements AutoCloseable {
   protected boolean nextToken() throws IOException {
     if (!tokens.isEmpty()) {
       token = tokens.remove(0);
+      quotedFlag = quotedFlags.remove(0);
       return true;
     }
     if (br != null) {
@@ -65,17 +68,20 @@ public class KlarfTokenizer implements AutoCloseable {
             }
           }
           tokens.add(quotedString.toString());
+          quotedFlags.add(Boolean.TRUE);
         } else {
           // Not a quoted string.  Trim it and remove blanks
           token = token.trim();
           if (!token.isBlank()) {
             tokens.add(token);
+            quotedFlags.add(Boolean.FALSE);
           }
         }
       }
     }
     if (!tokens.isEmpty()) {
       token = tokens.remove(0);
+      quotedFlag = quotedFlags.remove(0);
       return true;
     }
     return false;
@@ -83,6 +89,10 @@ public class KlarfTokenizer implements AutoCloseable {
 
   public String val() {
     return token;
+  }
+
+  public boolean isQuoted() {
+    return quotedFlag.booleanValue();
   }
 
   /**
