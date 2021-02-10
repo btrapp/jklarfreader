@@ -34,6 +34,10 @@ to process Klarfs.  If you only want to keep certain attributes, or if you want 
 wait for the entire Klarf to be loaded in memory, this may be a more appealing choice for you.  (You can this of this as acting like SAX based XML 
 parsing instead of DOM parsing)
 
+## KlarfWriter18
+
+If you're parsing to the KlarfRecord objects, you can write the data back to a new Klarf using the KlarfWriter18 class.
+
 
 ## Command-line utility
 
