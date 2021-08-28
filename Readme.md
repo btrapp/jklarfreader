@@ -44,7 +44,8 @@ If you're parsing to the KlarfRecord objects, you can write the data back to a n
 There's a simple command line utility to validate a klarf, and optionally convert it to json:
 
 ```
-java -jar jklarfreader-0.9.13.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
+mvn clean package
+java -jar target/jklarfreader-0.9.14-SNAPSHOT-jar-with-dependencies.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
 ```
 
 ## Maven Artifact
@@ -52,7 +53,7 @@ java -jar jklarfreader-0.9.13.jar /path/to/klarf.klarf (optional: /path/to/klarf
 <dependency>
   <groupId>com.github.btrapp</groupId>
   <artifactId>jklarfreader</artifactId>
-  <version>0.9.13</version>
+  <version>0.9.14</version>
 </dependency>
 ```
 
