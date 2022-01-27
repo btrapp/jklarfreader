@@ -1,7 +1,9 @@
 package com.btrapp.jklarfreader.objects;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,87 +56,164 @@ import java.util.Optional;
  *
  */
 public final class KlarfList {
-  private String name;
-  private List<String> columnNames;
-  private List<String> columnTypes;
-  // Store the inner defects in a JSONLines format http://jsonlines.org/
-  // Why JSONLines?  Well it compresses *REALLY* nicely, and it makes it easier to see all of one
-  // attribute for all records quickly
-  private Map<String, List<Object>> colMap = new HashMap<>();
+	private String name;
+	private List<String> columnNames;
+	private List<String> columnTypes;
+	// Store the inner defects in a JSONLines format http://jsonlines.org/
+	// Why JSONLines?  Well it compresses *REALLY* nicely, and it makes it easier to see all of one
+	// attribute for all records quickly
+	private Map<String, List<Object>> colMap = new HashMap<>();
 
-  public void addByIndex(int colIndex, Object value) {
-    String colName = columnNames.get(colIndex);
-    List<Object> list = colMap.get(colName);
-    list.add(value);
-  }
+	public void addByIndex(int colIndex, Object value) {
+		String colName = columnNames.get(colIndex);
+		List<Object> list = colMap.get(colName);
+		list.add(value);
+	}
 
-  /**
-   * A simple utility getter, handles missing col names and array out of bound problems
-   *
-   * @param col the column name to retrieve
-   * @param index the index within that row
-   * @return the value (wrapped with optional)
-   */
-  public Optional<Object> get(String col, int index) {
-    List<Object> theCol = colMap.get(col);
-    if (theCol == null) {
-      return Optional.empty();
-    }
-    if (index < 0) return Optional.empty();
-    if (index >= theCol.size()) return Optional.empty();
-    return Optional.ofNullable(theCol.get(index));
-  }
+	/**
+	 * If this colName is new, adds it to the column list, sets, the type and sets the values.
+	 * 
+	 * If this colName is existing, then it updates the type and sets the values.
+	 * 
+	 * @param colName
+	 * @param colType
+	 * @param values
+	 */
+	public void set(String colName, String colType, List<Object> values) {
+		int colNdx = columnNames.indexOf(colName);
+		if (colNdx < 0) {
+			//This is new
+			ArrayList<String> columnNamesNew = new ArrayList<>(columnNames);
+			columnNamesNew.add(colName);
+			this.columnNames = Collections.unmodifiableList(columnNamesNew);
+			ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
+			columnTypesNew.add(colType);
+			this.columnTypes = Collections.unmodifiableList(columnTypes);
+		} else {
+			//this is existing, update the col type
+			ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
+			columnTypesNew.set(colNdx, colType);
+			this.columnTypes = Collections.unmodifiableList(columnTypes);
+		}
+		Map<String, List<Object>> colMapNew = new LinkedHashMap<>(this.colMap);
+		colMapNew.put(colName, values);
+		this.colMap = Collections.unmodifiableMap(colMapNew);
+	}
 
-  public List<Object> asRow(int rowIndex) {
-    List<Object> row = new ArrayList<>(columnNames.size());
-    for (String c : columnNames) {
-      row.add(colMap.get(c).get(rowIndex));
-    }
-    return row;
-  }
+	/**
+	 * Removes this attribute if it exists.
+	 * Does nothing if it doesnt
+	 * 
+	 * @param colName
+	 * @param colType
+	 * @param values
+	 */
+	public void remove(String colName) {
+		int colNdx = columnNames.indexOf(colName);
+		if (colNdx < 0) {
+			return; //This col doesn't exist.
+		}
+		//This is new
+		ArrayList<String> columnNamesNew = new ArrayList<>(columnNames);
+		columnNamesNew.remove(colNdx);
+		this.columnNames = Collections.unmodifiableList(columnNamesNew);
+		ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
+		columnTypesNew.remove(colNdx);
+		this.columnTypes = Collections.unmodifiableList(columnTypes);
+		Map<String, List<Object>> colMapNew = new LinkedHashMap<>(this.colMap);
+		colMapNew.remove(colName);
+		this.colMap = Collections.unmodifiableMap(colMapNew);
+	}
 
-  /** @return the number of rows in the list (uses the 1st item in the map) */
-  public int size() {
-    if (colMap.isEmpty()) return 0;
-    return colMap.values().iterator().next().size();
-  }
+	/**
+	 * A simple utility getter, handles missing col names and array out of bound problems
+	 *
+	 * @param col
+	 *            the column name to retrieve
+	 * @param index
+	 *            the index within that row
+	 * @return the value (wrapped with optional)
+	 */
+	public Optional<Object> get(String col, int index) {
+		List<Object> theCol = colMap.get(col);
+		if (theCol == null) {
+			return Optional.empty();
+		}
+		if (index < 0)
+			return Optional.empty();
+		if (index >= theCol.size())
+			return Optional.empty();
+		return Optional.ofNullable(theCol.get(index));
+	}
 
-  public String getName() {
-    return name;
-  }
+	public List<Object> asRow(int rowIndex) {
+		List<Object> row = new ArrayList<>(columnNames.size());
+		for (String c : columnNames) {
+			row.add(colMap.get(c).get(rowIndex));
+		}
+		return row;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	/** @return the number of rows in the list (uses the 1st item in the map) */
+	public int size() {
+		if (colMap.isEmpty())
+			return 0;
+		return colMap.values().iterator().next().size();
+	}
 
-  public List<String> getColumnNames() {
-    return columnNames;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setColumnNames(List<String> columnNames) {
-    this.columnNames = columnNames;
-    for (String colName : columnNames) {
-      colMap.computeIfAbsent(colName, l -> new ArrayList<>());
-    }
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public List<String> getColumnTypes() {
-    return columnTypes;
-  }
+	/**
+	 * This is an unmodifiable list
+	 * 
+	 * @return
+	 */
+	public List<String> getColumnNames() {
+		return columnNames;
+	}
 
-  public void setColumnTypes(List<String> columnTypes) {
-    this.columnTypes = columnTypes;
-  }
+	public void setColumnNames(List<String> columnNames) {
+		this.columnNames = Collections.unmodifiableList(columnNames);
+		for (String colName : columnNames) {
+			colMap.computeIfAbsent(colName, l -> new ArrayList<>());
+		}
+	}
 
-  public Map<String, List<Object>> getColMap() {
-    return colMap;
-  }
+	/**
+	 * This is an unmodifiable list
+	 * 
+	 * @return
+	 */
+	public List<String> getColumnTypes() {
+		return columnTypes;
+	}
 
-  public void setColMap(Map<String, List<Object>> colMap) {
-    this.colMap = colMap;
-  }
+	public void setColumnTypes(List<String> columnTypes) {
+		this.columnTypes = Collections.unmodifiableList(columnTypes);
+	}
 
-  public List<Object> getColumn(String colName) {
-    return this.colMap.get(colName);
-  }
+	/**
+	 * returns an immutable colMap
+	 * 
+	 * @See set(colName,colType,List<Object>values);
+	 * 
+	 * @return
+	 */
+	public Map<String, List<Object>> getColMap() {
+		return colMap;
+	}
+
+	public void setColMap(Map<String, List<Object>> colMap) {
+		this.colMap = Collections.unmodifiableMap(colMap);
+	}
+
+	public List<Object> getColumn(String colName) {
+		return this.colMap.get(colName);
+	}
 }
