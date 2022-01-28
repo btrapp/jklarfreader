@@ -16,8 +16,12 @@ public class KlarfWriter18 {
 	}
 
 	private void writeRecord(KlarfRecord record, Writer writer, int indent) throws IOException {
-		writer.write(
-				String.format(spaces(indent) + "Record %s \"%s\" { \n", record.getName(), record.getId()));
+		writer.write(spaces(indent) + "Record " + record.getName());
+		if (record.getId() != null && record.getId().isEmpty()) {
+			//The ID field may be missing, and some loaders don't like Record Name "" { style
+			writer.write(" \"" + record.getId() + "\"");
+		}
+		writer.write(" {\n");
 		for (String fieldName : record.getFields().keySet()) {
 			writer.write(writeField(record, fieldName, indent));
 		}
