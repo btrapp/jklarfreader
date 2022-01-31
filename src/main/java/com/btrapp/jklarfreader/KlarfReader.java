@@ -56,8 +56,6 @@ public class KlarfReader {
     String line;
     int lineCount = 0;
     try (InputStream fis = Files.newInputStream(file.toPath())) {
-      // We need to be able to rewind this stream when we've detected
-      // System.out.println("HEAD: " + new String(header));
       try (BufferedReader br = new BufferedReader(new InputStreamReader(fis))) {
         while ((line = br.readLine()) != null) {
           line = line.trim();
@@ -67,12 +65,10 @@ public class KlarfReader {
           }
           m = pattern1_2.matcher(line);
           if (m.matches()) {
-            // return KlarfFormat.V1_2;
             return KlarfFormat.UNSUPPORTED_FORMAT;
           }
           m = pattern1_0.matcher(line);
           if (m.matches()) {
-            // return KlarfFormat.V1_0;
             return KlarfFormat.UNSUPPORTED_FORMAT;
           }
           lineCount++;

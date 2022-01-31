@@ -36,7 +36,7 @@ public class KlarfParser18Pojo implements KlarfParserIf18<KlarfRecord> {
   public void startRecord(String recordName, String recordId) {
     KlarfRecord record = new KlarfRecord(recordName, recordId);
     if (this.recordStack.isEmpty()) {
-      // This is the first one!
+      // This is the first one, start the stack with it.
       this.recordStack.add(record);
     } else {
       // Add this to the parent's "records" list
@@ -48,6 +48,7 @@ public class KlarfParser18Pojo implements KlarfParserIf18<KlarfRecord> {
 
   @Override
   public void endRecord() {
+    // When a record has ended, we move back up the stack
     if (this.recordStack.size() > 1) {
       this.recordStack.removeLast();
     }

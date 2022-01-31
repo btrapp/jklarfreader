@@ -28,19 +28,20 @@ public class KlarfReader18<T> {
     // The service has already removed the "FileRecord "1.8" bits.  put them in here first.
     // Look for the 3 main types of entries: Records, Fields, and Lists
     while (kt.nextToken()) {
-      String val = kt.val();
-      if (val.equalsIgnoreCase("Record")) {
+      String val = kt.val().toUpperCase();
+      if (val.equals("RECORD")) {
         readRecord(kt); // A record could be a KEY={obj} or a KEY={subkey1: obj, subkey2: obj}
-      } else if (val.equalsIgnoreCase("Field")) {
+      } else if (val.equals("FIELD")) {
         readField(kt);
-      } else if (val.equalsIgnoreCase("List")) {
+      } else if (val.equals("LIST")) {
         readList(kt);
       } else if (val.equals("}")) {
         parser.endRecord();
-      } else if (val.equalsIgnoreCase("EndOfFile")) {
+      } else if (val.equals("ENDOFFILE")) {
         return;
       } else {
-        throw new KlarfException("What is " + val + " doing here?", kt, ExceptionCode.GenericError);
+        throw new KlarfException(
+            "What is " + kt.val() + " doing here?", kt, ExceptionCode.GenericError);
       }
     }
     throw new KlarfException("Missing trailing }", kt, ExceptionCode.GenericError);
@@ -103,8 +104,8 @@ public class KlarfReader18<T> {
     for (int i = 0; i < rowCount; i++) {
       List<Object> row = new ArrayList<>();
       for (int j = 0; j < colNames.size(); j++) {
-        String colType = colTypes.get(j);
-        if (colType.endsWith("List")) {
+        String colTypeUc = colTypes.get(j).toUpperCase();
+        if (colTypeUc.endsWith("LIST")) {
           // This is an embedded list.  Embedded lists don't seem to act like the other lists, with
           // cols and all that jazz..
           List<List<String>> embeddedList = readEmbeddedList(kt);
@@ -127,11 +128,11 @@ public class KlarfReader18<T> {
                 kt,
                 ExceptionCode.ListFormat);
           }
-          if (colType.equalsIgnoreCase("int32")) {
+          if (colTypeUc.equalsIgnoreCase("INT32")) {
             row.add(kt.intVal());
-          } else if (colType.equalsIgnoreCase("float")) {
+          } else if (colTypeUc.equalsIgnoreCase("FLOAT")) {
             row.add(kt.floatVal());
-          } else if (colType.equalsIgnoreCase("string")) {
+          } else if (colTypeUc.equalsIgnoreCase("STRING")) {
             row.add(kt.val());
           } else {
             // If its not a list, int, or float, it must be a string

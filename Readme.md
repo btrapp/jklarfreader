@@ -31,7 +31,7 @@ KlarfParser18Pojo also serializes nicely to JSON using Jackson's ObjectMapper, i
 
 You can also implement the KlarfParserIf18 interface using your own logic if you're looking for a more flexible way
 to process Klarfs.  If you only want to keep certain attributes, or if you want to be able to process data without having to 
-wait for the entire Klarf to be loaded in memory, this may be a more appealing choice for you.  (You can this of this as acting like SAX based XML 
+wait for the entire Klarf to be loaded in memory, this may be a more appealing choice for you.  (You can think of this as acting like SAX based XML 
 parsing instead of DOM parsing)
 
 ## KlarfWriter18
@@ -41,7 +41,8 @@ If you're parsing to the KlarfRecord objects, you can write the data back to a n
 
 ## Command-line utility
 
-There's a simple command line utility to validate a klarf, and optionally convert it to json:
+There's a simple command line utility to validate a klarf, and optionally convert it to json.  Here's an example of how to build 
+a fat-jar (containing required dependencies) and run it from the command line:
 
 ```
 mvn clean package

@@ -1,7 +1,9 @@
 package com.btrapp.jklarfreader.objects;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,12 +60,66 @@ public final class KlarfList {
   private List<String> columnNames;
   private List<String> columnTypes;
   // Store the inner defects in a JSONLines format http://jsonlines.org/
+  // Why JSONLines?  Well it compresses *REALLY* nicely, and it makes it easier to see all of one
+  // attribute for all records quickly
   private Map<String, List<Object>> colMap = new HashMap<>();
 
   public void addByIndex(int colIndex, Object value) {
     String colName = columnNames.get(colIndex);
     List<Object> list = colMap.get(colName);
     list.add(value);
+  }
+
+  /**
+   * If this colName is new, adds it to the column list, sets, the type and sets the values.
+   *
+   * <p>If this colName is existing, then it updates the type and sets the values.
+   *
+   * @param colName the name of the column to set (case sensitive)
+   * @param colType the type of the column
+   * @param values the list of values (one for each list row)
+   */
+  public void set(String colName, String colType, List<Object> values) {
+    int colNdx = columnNames.indexOf(colName);
+    if (colNdx < 0) {
+      // This is new
+      ArrayList<String> columnNamesNew = new ArrayList<>(columnNames);
+      columnNamesNew.add(colName);
+      this.columnNames = Collections.unmodifiableList(columnNamesNew);
+      ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
+      columnTypesNew.add(colType);
+      this.columnTypes = Collections.unmodifiableList(columnTypes);
+    } else {
+      // this is existing, update the col type
+      ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
+      columnTypesNew.set(colNdx, colType);
+      this.columnTypes = Collections.unmodifiableList(columnTypes);
+    }
+    Map<String, List<Object>> colMapNew = new LinkedHashMap<>(this.colMap);
+    colMapNew.put(colName, values);
+    this.colMap = Collections.unmodifiableMap(colMapNew);
+  }
+
+  /**
+   * Removes this attribute if it exists. Does nothing if it doesnt
+   *
+   * @param colName the name of the col to remove (case sensitive)
+   */
+  public void remove(String colName) {
+    int colNdx = columnNames.indexOf(colName);
+    if (colNdx < 0) {
+      return; // This col doesn't exist.
+    }
+    // This is new
+    ArrayList<String> columnNamesNew = new ArrayList<>(columnNames);
+    columnNamesNew.remove(colNdx);
+    this.columnNames = Collections.unmodifiableList(columnNamesNew);
+    ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
+    columnTypesNew.remove(colNdx);
+    this.columnTypes = Collections.unmodifiableList(columnTypes);
+    Map<String, List<Object>> colMapNew = new LinkedHashMap<>(this.colMap);
+    colMapNew.remove(colName);
+    this.colMap = Collections.unmodifiableMap(colMapNew);
   }
 
   /**
@@ -105,31 +161,46 @@ public final class KlarfList {
     this.name = name;
   }
 
+  /**
+   * This is an unmodifiable list
+   *
+   * @return List of all column names
+   */
   public List<String> getColumnNames() {
     return columnNames;
   }
 
   public void setColumnNames(List<String> columnNames) {
-    this.columnNames = columnNames;
+    this.columnNames = Collections.unmodifiableList(columnNames);
     for (String colName : columnNames) {
       colMap.computeIfAbsent(colName, l -> new ArrayList<>());
     }
   }
 
+  /**
+   * This is an unmodifiable list
+   *
+   * @return List of all column types
+   */
   public List<String> getColumnTypes() {
     return columnTypes;
   }
 
   public void setColumnTypes(List<String> columnTypes) {
-    this.columnTypes = columnTypes;
+    this.columnTypes = Collections.unmodifiableList(columnTypes);
   }
 
+  /**
+   * returns an immutable colMap @See set(colName,colType,values);
+   *
+   * @return map of String(colName) to List(Object) values (one for each row)
+   */
   public Map<String, List<Object>> getColMap() {
     return colMap;
   }
 
   public void setColMap(Map<String, List<Object>> colMap) {
-    this.colMap = colMap;
+    this.colMap = Collections.unmodifiableMap(colMap);
   }
 
   public List<Object> getColumn(String colName) {

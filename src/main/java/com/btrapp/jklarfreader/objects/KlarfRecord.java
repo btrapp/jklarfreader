@@ -52,7 +52,7 @@ public final class KlarfRecord {
   /**
    * Adds a record to the record
    *
-   * @param record
+   * @param record the record to add
    */
   public void addRecord(KlarfRecord record) {
     this.records.add(record);
@@ -61,7 +61,7 @@ public final class KlarfRecord {
   /**
    * Adds a list to the record
    *
-   * @param list
+   * @param list the list to add
    */
   public void addList(KlarfList list) {
     this.lists.add(list);
@@ -71,8 +71,8 @@ public final class KlarfRecord {
    * Sets a field in the record (dupe field names will overwrite), and sets a flag saying it should
    * be quoted if printed later.
    *
-   * @param fieldName
-   * @param fieldValue
+   * @param fieldName the name of the field (case sensitive)
+   * @param fieldValue the value to set
    */
   public void setStringField(String fieldName, List<String> fieldValue) {
     setField(fieldName, fieldValue, true);
@@ -82,8 +82,8 @@ public final class KlarfRecord {
    * Sets a field in the record (dupe field names will overwrite), and sets a flag saying it should
    * NOT be quoted if printed later.
    *
-   * @param fieldName
-   * @param fieldValue
+   * @param fieldName the name of the field (case sensitive)
+   * @param fieldValue the value to set
    */
   public void setNumericField(String fieldName, List<Number> fieldValue) {
     setField(
@@ -161,6 +161,7 @@ public final class KlarfRecord {
   /**
    * A <b>case-insensitive</b> search to see if a field is quoted
    *
+   * @param fieldName the name of the field (case sensitive!)
    * @return the quote state
    */
   public boolean isQuotedField(String fieldName) {
@@ -178,7 +179,7 @@ public final class KlarfRecord {
   /**
    * Returns an Immutable LinkedHashMap
    *
-   * @return
+   * @return the field map (name to value list)
    */
   public Map<String, List<String>> getFields() {
     return Collections.unmodifiableMap(fields);
@@ -189,7 +190,7 @@ public final class KlarfRecord {
     return Collections.unmodifiableList(lists);
   }
 
-  /** @return Immunable list of records */
+  /** @return Immutable list of records */
   public List<KlarfRecord> getRecords() {
     return Collections.unmodifiableList(records);
   }
