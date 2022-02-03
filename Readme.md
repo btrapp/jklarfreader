@@ -46,7 +46,7 @@ a fat-jar (containing required dependencies) and run it from the command line:
 
 ```
 mvn clean package
-java -jar target/jklarfreader-0.9.14-SNAPSHOT-jar-with-dependencies.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
+java -jar target/jklarfreader-0.9.15-SNAPSHOT-jar-with-dependencies.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
 ```
 
 ## Maven Artifact
@@ -54,7 +54,7 @@ java -jar target/jklarfreader-0.9.14-SNAPSHOT-jar-with-dependencies.jar /path/to
 <dependency>
   <groupId>com.github.btrapp</groupId>
   <artifactId>jklarfreader</artifactId>
-  <version>0.9.14</version>
+  <version>0.9.15</version>
 </dependency>
 ```
 
