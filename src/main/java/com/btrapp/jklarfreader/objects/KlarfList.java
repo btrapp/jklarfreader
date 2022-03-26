@@ -147,7 +147,9 @@ public final class KlarfList {
     return row;
   }
 
-  /** @return the number of rows in the list (uses the 1st item in the map) */
+  /**
+   * @return the number of rows in the list (uses the 1st item in the map)
+   */
   public int size() {
     if (colMap.isEmpty()) return 0;
     return colMap.values().iterator().next().size();

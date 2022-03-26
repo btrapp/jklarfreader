@@ -10,7 +10,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** @author btrapp */
+/**
+ * @author btrapp
+ */
 
 /*
  * Example:
@@ -185,12 +187,16 @@ public final class KlarfRecord {
     return Collections.unmodifiableMap(fields);
   }
 
-  /** @return Immutable list of lists */
+  /**
+   * @return Immutable list of lists
+   */
   public List<KlarfList> getLists() {
     return Collections.unmodifiableList(lists);
   }
 
-  /** @return Immutable list of records */
+  /**
+   * @return Immutable list of records
+   */
   public List<KlarfRecord> getRecords() {
     return Collections.unmodifiableList(records);
   }
