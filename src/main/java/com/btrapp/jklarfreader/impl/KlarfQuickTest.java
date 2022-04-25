@@ -8,6 +8,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Optional;
 
+/**
+ * Just a quick test to try reading a klarf and possibly output as json
+ *
+ * @author btrapp
+ */
 public class KlarfQuickTest {
   public static void main(String[] args) {
     if (args == null || (args.length < 1) || (args.length > 2)) {

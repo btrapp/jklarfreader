@@ -188,6 +188,11 @@ public final class KlarfList {
     return columnTypes;
   }
 
+  /**
+   * Set the column types (string, int32, etc)
+   *
+   * @param columnTypes
+   */
   public void setColumnTypes(List<String> columnTypes) {
     this.columnTypes = Collections.unmodifiableList(columnTypes);
   }
@@ -201,10 +206,21 @@ public final class KlarfList {
     return colMap;
   }
 
+  /**
+   * Sets the map-value map directly
+   *
+   * @param colMap
+   */
   public void setColMap(Map<String, List<Object>> colMap) {
     this.colMap = Collections.unmodifiableMap(colMap);
   }
 
+  /**
+   * Get a columnn list by column name
+   *
+   * @param colName
+   * @return columnvalues in a list
+   */
   public List<Object> getColumn(String colName) {
     return this.colMap.get(colName);
   }

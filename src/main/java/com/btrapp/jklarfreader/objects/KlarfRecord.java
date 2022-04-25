@@ -73,7 +73,7 @@ public final class KlarfRecord {
    * Given a list, replace all lists with the same name, or add the list if there's not a list with
    * the same name.
    *
-   * @param list the list to add
+   * @param newList the list to add
    */
   public void setListByName(KlarfList newList) {
     List<KlarfList> newLists = new ArrayList<>(this.lists.size());

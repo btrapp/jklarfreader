@@ -12,6 +12,11 @@ package com.btrapp.jklarfreader.objects;
 public class KlarfException extends Exception {
   private static final long serialVersionUID = -6451200672730727155L;
 
+  /**
+   * Type of Klarf error
+   *
+   * @author btrapp
+   */
   public enum ExceptionCode {
     GenericError,
     ListFormat,
@@ -22,10 +27,22 @@ public class KlarfException extends Exception {
   private ExceptionCode code = ExceptionCode.GenericError;
   private int lineNumber = -1;
 
+  /**
+   * Klarf formatting error
+   *
+   * @param msg the message to tell people about
+   */
   public KlarfException(String msg) {
     this(msg, null, ExceptionCode.GenericError);
   }
 
+  /**
+   * Error including the token/code info
+   *
+   * @param msg the message
+   * @param kt the tokenizer
+   * @param code the type of code
+   */
   public KlarfException(String msg, KlarfTokenizer kt, ExceptionCode code) {
     super(
         msg
@@ -36,10 +53,16 @@ public class KlarfException extends Exception {
     this.lineNumber = kt.getLineNumber();
   }
 
+  /**
+   * @return the code
+   */
   public ExceptionCode getCode() {
     return code;
   }
 
+  /**
+   * @return the line of the problem
+   */
   public int getLineNumber() {
     return lineNumber;
   }

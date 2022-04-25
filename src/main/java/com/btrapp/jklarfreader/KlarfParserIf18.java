@@ -23,6 +23,7 @@ public interface KlarfParserIf18<T> {
    */
   public void startRecord(String recordName, String recordId);
 
+  /** Used when a record ends */
   public void endRecord();
 
   /**

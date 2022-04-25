@@ -13,7 +13,7 @@ public class KlarfContentException extends Exception {
   /**
    * Throws an exception with the given message
    *
-   * @param msg
+   * @param msg the message to display
    */
   public KlarfContentException(String msg) {
     super(msg);
