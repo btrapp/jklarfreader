@@ -18,8 +18,13 @@ public class KlarfRecordTestCase {
 	}
 
 	@Test
+	/**
+	 * This should just add the list to the klarf
+	 */
 	public void testListAddNewName() {
 		KlarfRecord kr = dummyRec();
+		assertEquals(1, kr.getLists().size());
+		assertEquals(1, kr.findListsByName("List1").size());
 		KlarfList newList = new KlarfList();
 		newList.setName("List2");
 		newList.set("NAME", "string", List.of("A2", "B2"));
@@ -29,8 +34,13 @@ public class KlarfRecordTestCase {
 	}
 
 	@Test
+	/**
+	 * This should replace the existing list with the same name.
+	 */
 	public void testListAddSameName() {
 		KlarfRecord kr = dummyRec();
+		assertEquals(1, kr.getLists().size());
+		assertEquals(1, kr.findListsByName("List1").size());
 		KlarfList newList = new KlarfList();
 		newList.setName("List1");
 		newList.set("NAME", "string", List.of("A2", "B2"));
