@@ -10,6 +10,11 @@ package com.btrapp.jklarfreader.objects;
 public class KlarfContentException extends Exception {
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Throws an exception with the given message
+   *
+   * @param msg
+   */
   public KlarfContentException(String msg) {
     super(msg);
   }
