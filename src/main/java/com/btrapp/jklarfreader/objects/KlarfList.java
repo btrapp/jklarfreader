@@ -148,6 +148,12 @@ public final class KlarfList {
 		return Optional.ofNullable(theCol.get(index));
 	}
 
+	/**
+	 * Returns a Map of a KlarfList *row* {colName:colval}
+	 * 
+	 * @param rowIndex
+	 * @return
+	 */
 	public Map<String, Object> asRowMap(int rowIndex) {
 		LinkedHashMap<String, Object> map = new LinkedHashMap<>(columnNames.size());
 		for (String c : columnNames) {
@@ -156,6 +162,12 @@ public final class KlarfList {
 		return map;
 	}
 
+	/**
+	 * Returns a row of KlarfList as a list of objects
+	 * 
+	 * @param rowIndex
+	 * @return
+	 */
 	public List<Object> asRow(int rowIndex) {
 		List<Object> row = new ArrayList<>(columnNames.size());
 		for (String c : columnNames) {
