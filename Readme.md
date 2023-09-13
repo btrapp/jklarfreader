@@ -41,14 +41,23 @@ parsing instead of DOM parsing)
 If you're parsing to the KlarfRecord objects, you can write the data back to a new Klarf using the KlarfWriter18 class.
 
 
-## Command-line utility
+## Command-line utilities
 
+###Klarf-to-Json
 There's a simple command line utility to validate a klarf, and optionally convert it to json.  Here's an example of how to build 
 a fat-jar (containing required dependencies) and run it from the command line:
 
 ```
 mvn clean package
-java -jar target/jklarfreader-0.9.18-SNAPSHOT-jar-with-dependencies.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
+java -jar target/jklarfreader-0.9.21-SNAPSHOT-jar-with-dependencies.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
+```
+
+###Klarf-to-Image
+There's a command line utility to render a klarf to a png (or jpeg).  The image is relatively simple, ideal for feeding into a ML model.  Example usage:
+
+```
+mvn clean package
+java -cp target/jklarfreader-0.9.21-SNAPSHOT-jar-with-dependencies.jar com.btrapp.jklarfreader.util.KlarfToImage -klarf /path/to/my/klarf.KLAR -image /path/to/image.png -imgSizePx 224
 ```
 
 ## Maven Artifact
@@ -56,7 +65,7 @@ java -jar target/jklarfreader-0.9.18-SNAPSHOT-jar-with-dependencies.jar /path/to
 <dependency>
   <groupId>com.github.btrapp</groupId>
   <artifactId>jklarfreader</artifactId>
-  <version>0.9.18</version>
+  <version>0.9.21</version>
 </dependency>
 ```
 
