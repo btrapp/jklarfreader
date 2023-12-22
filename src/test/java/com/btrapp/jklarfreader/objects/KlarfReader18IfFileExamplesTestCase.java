@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
-public class KlarfReader18IfFileExamplesTestCase {
+class KlarfReader18IfFileExamplesTestCase {
 
   private Optional<KlarfRecord> readTestKlarf() throws Exception {
     KlarfParser18Pojo kp18 = new KlarfParser18Pojo();
@@ -32,7 +32,7 @@ public class KlarfReader18IfFileExamplesTestCase {
   }
 
   @Test
-  public void testFile() throws Exception {
+  void testFile() throws Exception {
     Optional<KlarfRecord> klarfRecordO = readTestKlarf();
     assertTrue(klarfRecordO.isPresent());
     KlarfRecord klarfRecord = klarfRecordO.get();
@@ -51,7 +51,7 @@ public class KlarfReader18IfFileExamplesTestCase {
   }
 
   @Test
-  public void testLot() throws Exception {
+  void testLot() throws Exception {
     Optional<KlarfRecord> klarfRecordO = readTestKlarf();
     assertTrue(klarfRecordO.isPresent());
     KlarfRecord klarfRecord = klarfRecordO.get();
@@ -110,7 +110,7 @@ public class KlarfReader18IfFileExamplesTestCase {
   }
 
   @Test
-  public void testWafer() throws Exception {
+  void testWafer() throws Exception {
     Optional<KlarfRecord> klarfRecordO = readTestKlarf();
     assertTrue(klarfRecordO.isPresent());
     Optional<KlarfRecord> lotRecordO =
@@ -122,15 +122,17 @@ public class KlarfReader18IfFileExamplesTestCase {
 
     KlarfRecord firstWafer = waferRecordO.get();
     Map<String, String> expectedFields =
-        new HashMap<String, String>() {
-          {
-            put("DieOrigin", "0,0");
-            put("OrientationInstructions", "");
-            put("ProcessEquipmentState", "NONE,,,,,");
-            put("SampleCenterLocation", "4929000,-490333");
-            put("SlotNumber", "25");
-          }
-        };
+        Map.of(
+            "DieOrigin",
+            "0,0", //
+            "OrientationInstructions",
+            "", //
+            "ProcessEquipmentState",
+            "NONE,,,,,", //
+            "SampleCenterLocation",
+            "4929000,-490333", //
+            "SlotNumber",
+            "25");
     for (Entry<String, String> e : expectedFields.entrySet()) {
       assertEquals(e.getValue(), toStr(firstWafer.getFields().get(e.getKey())), e.getKey());
     }

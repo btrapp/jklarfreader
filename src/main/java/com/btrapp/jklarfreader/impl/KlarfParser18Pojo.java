@@ -21,8 +21,8 @@ import java.util.Optional;
 public class KlarfParser18Pojo implements KlarfParserIf18<KlarfRecord> {
 
   /*
-   * We need a stack as we need to sorta work our way into inner records
-   * and back & forward a few times until we're all done.
+   * We need a stack as we need to sorta work our way into inner records and back
+   * & forward a few times until we're all done.
    */
   private Deque<KlarfRecord> recordStack = new ArrayDeque<>();
   // Holds information about the list as we move from definition to contents
@@ -34,15 +34,15 @@ public class KlarfParser18Pojo implements KlarfParserIf18<KlarfRecord> {
 
   @Override
   public void startRecord(String recordName, String recordId) {
-    KlarfRecord record = new KlarfRecord(recordName, recordId);
+    KlarfRecord krecord = new KlarfRecord(recordName, recordId);
     if (this.recordStack.isEmpty()) {
       // This is the first one, start the stack with it.
-      this.recordStack.add(record);
+      this.recordStack.add(krecord);
     } else {
       // Add this to the parent's "records" list
-      this.recordStack.getLast().addRecord(record);
+      this.recordStack.getLast().addRecord(krecord);
       // And move it onto the queue
-      this.recordStack.add(record);
+      this.recordStack.add(krecord);
     }
   }
 

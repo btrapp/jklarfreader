@@ -9,26 +9,27 @@ import java.util.stream.Stream;
 
 public class KlarfWriter18 {
 
-  public void writeKlarf(KlarfRecord record, Writer writer) throws IOException {
-    writeRecord(record, writer, 0);
+  public void writeKlarf(KlarfRecord krecord, Writer writer) throws IOException {
+    writeRecord(krecord, writer, 0);
     writer.write("EndOfFile;\n");
     writer.flush();
   }
 
-  private void writeRecord(KlarfRecord record, Writer writer, int indent) throws IOException {
-    writer.write(spaces(indent) + "Record " + record.getName());
-    if (record.getId() != null && (!record.getId().isEmpty())) {
-      // The ID field may be missing, and some loaders don't like Record Name "" { style
-      writer.write(" \"" + record.getId() + "\"");
+  private void writeRecord(KlarfRecord krecord, Writer writer, int indent) throws IOException {
+    writer.write(spaces(indent) + "Record " + krecord.getName());
+    if (krecord.getId() != null && (!krecord.getId().isEmpty())) {
+      // The ID field may be missing, and some loaders don't like Record Name "" {
+      // style
+      writer.write(" \"" + krecord.getId() + "\"");
     }
     writer.write(" {\n");
-    for (String fieldName : record.getFields().keySet()) {
-      writer.write(writeField(record, fieldName, indent));
+    for (String fieldName : krecord.getFields().keySet()) {
+      writer.write(writeField(krecord, fieldName, indent));
     }
-    for (KlarfList list : record.getLists()) {
+    for (KlarfList list : krecord.getLists()) {
       writer.write(writeList(list, indent));
     }
-    for (KlarfRecord innerRecord : record.getRecords()) {
+    for (KlarfRecord innerRecord : krecord.getRecords()) {
       writeRecord(innerRecord, writer, (indent + 1));
     }
     writer.write(spaces(indent) + "}\n");
@@ -93,9 +94,9 @@ public class KlarfWriter18 {
     return sb.toString();
   }
 
-  private String writeField(KlarfRecord record, String fieldName, int indent) {
-    List<String> fieldValues = new ArrayList<>(record.getFields().get(fieldName));
-    boolean quoted = record.isQuotedField(fieldName);
+  private String writeField(KlarfRecord krecord, String fieldName, int indent) {
+    List<String> fieldValues = new ArrayList<>(krecord.getFields().get(fieldName));
+    boolean quoted = krecord.isQuotedField(fieldName);
     StringBuilder sb = new StringBuilder();
     sb.append(spaces(indent));
     sb.append(" Field " + fieldName + " " + fieldValues.size() + " {");

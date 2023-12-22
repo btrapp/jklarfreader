@@ -25,7 +25,8 @@ public class KlarfReader18<T> {
   }
 
   private void read(KlarfTokenizer kt) throws IOException, KlarfException {
-    // The service has already removed the "FileRecord "1.8" bits.  put them in here first.
+    // The service has already removed the "FileRecord "1.8" bits. put them in here
+    // first.
     // Look for the 3 main types of entries: Records, Fields, and Lists
     while (kt.nextToken()) {
       String val = kt.val().toUpperCase();
@@ -56,7 +57,7 @@ public class KlarfReader18<T> {
       parser.startRecord(recordType, "");
     } else {
       // This had a record ID
-      // like     Record WaferRecord "WAFERID01"
+      // like Record WaferRecord "WAFERID01"
       kt.skipTo("{");
       parser.startRecord(recordType, recordIdOrBrace);
     }
@@ -72,8 +73,9 @@ public class KlarfReader18<T> {
       if (i > 0) kt.skipTo(",");
       kt.nextToken();
       fieldVals.add(kt.val());
-      if (kt.isQuoted()) // Turn this true if any fieldVal is quoted in the source
-      isQuoted = true;
+      if (kt.isQuoted()) { // Turn this true if any fieldVal is quoted in the source
+        isQuoted = true;
+      }
     }
     kt.skipTo("}");
     parser.setField(fieldName, fieldCount, fieldVals, isQuoted);
@@ -93,8 +95,6 @@ public class KlarfReader18<T> {
     }
     kt.skipTo("}");
 
-    //		System.out.println("Types: " + colTypes.toString());
-    //		System.out.println("Columns: " + colNames.toString());
     kt.skipTo("Data");
     int rowCount = kt.nextIntVal().intValue();
     kt.skipTo("{");
@@ -106,13 +106,13 @@ public class KlarfReader18<T> {
       for (int j = 0; j < colNames.size(); j++) {
         String colTypeUc = colTypes.get(j).toUpperCase();
         if (colTypeUc.endsWith("LIST")) {
-          // This is an embedded list.  Embedded lists don't seem to act like the other lists, with
+          // This is an embedded list. Embedded lists don't seem to act like the other
+          // lists, with
           // cols and all that jazz..
           List<List<String>> embeddedList = readEmbeddedList(kt);
           row.add(embeddedList);
         } else {
           String val = kt.nextVal();
-          // System.out.println("I=" + i + ",J=" + j + " VAL=" + val);
           if (val.equals(";") || val.equals("{") || val.equals("}")) {
             throw new KlarfException(
                 "ERR in list "
@@ -147,7 +147,6 @@ public class KlarfReader18<T> {
     kt.skipTo("}"); // End of data
     kt.skipTo("}"); // End of list
     kt.nextToken();
-    // System.out.println("List ends at " + kt.getLineNumber() + ": " + kt.getCurrentLine());
   }
 
   /**

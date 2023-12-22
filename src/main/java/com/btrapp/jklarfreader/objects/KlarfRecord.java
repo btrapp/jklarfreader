@@ -17,23 +17,18 @@ import java.util.stream.Collectors;
 /*
  * Example:
  *
- * Record WaferRecord "FirstWaferId" {
- * Field DieOrigin 2 {0, 0}
- * Field OrientationInstructions 1 {""}
- * }
+ * Record WaferRecord "FirstWaferId" { Field DieOrigin 2 {0, 0} Field
+ * OrientationInstructions 1 {""} }
  *
  * Would map to:
  *
- * name: "WaferRecord"
- * id: "FirstWaferId"
- * fields: {
- * "DieOrigin" : ["0","0"],
- * "OrientationInstructions" : [""]
- * }
+ * name: "WaferRecord" id: "FirstWaferId" fields: { "DieOrigin" : ["0","0"],
+ * "OrientationInstructions" : [""] }
  *
  */
 public final class KlarfRecord {
-  // Keep a zero-arg contstructor around so this can object can be created by the Jackson
+  // Keep a zero-arg contstructor around so this can object can be created by the
+  // Jackson
   // objectmapper
   @SuppressWarnings("unused")
   private KlarfRecord() {}
@@ -44,7 +39,7 @@ public final class KlarfRecord {
   }
 
   private String name; // ex: FileRecord, LotRecord, WaferRecord...
-  private String id = ""; // 1.8  (Some Records don't have an ID.  Use a blank string for those)
+  private String id = ""; // 1.8 (Some Records don't have an ID. Use a blank string for those)
   private LinkedHashMap<String, List<String>> fields = new LinkedHashMap<>();
   private Set<String> quotedFields =
       new HashSet<>(); // Which fields shoudl be surrounded by quotes?
@@ -56,8 +51,8 @@ public final class KlarfRecord {
    *
    * @param record the record to add
    */
-  public void addRecord(KlarfRecord record) {
-    this.records.add(record);
+  public void addRecord(KlarfRecord krecord) {
+    this.records.add(krecord);
   }
 
   /**
@@ -65,8 +60,8 @@ public final class KlarfRecord {
    *
    * @param list the list to add
    */
-  public void addList(KlarfList list) {
-    this.lists.add(list);
+  public void addList(KlarfList klist) {
+    this.lists.add(klist);
   }
 
   /**
@@ -180,7 +175,7 @@ public final class KlarfRecord {
   public List<String> findField(String name) {
     return fields.entrySet().stream()
         .filter(e -> name.equalsIgnoreCase(e.getKey()))
-        .map(e -> e.getValue())
+        .map(Map.Entry::getValue)
         .findFirst()
         .orElse(Collections.emptyList());
   }
@@ -235,12 +230,12 @@ public final class KlarfRecord {
    * @throws KlarfContentException if the list is missing or the length is unexpected
    */
   public List<KlarfList> reqList(String name, int n) throws KlarfContentException {
-    List<KlarfList> lists = findListsByName(name);
-    if (lists.isEmpty()) {
+    List<KlarfList> klists = findListsByName(name);
+    if (klists.isEmpty()) {
       throw new KlarfContentException(
           "List " + name + " in record " + this.getName() + "/" + this.getId() + " is missing");
     }
-    if (lists.size() != n) {
+    if (klists.size() != n) {
       throw new KlarfContentException(
           "List "
               + name
@@ -254,7 +249,7 @@ public final class KlarfRecord {
               + n
               + ")");
     }
-    return lists;
+    return klists;
   }
 
   /**
@@ -266,12 +261,12 @@ public final class KlarfRecord {
    * @throws KlarfContentException if the record is missing or the length is unexpected
    */
   public List<KlarfRecord> reqRecord(String name, int n) throws KlarfContentException {
-    List<KlarfRecord> records = findRecordsByName(name);
-    if (records.isEmpty()) {
+    List<KlarfRecord> krecords = findRecordsByName(name);
+    if (krecords.isEmpty()) {
       throw new KlarfContentException(
           "Record " + name + " in record " + this.getName() + "/" + this.getId() + " is missing");
     }
-    if (records.size() != n) {
+    if (krecords.size() != n) {
       throw new KlarfContentException(
           "Record "
               + name
@@ -285,7 +280,7 @@ public final class KlarfRecord {
               + n
               + ")");
     }
-    return records;
+    return krecords;
   }
 
   /**

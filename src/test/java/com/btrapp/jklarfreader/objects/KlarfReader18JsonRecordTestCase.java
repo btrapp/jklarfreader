@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-public class KlarfReader18JsonRecordTestCase {
+class KlarfReader18JsonRecordTestCase {
 
   @Test
-  public void testEmptyRecord() throws Exception {
+  void testEmptyRecord() throws Exception {
     String record = "Record FileRecord  \"1.8\"{}\n" + "EndOfFile;";
     Optional<KlarfRecord> k =
         KlarfReader.parseKlarf(
@@ -23,8 +23,8 @@ public class KlarfReader18JsonRecordTestCase {
 
     assertTrue(k.isPresent());
     KlarfRecord node = k.get();
-    //		ObjectMapper m = new ObjectMapper();
-    //		System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
+    // ObjectMapper m = new ObjectMapper();
+    // System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
     assertNotNull(node);
     assertEquals("FileRecord", node.getName());
     assertEquals("1.8", node.getId());
@@ -33,7 +33,7 @@ public class KlarfReader18JsonRecordTestCase {
   }
 
   @Test
-  public void testSimpleRecord() throws Exception {
+  void testSimpleRecord() throws Exception {
     String record =
         "Record FileRecord  \"1.8\" { \n"
             + " Field F 1 { A } \n"
@@ -47,8 +47,8 @@ public class KlarfReader18JsonRecordTestCase {
     assertTrue(kO.isPresent());
     KlarfRecord node = kO.get();
 
-    //		ObjectMapper m = new ObjectMapper();
-    //		System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
+    // ObjectMapper m = new ObjectMapper();
+    // System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
     assertEquals("FileRecord", node.getName());
     assertEquals("1.8", node.getId());
     List<String> fieldF = node.getFields().get("F");
@@ -70,7 +70,7 @@ public class KlarfReader18JsonRecordTestCase {
   }
 
   @Test
-  public void testNestedRecord() throws Exception {
+  void testNestedRecord() throws Exception {
     String record =
         ""
             + "Record FileRecord  \"1.8\" { \n"
@@ -88,8 +88,8 @@ public class KlarfReader18JsonRecordTestCase {
             .readKlarf(new ByteArrayInputStream(record.getBytes()));
     assertTrue(kO.isPresent());
     KlarfRecord node = kO.get();
-    //		ObjectMapper m = new ObjectMapper();
-    //		System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
+    // ObjectMapper m = new ObjectMapper();
+    // System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
     assertNotNull(node);
     assertEquals("FileRecord", node.getName());
     assertEquals("1.8", node.getId());
@@ -123,9 +123,8 @@ public class KlarfReader18JsonRecordTestCase {
         });
   }
 
-  @SuppressWarnings("boxing")
   @Test
-  public void testSimpleLists() throws Exception {
+  void testSimpleLists() throws Exception {
     String record =
         "Record FileRecord  \"1.8\" { \n"
             + " List AList {\n"
@@ -145,8 +144,8 @@ public class KlarfReader18JsonRecordTestCase {
             .readKlarf(new ByteArrayInputStream(record.getBytes()));
     assertTrue(kO.isPresent());
     KlarfRecord node = kO.get();
-    //		ObjectMapper m = new ObjectMapper();
-    //		System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
+    // ObjectMapper m = new ObjectMapper();
+    // System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
     assertNotNull(node);
     assertEquals("FileRecord", node.getName());
     assertEquals("1.8", node.getId());
@@ -176,7 +175,7 @@ public class KlarfReader18JsonRecordTestCase {
   }
 
   @Test
-  public void testReqNumberMethods() throws Exception {
+  void testReqNumberMethods() throws Exception {
     String record =
         "Record FileRecord  \"1.8\" { \n"
             + " Field A 1 { 3.14 } \n"
@@ -199,7 +198,7 @@ public class KlarfReader18JsonRecordTestCase {
   }
 
   @Test
-  public void testQuoting() throws Exception {
+  void testQuoting() throws Exception {
     String record =
         "Record ARecord  \"1.8\"\n"
             + "{\n"

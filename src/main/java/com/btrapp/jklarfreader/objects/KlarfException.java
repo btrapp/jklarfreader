@@ -24,8 +24,8 @@ public class KlarfException extends Exception {
     UnsupportedKlarfVersion
   }
 
-  private ExceptionCode code = ExceptionCode.GenericError;
-  private int lineNumber = -1;
+  private final ExceptionCode code;
+  private final int lineNumber;
 
   /**
    * Klarf formatting error
@@ -50,7 +50,7 @@ public class KlarfException extends Exception {
                 ? ""
                 : " (At line " + kt.getLineNumber() + ": " + kt.getCurrentLine() + ")"));
     this.code = code;
-    this.lineNumber = kt.getLineNumber();
+    this.lineNumber = (kt == null) ? -1 : kt.getLineNumber();
   }
 
   /**

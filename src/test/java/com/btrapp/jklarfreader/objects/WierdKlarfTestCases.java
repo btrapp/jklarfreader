@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
-public class WierdKlarfTestCases {
+class WierdKlarfTestCases {
 
   private Optional<KlarfRecord> readTestKlarf() throws Exception {
     KlarfParser18Pojo kp18 = new KlarfParser18Pojo();
@@ -29,7 +29,7 @@ public class WierdKlarfTestCases {
   }
 
   @Test
-  public void testFile() throws Exception {
+  void testFile() throws Exception {
     Optional<KlarfRecord> klarfRecordO = readTestKlarf();
     assertTrue(klarfRecordO.isPresent());
     KlarfRecord klarfRecord = klarfRecordO.get();
@@ -48,7 +48,7 @@ public class WierdKlarfTestCases {
   }
 
   @Test
-  public void testDefectRecordsHaveNasAsMissing() throws Exception {
+  void testDefectRecordsHaveNasAsMissing() throws Exception {
     Optional<KlarfRecord> klarfRecordO = readTestKlarf();
     assertTrue(klarfRecordO.isPresent());
     Optional<KlarfRecord> lotRecordO =

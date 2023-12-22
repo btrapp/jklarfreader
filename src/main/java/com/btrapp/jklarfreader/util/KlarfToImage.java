@@ -53,104 +53,48 @@ public class KlarfToImage {
       String cliKey = "-" + ca.name();
       switch (ca) {
         case dotSizePx:
-          parms.put(
-              cliKey,
-              new Consumer<String>() {
-                @Override
-                public void accept(String arg) {
-                  kio.setDotSizePx(Integer.valueOf(arg));
-                }
-              });
+          parms.put(cliKey, arg -> kio.setDotSizePx(Integer.valueOf(arg)));
           descriptions.put(
               cliKey,
               "[integer] The diameter, in pixels, of how big each defect dot should be.  Default is "
                   + kio.dotSizePx);
           break;
         case drawChipGrid:
-          parms.put(
-              cliKey,
-              new Consumer<String>() {
-                @Override
-                public void accept(String arg) {
-                  kio.setDrawChipGrid("true".equalsIgnoreCase(arg));
-                }
-              });
+          parms.put(cliKey, arg -> kio.setDrawChipGrid("true".equalsIgnoreCase(arg)));
           descriptions.put(
               cliKey,
               "[true|false] If chip outlines should be drawn.  Default is " + kio.drawChipGrid);
           break;
         case drawNotch:
-          parms.put(
-              cliKey,
-              new Consumer<String>() {
-                @Override
-                public void accept(String arg) {
-                  kio.setDrawNotch("true".equalsIgnoreCase(arg));
-                }
-              });
+          parms.put(cliKey, arg -> kio.setDrawNotch("true".equalsIgnoreCase(arg)));
           descriptions.put(
               cliKey, "[true|false] If the notch should be drawn.  Default is " + kio.drawNotch);
           break;
         case drawWaferOutline:
-          parms.put(
-              cliKey,
-              new Consumer<String>() {
-                @Override
-                public void accept(String arg) {
-                  kio.setDrawWaferOutline("true".equalsIgnoreCase(arg));
-                }
-              });
+          parms.put(cliKey, arg -> kio.setDrawWaferOutline("true".equalsIgnoreCase(arg)));
           descriptions.put(
               cliKey,
               "[true|false] If the wafer outline circle should be drawn. Default is "
                   + kio.drawWaferOutline);
           break;
         case imgSizePx:
-          parms.put(
-              cliKey,
-              new Consumer<String>() {
-                @Override
-                public void accept(String arg) {
-                  kio.setImgSizePx(Integer.valueOf(arg));
-                }
-              });
+          parms.put(cliKey, arg -> kio.setImgSizePx(Integer.valueOf(arg)));
           descriptions.put(
               cliKey,
               "[integer] How big the wafermap image should be.  Default is " + kio.imgSizePx);
           break;
         case imgType:
-          parms.put(
-              cliKey,
-              new Consumer<String>() {
-                @Override
-                public void accept(String arg) {
-                  kio.setImgType(arg);
-                }
-              });
+          parms.put(cliKey, kio::setImgType);
           descriptions.put(cliKey, "[png|jpg] Output image format.  Default is " + kio.imgType);
           break;
         case klarf:
-          parms.put(
-              cliKey,
-              new Consumer<String>() {
-                @Override
-                public void accept(String arg) {
-                  kio.setKlarfIn(new File(arg));
-                }
-              });
+          parms.put(cliKey, arg -> kio.setKlarfIn(new File(arg)));
           descriptions.put(
               cliKey,
               "[file] (REQUIRED) file name (and path if required) to the 1.8 version klarf to read");
           break;
         case image:
-          parms.put(
-              cliKey,
-              new Consumer<String>() {
-                @Override
-                public void accept(String arg) {
-                  kio.setPngOut(new File(arg));
-                }
-              });
+          parms.put(cliKey, arg -> kio.setPngOut(new File(arg)));
           descriptions.put(
               cliKey, "[file] (REQUIRED) file name (and path if required) of the image to create");
           break;
@@ -464,15 +408,17 @@ public class KlarfToImage {
 
       KlarfImageDrawer kii = new KlarfImageDrawer(kio, ksi); // Gets bare wafer ready
       if (kio.isDrawChipGrid()) {
-        // Only take the hit to read the chip grid if required.  A klarf can have many test records,
+        // Only take the hit to read the chip grid if required. A klarf can have many
+        // test records,
         // but we only need the unique set
         List<IntXY> uniqueChipIds =
-            waferRec.findRecordsByName("TestRecord").stream() // A wafer can have several tests
+            waferRec.findRecordsByName("TestRecord").stream() // A wafer can have
+                // several tests
                 .flatMap(
                     testRec ->
-                        testRec
-                            .findListsByName("SampleTestPlanList")
-                            .stream()) // Each test may have a SampleTestPlan
+                        testRec.findListsByName("SampleTestPlanList").stream()) // Each test may
+                // have a
+                // SampleTestPlan
                 .flatMap(stpList -> parseChipIdsFromKlarfList(stpList).stream())
                 .distinct()
                 .toList();

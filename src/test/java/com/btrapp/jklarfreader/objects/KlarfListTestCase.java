@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-public class KlarfListTestCase {
+class KlarfListTestCase {
   @Test
-  public void testAddingNewAttr() {
+  void testAddingNewAttr() {
     KlarfList kl = new KlarfList();
     kl.setColumnNames(List.of("A", "B"));
     kl.setColumnTypes(List.of("string", "int32"));
@@ -38,7 +38,7 @@ public class KlarfListTestCase {
   }
 
   @Test
-  public void testReplacingAttrs() {
+  void testReplacingAttrs() {
     KlarfList kl = new KlarfList();
     kl.setColumnNames(List.of("A", "B"));
     kl.setColumnTypes(List.of("string", "int32"));
@@ -54,7 +54,7 @@ public class KlarfListTestCase {
   }
 
   @Test
-  public void testRemovingAttrs() {
+  void testRemovingAttrs() {
     KlarfList kl = new KlarfList();
     kl.setColumnNames(List.of("A", "B"));
     kl.setColumnTypes(List.of("string", "int32"));

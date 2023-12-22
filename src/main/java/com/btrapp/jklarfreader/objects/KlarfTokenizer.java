@@ -52,7 +52,8 @@ public class KlarfTokenizer implements AutoCloseable {
         return false;
       }
 
-      // Tokenize on commas, whitespace, and {}s, keeping the separator tokens (" and ;)
+      // Tokenize on commas, whitespace, and {}s, keeping the separator tokens (" and
+      // ;)
       StringTokenizer st = new StringTokenizer(currentLine, ", \t{}\";", true);
       while (st.hasMoreTokens()) {
         String token = st.nextToken();
@@ -70,7 +71,7 @@ public class KlarfTokenizer implements AutoCloseable {
           tokens.add(quotedString.toString());
           quotedFlags.add(Boolean.TRUE);
         } else {
-          // Not a quoted string.  Trim it and remove blanks
+          // Not a quoted string. Trim it and remove blanks
           token = token.trim();
           if (!token.isBlank()) {
             tokens.add(token);
@@ -133,11 +134,10 @@ public class KlarfTokenizer implements AutoCloseable {
   }
 
   private boolean isNa(String s) {
-    if (s.equalsIgnoreCase("NA")) return true;
-    return false;
+    return (s.equalsIgnoreCase("NA"));
   }
 
-  public Integer intVal() throws IOException, KlarfException {
+  public Integer intVal() throws KlarfException {
     String str = val();
     if (isNa(str)) {
       return null;
@@ -152,7 +152,7 @@ public class KlarfTokenizer implements AutoCloseable {
     }
   }
 
-  public Float floatVal() throws IOException, KlarfException {
+  public Float floatVal() throws KlarfException {
     String str = val();
     if (isNa(str)) return null;
     try {

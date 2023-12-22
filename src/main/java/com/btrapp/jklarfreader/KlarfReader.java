@@ -19,25 +19,19 @@ import java.util.regex.Pattern;
  * @author btrapp
  */
 public class KlarfReader {
-  public static enum KlarfFormat {
+  public enum KlarfFormat {
     UNSUPPORTED_FORMAT,
     V1_0,
     V1_2,
     V1_8
   }
 
+  private KlarfReader() {}
+
   public static <T> Optional<T> parseKlarf(KlarfParserIf18<T> parser, InputStream is)
       throws Exception {
     return new KlarfReader18<T>(parser).readKlarf(is);
   }
-  //	public boolean parseKlarf(KlarfParserIf12 parser, InputStream is) throws Exception {
-  //		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-  //			new KlarfReader12().readKlarf(parser, br);
-  //		} catch (IOException e) {
-  //			throw (e);
-  //		}
-  //		return false;
-  //	}
 
   /**
    * Tries to determine if this looks *anything* like the expected Klarf format
@@ -47,11 +41,11 @@ public class KlarfReader {
    * @throws IOException if any error
    */
   public static KlarfFormat findKlarfFormat(File file) throws IOException {
-    // Record FileRecord  "1.8"
+    // Record FileRecord "1.8"
     // FileVersion 1 2;
-    Pattern pattern1_8 = Pattern.compile("Record\\s+FileRecord.*1\\.8.*");
-    Pattern pattern1_2 = Pattern.compile("FileVersion\\s+1\\s+2.*");
-    Pattern pattern1_0 = Pattern.compile("FileVersion\\s+1\\s+0.*");
+    final Pattern pattern1_8 = Pattern.compile("Record\\s+FileRecord.*1\\.8.*");
+    final Pattern pattern1_2 = Pattern.compile("FileVersion\\s+1\\s+2.*");
+    final Pattern pattern1_0 = Pattern.compile("FileVersion\\s+1\\s+0.*");
     Matcher m;
     String line;
     int lineCount = 0;
@@ -73,7 +67,8 @@ public class KlarfReader {
           }
           lineCount++;
           if (lineCount > 50) {
-            // If we haven't found the record start in the first 50 lines, we probably aren't going
+            // If we haven't found the record start in the first 50 lines, we probably
+            // aren't going
             // to find it at all.
             return KlarfFormat.UNSUPPORTED_FORMAT;
           }
