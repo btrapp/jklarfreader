@@ -166,6 +166,7 @@ public final class KlarfList {
 
   /**
    * Returns the Name of the list
+   *
    * @return the Klarf's name
    */
   public String getName() {
@@ -174,6 +175,7 @@ public final class KlarfList {
 
   /**
    * Sets the name of the list
+   *
    * @param name the Klarf's name
    */
   public void setName(String name) {

@@ -90,6 +90,7 @@ public class KlarfTokenizer implements AutoCloseable {
 
   /**
    * The next token
+   *
    * @return
    */
   public String val() {
@@ -98,6 +99,7 @@ public class KlarfTokenizer implements AutoCloseable {
 
   /**
    * T/F if this field is quoted or not
+   *
    * @return
    */
   public boolean isQuoted() {
