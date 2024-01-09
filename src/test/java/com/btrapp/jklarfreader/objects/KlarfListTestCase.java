@@ -69,16 +69,16 @@ class KlarfListTestCase {
     assertNotNull(kl.getColumn("B"));
     assertEquals(0, kl.getColMap().get("B").get(0));
   }
-  
+
   @Test
   void testListyConstructor() {
-	  List integers = List.of(1,2,3);
-	  List strings = List.of("A","B","C");
-	  KlarfList kl = new KlarfList();
-	  kl.setName("MyName");
-	  kl.set("ColA", "int32",integers);
-	  kl.set("ColB", "string",strings);
-	  assertEquals(2,kl.getColMap().size());
-	  assertEquals(2,kl.getColumnTypes().size());
+    List integers = List.of(1, 2, 3);
+    List strings = List.of("A", "B", "C");
+    KlarfList kl = new KlarfList();
+    kl.setName("MyName");
+    kl.set("ColA", "int32", integers);
+    kl.set("ColB", "string", strings);
+    assertEquals(2, kl.getColMap().size());
+    assertEquals(2, kl.getColumnTypes().size());
   }
 }

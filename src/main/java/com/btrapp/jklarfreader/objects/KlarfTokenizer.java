@@ -88,10 +88,18 @@ public class KlarfTokenizer implements AutoCloseable {
     return false;
   }
 
+  /**
+   * The next token
+   * @return
+   */
   public String val() {
     return token;
   }
 
+  /**
+   * T/F if this field is quoted or not
+   * @return
+   */
   public boolean isQuoted() {
     return quotedFlag.booleanValue();
   }

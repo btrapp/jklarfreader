@@ -49,7 +49,7 @@ public final class KlarfRecord {
   /**
    * Adds a record to the record
    *
-   * @param record the record to add
+   * @param krecord the record to add
    */
   public void addRecord(KlarfRecord krecord) {
     this.records.add(krecord);
@@ -58,7 +58,7 @@ public final class KlarfRecord {
   /**
    * Adds a list to the record
    *
-   * @param list the list to add
+   * @param klist the list to add
    */
   public void addList(KlarfList klist) {
     this.lists.add(klist);

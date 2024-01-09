@@ -164,10 +164,18 @@ public final class KlarfList {
     return colMap.values().iterator().next().size();
   }
 
+  /**
+   * Returns the Name of the list
+   * @return the Klarf's name
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Sets the name of the list
+   * @param name the Klarf's name
+   */
   public void setName(String name) {
     this.name = name;
   }

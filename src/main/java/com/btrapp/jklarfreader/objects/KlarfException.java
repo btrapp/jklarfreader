@@ -14,7 +14,6 @@ public class KlarfException extends Exception {
 
   /**
    * Type of Klarf error
-   *
    * @author btrapp
    */
   public enum ExceptionCode {
