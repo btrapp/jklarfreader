@@ -6,4 +6,14 @@
 0.9.12 - 2021-01-14 : addField renamed to setField to better match behavior
 0.9.13 - 2021-02-10 : add simple write support, if parsing to KlarfRecord
 0.9.14 -  : add setStringField, setNumericField helper methods, which auto set 'quoted' flag'
-0.10.0 - 2023-12-22 : Require java 17 or better
+0.9.4 - Changelog started
+0.9.5 - 2020-01-20 : Changed KlarfList to be organized like JsonLines format (http://jsonlines.org/) to eventually intersect things like Spark nicer. 
+0.9.6 - 2020-01-25 : Fixed project description in the POM
+0.9.7 - 2020-04-14 : KlarfLists can contain NAs in int32 and doubles, return null in those cases
+0.9.8 - 2020-04-29 : KlarfRecord has proper addField,addList,addRecord methods instead of sketchy .getLists().add(x)
+0.9.12 - 2021-01-14 : addField renamed to setField to better match behavior
+0.9.13 - 2021-02-10 : add simple write support, if parsing to KlarfRecord
+0.9.14 -  : add setStringField, setNumericField helper methods, which auto set 'quoted' flag
+0.9.15 - 2021-02-10 : Add basic Klarf write support
+0.9.21 - 2023-09-12 : Add KlarfToImage for simple wafermaps
+0.9.22 - 2024-01-09 : Require java 17 or better, Fixed a bug in KlarfList's set(name,type,values)
