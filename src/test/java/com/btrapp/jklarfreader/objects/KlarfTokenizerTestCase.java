@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class KlarfTokenizerTestCase {
+class KlarfTokenizerTestCase {
 
   @Test
-  public void testIntError() {
+  void testIntError() {
     assertThrows(
         KlarfException.class,
         () -> {
@@ -22,7 +22,7 @@ public class KlarfTokenizerTestCase {
   }
 
   @Test
-  public void testQuotedStringsWork() throws Exception {
+  void testQuotedStringsWork() throws Exception {
     try (KlarfTokenizer kt =
         new KlarfTokenizer(new ByteArrayInputStream("A \"B;\" \"C{}\" \";D\"".getBytes()))) {
       List<String> tokens = new ArrayList<>();
@@ -38,7 +38,7 @@ public class KlarfTokenizerTestCase {
   }
 
   @Test
-  public void testTokening() throws Exception {
+  void testTokening() throws Exception {
     try (KlarfTokenizer kt =
         new KlarfTokenizer(
             new ByteArrayInputStream(
@@ -67,7 +67,7 @@ public class KlarfTokenizerTestCase {
   }
 
   @Test
-  public void testReadingEmptyQuotedStrings() throws Exception {
+  void testReadingEmptyQuotedStrings() throws Exception {
     try (KlarfTokenizer kt =
         new KlarfTokenizer(new ByteArrayInputStream("A \"\" B\t\"C\" D \"\"".getBytes()))) {
       List<String> tokens = new ArrayList<>();
@@ -86,7 +86,7 @@ public class KlarfTokenizerTestCase {
   }
 
   @Test
-  public void testTokeningJustCommas() throws Exception {
+  void testTokeningJustCommas() throws Exception {
     try (KlarfTokenizer kt =
         new KlarfTokenizer(new ByteArrayInputStream("A,B,C,\"D E\",\"F,G\"".getBytes()))) {
       List<String> tokens = new ArrayList<>();

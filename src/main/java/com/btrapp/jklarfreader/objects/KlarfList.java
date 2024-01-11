@@ -18,41 +18,29 @@ import java.util.Optional;
 /*
  * Example:
  *
- * List DefectList
- * {
- * Columns 41 { int32 DEFECTID, int32 XREL, int32 YREL, int32 XINDEX, int32 YINDEX,
- * int32 XSIZE, int32 YSIZE, float DEFECTAREA, int32 DSIZE, int32 CLASSNUMBER,
- * int32 TEST, int32 ROUGHBINNUMBER, int32 FINEBINNUMBER, int32 SAMPLEBINNUMBER, float CONTRAST,
- * int32 CHANNELID, int32 MANSEMCLASS, int32 AUTOONSEMCLASS, int32 MICROSIGCLASS, int32 MACROSIGCLASS,
- * int32 AUTOOFFSEMCLASS, int32 AUTOOFFOPTADC, int32 FACLASS, int32 INTENSITY, float KILLPROB,
- * int32 MACROSIGID, int32 REGIONID, int32 EVENTTYPE, int32 EBRLINE,
- * int32 POLARITY, float CRITICALAREA, int32 MANOPTCLASS, float PHI, int32 DBCLASS,
- * int32 DBGROUP, float DBCRITICALITYINDEX, float CELLSIZE, int32 CAREAREAGROUPCODE, float PCI,
- * float LINECOMPLEXITY, float DCIRANGE }
- * Data 3
- * {
- * 2 1254960 4346692 2 24 315 195 6445.0 325 91 1 0 0 0 0.0000 0 0 0 0 0 0 0 0
- * 0 0.0000 0 0 0 0 0 0.0000 0 0.0 0 0 0.0000 0.000000 0 0.0000 0.0000
- * 0.0000 ;
- * 3 622162 924193 -3 24 1170 1495 129236.0 1295 180 1 0 0 0 0.0000 0 0 0 0 0
- * 0 0 0 0 0.0000 0 0 0 0 0 0.0000 0 0.0 0 0 0.0000 0.000000 0 0.0000
- * 0.0000 0.0000 ;
- * 128 2782531 487465 -2 -27 5039 3959 177209.0 5039 0 2 0 0 0 0.0000 0 0 0 0
- * 0 0 0 0 0 0.0000 0 0 0 0 0 0.0000 0 0.0 0 0 0.0000 0.000000 0
- * 0.0000 0.0000 0.0000 ;
- * }
- * }
+ * List DefectList { Columns 41 { int32 DEFECTID, int32 XREL, int32 YREL, int32
+ * XINDEX, int32 YINDEX, int32 XSIZE, int32 YSIZE, float DEFECTAREA, int32
+ * DSIZE, int32 CLASSNUMBER, int32 TEST, int32 ROUGHBINNUMBER, int32
+ * FINEBINNUMBER, int32 SAMPLEBINNUMBER, float CONTRAST, int32 CHANNELID, int32
+ * MANSEMCLASS, int32 AUTOONSEMCLASS, int32 MICROSIGCLASS, int32 MACROSIGCLASS,
+ * int32 AUTOOFFSEMCLASS, int32 AUTOOFFOPTADC, int32 FACLASS, int32 INTENSITY,
+ * float KILLPROB, int32 MACROSIGID, int32 REGIONID, int32 EVENTTYPE, int32
+ * EBRLINE, int32 POLARITY, float CRITICALAREA, int32 MANOPTCLASS, float PHI,
+ * int32 DBCLASS, int32 DBGROUP, float DBCRITICALITYINDEX, float CELLSIZE, int32
+ * CAREAREAGROUPCODE, float PCI, float LINECOMPLEXITY, float DCIRANGE } Data 3 {
+ * 2 1254960 4346692 2 24 315 195 6445.0 325 91 1 0 0 0 0.0000 0 0 0 0 0 0 0 0 0
+ * 0.0000 0 0 0 0 0 0.0000 0 0.0 0 0 0.0000 0.000000 0 0.0000 0.0000 0.0000 ; 3
+ * 622162 924193 -3 24 1170 1495 129236.0 1295 180 1 0 0 0 0.0000 0 0 0 0 0 0 0
+ * 0 0 0.0000 0 0 0 0 0 0.0000 0 0.0 0 0 0.0000 0.000000 0 0.0000 0.0000 0.0000
+ * ; 128 2782531 487465 -2 -27 5039 3959 177209.0 5039 0 2 0 0 0 0.0000 0 0 0 0
+ * 0 0 0 0 0 0.0000 0 0 0 0 0 0.0000 0 0.0 0 0 0.0000 0.000000 0 0.0000 0.0000
+ * 0.0000 ; } }
  *
  * Would map to:
  *
- * name: "DefectList"
- * columnNames: ["DEFECTID","XREL",...,"DCIRANGE"]
- * coumnTypes: [int32,int32,...,float]
- * data: {
- * "DEFECTID" : [2, 3, 128],
- * "XREL" : [ 1254960, 622162, 2782531]
- * ..etc
- * }
+ * name: "DefectList" columnNames: ["DEFECTID","XREL",...,"DCIRANGE"]
+ * coumnTypes: [int32,int32,...,float] data: { "DEFECTID" : [2, 3, 128], "XREL"
+ * : [ 1254960, 622162, 2782531] ..etc }
  *
  */
 public final class KlarfList {
@@ -60,7 +48,8 @@ public final class KlarfList {
   private List<String> columnNames = Collections.emptyList();
   private List<String> columnTypes = Collections.emptyList();
   // Store the inner defects in a JSONLines format http://jsonlines.org/
-  // Why JSONLines?  Well it compresses *REALLY* nicely, and it makes it easier to see all of one
+  // Why JSONLines? Well it compresses *REALLY* nicely, and it makes it easier to
+  // see all of one
   // attribute for all records quickly
   private Map<String, List<Object>> colMap = new HashMap<>();
 
@@ -86,14 +75,15 @@ public final class KlarfList {
       ArrayList<String> columnNamesNew = new ArrayList<>(columnNames);
       columnNamesNew.add(colName);
       this.columnNames = Collections.unmodifiableList(columnNamesNew);
+
       ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
       columnTypesNew.add(colType);
-      this.columnTypes = Collections.unmodifiableList(columnTypes);
+      this.columnTypes = Collections.unmodifiableList(columnTypesNew);
     } else {
       // this is existing, update the col type
       ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
       columnTypesNew.set(colNdx, colType);
-      this.columnTypes = Collections.unmodifiableList(columnTypes);
+      this.columnTypes = Collections.unmodifiableList(columnTypesNew);
     }
     Map<String, List<Object>> colMapNew = new LinkedHashMap<>(this.colMap);
     colMapNew.put(colName, values);
@@ -114,9 +104,11 @@ public final class KlarfList {
     ArrayList<String> columnNamesNew = new ArrayList<>(columnNames);
     columnNamesNew.remove(colNdx);
     this.columnNames = Collections.unmodifiableList(columnNamesNew);
+
     ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
     columnTypesNew.remove(colNdx);
-    this.columnTypes = Collections.unmodifiableList(columnTypes);
+    this.columnTypes = Collections.unmodifiableList(columnTypesNew);
+
     Map<String, List<Object>> colMapNew = new LinkedHashMap<>(this.colMap);
     colMapNew.remove(colName);
     this.colMap = Collections.unmodifiableMap(colMapNew);
@@ -175,12 +167,24 @@ public final class KlarfList {
     return colMap.values().iterator().next().size();
   }
 
+  /**
+   * Returns the Name of the list
+   *
+   * @return the Klarf's name
+   */
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
+  /**
+   * Sets the name of the list
+   *
+   * @param name the Klarf's name
+   * @return this
+   */
+  public KlarfList setName(String name) {
     this.name = name;
+    return this;
   }
 
   /**

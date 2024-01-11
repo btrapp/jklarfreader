@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-public class KlarfListTestCase {
+class KlarfListTestCase {
   @Test
-  public void testAddingNewAttr() {
+  void testAddingNewAttr() {
     KlarfList kl = new KlarfList();
     kl.setColumnNames(List.of("A", "B"));
     kl.setColumnTypes(List.of("string", "int32"));
@@ -38,7 +38,7 @@ public class KlarfListTestCase {
   }
 
   @Test
-  public void testReplacingAttrs() {
+  void testReplacingAttrs() {
     KlarfList kl = new KlarfList();
     kl.setColumnNames(List.of("A", "B"));
     kl.setColumnTypes(List.of("string", "int32"));
@@ -54,7 +54,7 @@ public class KlarfListTestCase {
   }
 
   @Test
-  public void testRemovingAttrs() {
+  void testRemovingAttrs() {
     KlarfList kl = new KlarfList();
     kl.setColumnNames(List.of("A", "B"));
     kl.setColumnTypes(List.of("string", "int32"));
@@ -68,5 +68,17 @@ public class KlarfListTestCase {
     assertNull(kl.getColumn("A"));
     assertNotNull(kl.getColumn("B"));
     assertEquals(0, kl.getColMap().get("B").get(0));
+  }
+
+  @Test
+  void testListyConstructor() {
+    List integers = List.of(1, 2, 3);
+    List strings = List.of("A", "B", "C");
+    KlarfList kl = new KlarfList();
+    kl.setName("MyName");
+    kl.set("ColA", "int32", integers);
+    kl.set("ColB", "string", strings);
+    assertEquals(2, kl.getColMap().size());
+    assertEquals(2, kl.getColumnTypes().size());
   }
 }

@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.io.StringWriter;
 import org.junit.jupiter.api.Test;
 
-public class KlarfWriter18TestCase {
+class KlarfWriter18TestCase {
   @Test
-  public void testKlarfRecordIdWriting() throws IOException {
+  void testKlarfRecordIdWriting() throws IOException {
 
     KlarfRecord krWithId = new KlarfRecord("MyName", "MyId");
 
@@ -19,7 +19,7 @@ public class KlarfWriter18TestCase {
   }
 
   @Test
-  public void testKlarfRecordNoIdWriting() throws IOException {
+  void testKlarfRecordNoIdWriting() throws IOException {
 
     KlarfRecord krWithId = new KlarfRecord("MyName", "");
 
@@ -29,7 +29,7 @@ public class KlarfWriter18TestCase {
     // System.out.println(sw.toString());
     assertTrue(
         sw.toString()
-            .contains(
-                "Record MyName {")); // Be sure we're not writing a blank id of Record MyName "" {
+            .contains("Record MyName {")); // Be sure we're not writing a blank id of Record MyName
+    // "" {
   }
 }

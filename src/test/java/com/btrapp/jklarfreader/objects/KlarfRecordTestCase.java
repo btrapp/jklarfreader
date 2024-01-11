@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class KlarfRecordTestCase {
+class KlarfRecordTestCase {
   private KlarfRecord dummyRec() {
     KlarfRecord kr = new KlarfRecord("test", "1");
     KlarfList kl = new KlarfList();
@@ -18,7 +18,7 @@ public class KlarfRecordTestCase {
 
   @Test
   /** This should just add the list to the klarf */
-  public void testListAddNewName() {
+  void testListAddNewName() {
     KlarfRecord kr = dummyRec();
     assertEquals(1, kr.getLists().size());
     assertEquals(1, kr.findListsByName("List1").size());
@@ -32,7 +32,7 @@ public class KlarfRecordTestCase {
 
   @Test
   /** This should replace the existing list with the same name. */
-  public void testListAddSameName() {
+  void testListAddSameName() {
     KlarfRecord kr = dummyRec();
     assertEquals(1, kr.getLists().size());
     assertEquals(1, kr.findListsByName("List1").size());
