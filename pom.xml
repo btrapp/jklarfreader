@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.btrapp</groupId>
 	<artifactId>jklarfreader</artifactId>
-	<version>0.9.23</version>
+	<version>0.9.24-SNAPSHOT</version>
 
 	<name>io.github.btrapp:jklarfreader</name>
 	<description>Library to read a 1.8 format Klarf file into JSON or a POJO</description>
@@ -24,7 +24,7 @@
 		<developerConnection>
             scm:git:git@github.com:btrapp/jklarfreader.git
         </developerConnection>
-		<tag>jklarfreader-0.9.23</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<developers>
