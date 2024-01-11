@@ -75,7 +75,7 @@ public final class KlarfList {
       ArrayList<String> columnNamesNew = new ArrayList<>(columnNames);
       columnNamesNew.add(colName);
       this.columnNames = Collections.unmodifiableList(columnNamesNew);
-      
+
       ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
       columnTypesNew.add(colType);
       this.columnTypes = Collections.unmodifiableList(columnTypesNew);
@@ -104,11 +104,11 @@ public final class KlarfList {
     ArrayList<String> columnNamesNew = new ArrayList<>(columnNames);
     columnNamesNew.remove(colNdx);
     this.columnNames = Collections.unmodifiableList(columnNamesNew);
-    
+
     ArrayList<String> columnTypesNew = new ArrayList<>(columnTypes);
     columnTypesNew.remove(colNdx);
     this.columnTypes = Collections.unmodifiableList(columnTypesNew);
-    
+
     Map<String, List<Object>> colMapNew = new LinkedHashMap<>(this.colMap);
     colMapNew.remove(colName);
     this.colMap = Collections.unmodifiableMap(colMapNew);
