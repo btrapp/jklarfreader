@@ -37,8 +37,6 @@ public class KlarfReaderSpeedTest {
         } else {
           fileCount++;
           KlarfRecord klarfRecord = klarf.get();
-          // List<String> fileTimestamp =
-          // klarfRecord.findField("FileTimestamp").orElse(Collections.emptyList());
           for (KlarfRecord lotRecord : klarfRecord.findRecordsByName("LotRecord")) {
             for (KlarfRecord waferRecord : lotRecord.findRecordsByName("WaferRecord")) {
               for (KlarfList defectList : waferRecord.findListsByName("DefectList")) {
@@ -55,7 +53,6 @@ public class KlarfReaderSpeedTest {
           System.err.println("COuldn't read " + f.getAbsolutePath());
         }
       } catch (Exception e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
     }
