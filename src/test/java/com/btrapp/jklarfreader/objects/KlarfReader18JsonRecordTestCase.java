@@ -16,15 +16,17 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testEmptyRecord() throws Exception {
-    String record = "Record FileRecord  \"1.8\"{}\n" + "EndOfFile;";
+    String recordTxt = """
+    		Record FileRecord  "1.8" {
+    		} 
+    		EndOfFile;
+    		""";
     Optional<KlarfRecord> k =
         KlarfReader.parseKlarf(
-            new KlarfParser18Pojo(), new ByteArrayInputStream(record.getBytes()));
+            new KlarfParser18Pojo(), new ByteArrayInputStream(recordTxt.getBytes()));
 
     assertTrue(k.isPresent());
     KlarfRecord node = k.get();
-    // ObjectMapper m = new ObjectMapper();
-    // System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
     assertNotNull(node);
     assertEquals("FileRecord", node.getName());
     assertEquals("1.8", node.getId());
@@ -34,21 +36,21 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testSimpleRecord() throws Exception {
-    String record =
-        "Record FileRecord  \"1.8\" { \n"
-            + " Field F 1 { A } \n"
-            + " Field G 3 {\"B C\",D,\"E\"} \n"
-            + " } \n"
-            + "EndOfFile;";
+    String recordTxt =
+    		"""
+    		Record FileRecord  "1.8" { 
+             Field F 1 { A } 
+             Field G 3 {"B C",D,"E"} 
+             } 
+            EndOfFile;
+            """;
     KlarfParser18Pojo parser = new KlarfParser18Pojo();
     Optional<KlarfRecord> kO =
         new KlarfReader18<KlarfRecord>(parser)
-            .readKlarf(new ByteArrayInputStream(record.getBytes()));
+            .readKlarf(new ByteArrayInputStream(recordTxt.getBytes()));
     assertTrue(kO.isPresent());
     KlarfRecord node = kO.get();
 
-    // ObjectMapper m = new ObjectMapper();
-    // System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
     assertEquals("FileRecord", node.getName());
     assertEquals("1.8", node.getId());
     List<String> fieldF = node.getFields().get("F");
@@ -71,25 +73,24 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testNestedRecord() throws Exception {
-    String record =
-        ""
-            + "Record FileRecord  \"1.8\" { \n"
-            + " Field F 1 { A } \n"
-            + " Record NestedRecord \"1\" {\n"
-            + "  Field G 3 {\"B C\",D,\"E\"} \n"
-            + " }\n"
-            + " Record NestedRecord \"2\" {\n"
-            + "  Field G 3 {\"B C\",D,\"E\"} \n"
-            + " } \n"
-            + "}\n"
-            + "EndOfFile;";
+    String recordTxt =
+        """
+    		Record FileRecord  \"1.8\" { 
+             Field F 1 { A } 
+             Record NestedRecord \"1\" {
+              Field G 3 {\"B C\",D,\"E\"} 
+             }
+             Record NestedRecord \"2\" {
+              Field G 3 {\"B C\",D,\"E\"} 
+             } 
+            }
+            EndOfFile;
+            """;
     Optional<KlarfRecord> kO =
         new KlarfReader18<KlarfRecord>(new KlarfParser18Pojo())
-            .readKlarf(new ByteArrayInputStream(record.getBytes()));
+            .readKlarf(new ByteArrayInputStream(recordTxt.getBytes()));
     assertTrue(kO.isPresent());
     KlarfRecord node = kO.get();
-    // ObjectMapper m = new ObjectMapper();
-    // System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
     assertNotNull(node);
     assertEquals("FileRecord", node.getName());
     assertEquals("1.8", node.getId());
@@ -125,27 +126,26 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testSimpleLists() throws Exception {
-    String record =
-        "Record FileRecord  \"1.8\" { \n"
-            + " List AList {\n"
-            + "  Columns 2 { int32 Foo, float Bar }\n "
-            + "  Data 3 { \n"
-            + "   42 1.0;\n"
-            + "   43 2.0;\n"
-            + "   44 3.0;\n"
-            + "  }\n"
-            + " }\n"
-            + " Field F 1 {A}\n"
-            + "}\n"
-            + "EndOfFile;";
+    String recordTxt = """
+    		Record FileRecord  "1.8" { 
+             List AList {
+              Columns 2 { int32 Foo, float Bar }
+              Data 3 {
+               42 1.0;
+               43 2.0;
+               44 3.0;
+              }
+             }
+             Field F 1 {A}
+            }
+            EndOfFile
+            """;
 
     Optional<KlarfRecord> kO =
         new KlarfReader18<KlarfRecord>(new KlarfParser18Pojo())
-            .readKlarf(new ByteArrayInputStream(record.getBytes()));
+            .readKlarf(new ByteArrayInputStream(recordTxt.getBytes()));
     assertTrue(kO.isPresent());
     KlarfRecord node = kO.get();
-    // ObjectMapper m = new ObjectMapper();
-    // System.out.println(m.writerWithDefaultPrettyPrinter().writeValueAsString(node));
     assertNotNull(node);
     assertEquals("FileRecord", node.getName());
     assertEquals("1.8", node.getId());
@@ -176,15 +176,16 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testReqNumberMethods() throws Exception {
-    String record =
-        "Record FileRecord  \"1.8\" { \n"
-            + " Field A 1 { 3.14 } \n"
-            + " Field B 3 {3,1,4} \n"
-            + " } \n"
-            + "EndOfFile;";
+    String recordTxt = """
+    		Record FileRecord  "1.8" { 
+             Field A 1 { 3.14 } 
+             Field B 3 {3,1,4} 
+             } 
+            EndOfFile;
+            """;
     Optional<KlarfRecord> kO =
         new KlarfReader18<KlarfRecord>(new KlarfParser18Pojo())
-            .readKlarf(new ByteArrayInputStream(record.getBytes()));
+            .readKlarf(new ByteArrayInputStream(recordTxt.getBytes()));
     assertTrue(kO.isPresent());
     KlarfRecord node = kO.get();
     List<Double> fa = node.reqDoubleField("A", 1);
@@ -199,27 +200,29 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testQuoting() throws Exception {
-    String record =
-        "Record ARecord  \"1.8\"\n"
-            + "{\n"
-            + "  Field SingleLineNo 1 {0}\n"
-            + "  Field SingleLineYes 1 {\"Apple\"}\n"
-            + "  Field SingleLineMixed 2 {\"2\",3}\n"
-            + "  Field MultiLineNo 3 {00\n"
-            + "    ,11\n"
-            + "    ,22\n"
-            + "    }\n"
-            + "  Field MultiLineYes 3 {\"A\",\n"
-            + "    \"B\",\n"
-            + "    \"C\"}\n"
-            + "  Field MultiLineMixed 4 {\"1\"\n"
-            + "    ,\"2\",3\n"
-            + "    ,4}\n"
-            + "}\n"
-            + "EndOfFile;";
+    String recordTxt=
+        """
+    		Record ARecord  "1.8"
+            {
+    		  Field SingleLineNo 1 {0}
+              Field SingleLineYes 1 {"Apple"}
+              Field SingleLineMixed 2 {"2",3}
+              Field MultiLineNo 3 {00
+                ,11
+                ,22
+                }
+              Field MultiLineYes 3 {"A",
+                "B",
+                "C"}
+              Field MultiLineMixed 4 {"1"
+                ,"2",3
+                ,4}
+            }
+            EndOfFile;
+            """;
     Optional<KlarfRecord> kO =
         new KlarfReader18<KlarfRecord>(new KlarfParser18Pojo())
-            .readKlarf(new ByteArrayInputStream(record.getBytes()));
+            .readKlarf(new ByteArrayInputStream(recordTxt.getBytes()));
     assertTrue(kO.isPresent());
     KlarfRecord node = kO.get();
     assertTrue(node.getFields().containsKey("SingleLineNo"));

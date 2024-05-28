@@ -109,7 +109,7 @@ public final class KlarfRecord {
    */
   public void setNumericField(String fieldName, List<Number> fieldValue) {
     setField(
-        fieldName, fieldValue.stream().map(Number::toString).collect(Collectors.toList()), false);
+        fieldName, fieldValue.stream().map(Number::toString).toList(), false);
   }
 
   /**
@@ -134,7 +134,7 @@ public final class KlarfRecord {
   public List<KlarfRecord> findRecordsByName(String name) {
     return records.stream()
         .filter(r -> name.equalsIgnoreCase(r.getName()))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /**
@@ -147,7 +147,7 @@ public final class KlarfRecord {
   public List<KlarfList> findListsByName(String name) {
     return lists.stream()
         .filter(r -> name.equalsIgnoreCase(r.getName()))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /**
@@ -325,7 +325,7 @@ public final class KlarfRecord {
   public List<Double> reqDoubleField(String name, int n) throws KlarfContentException {
     List<String> str = reqField(name, n);
     try {
-      return str.stream().map(Double::parseDouble).collect(Collectors.toList());
+      return str.stream().map(Double::parseDouble).toList();
     } catch (Exception ex) {
       throw new KlarfContentException(
           "Record "
@@ -350,7 +350,7 @@ public final class KlarfRecord {
   public List<Integer> reqIntField(String name, int n) throws KlarfContentException {
     List<String> str = reqField(name, n);
     try {
-      return str.stream().map(Integer::parseInt).collect(Collectors.toList());
+      return str.stream().map(Integer::parseInt).toList();
     } catch (Exception ex) {
       throw new KlarfContentException(
           "Record "

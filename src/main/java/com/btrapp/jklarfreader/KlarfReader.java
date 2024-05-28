@@ -42,10 +42,10 @@ public class KlarfReader {
    */
   public static KlarfFormat findKlarfFormat(File file) throws IOException {
     // Record FileRecord "1.8"
-    // FileVersion 1 2;
-    final Pattern pattern1_8 = Pattern.compile("Record\\s+FileRecord.*1\\.8.*");
-    final Pattern pattern1_2 = Pattern.compile("FileVersion\\s+1\\s+2.*");
-    final Pattern pattern1_0 = Pattern.compile("FileVersion\\s+1\\s+0.*");
+    // FileVersion 1 2
+    final Pattern pattern18 = Pattern.compile("Record\\s+FileRecord.*1\\.8.*");
+    final Pattern pattern12 = Pattern.compile("FileVersion\\s+1\\s+2.*");
+    final Pattern pattern10 = Pattern.compile("FileVersion\\s+1\\s+0.*");
     Matcher m;
     String line;
     int lineCount = 0;
@@ -53,15 +53,15 @@ public class KlarfReader {
       try (BufferedReader br = new BufferedReader(new InputStreamReader(fis))) {
         while ((line = br.readLine()) != null) {
           line = line.trim();
-          m = pattern1_8.matcher(line);
+          m = pattern18.matcher(line);
           if (m.matches()) {
             return KlarfFormat.V1_8;
           }
-          m = pattern1_2.matcher(line);
+          m = pattern12.matcher(line);
           if (m.matches()) {
             return KlarfFormat.UNSUPPORTED_FORMAT;
           }
-          m = pattern1_0.matcher(line);
+          m = pattern10.matcher(line);
           if (m.matches()) {
             return KlarfFormat.UNSUPPORTED_FORMAT;
           }

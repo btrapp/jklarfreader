@@ -84,7 +84,6 @@ class ImageListTestCase {
     StringWriter sw = new StringWriter();
     KlarfWriter18 writer = new KlarfWriter18();
     writer.writeKlarf(klarfRecordO.get(), sw);
-    // System.out.println(sw.toString());
     List<String> klarfAsString = Arrays.asList(sw.toString().split("\n"));
     assertFalse(klarfAsString.isEmpty());
     assertTrue(klarfAsString.size() > 50);

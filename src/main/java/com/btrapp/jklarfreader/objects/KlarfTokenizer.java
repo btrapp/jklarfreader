@@ -56,7 +56,7 @@ public class KlarfTokenizer implements AutoCloseable {
       // ;)
       StringTokenizer st = new StringTokenizer(currentLine, ", \t{}\";", true);
       while (st.hasMoreTokens()) {
-        String token = st.nextToken();
+    	token = st.nextToken();
         if (token.equals("\"")) {
           StringBuilder quotedString = new StringBuilder();
           boolean endQuoteNotFound = true;
@@ -115,7 +115,7 @@ public class KlarfTokenizer implements AutoCloseable {
    */
   public void skipTo(String str) throws IOException, KlarfException {
     while (!str.equalsIgnoreCase(val())) {
-      // We've already read the 1st {
+      // We've already read the 1st '{'
       if (!nextToken()) {
         throw new KlarfException(str + " not found", this, ExceptionCode.GenericError);
       }
