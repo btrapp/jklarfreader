@@ -18,7 +18,8 @@ public class KlarfWriter18 {
   private void writeRecord(KlarfRecord krecord, Writer writer, int indent) throws IOException {
     writer.write(spaces(indent) + "Record " + krecord.getName());
     if (krecord.getId() != null && (!krecord.getId().isEmpty())) {
-      // The ID field may be missing, and some loaders don't like Record Name of blank quotes like  "" 
+      // The ID field may be missing, and some loaders don't like Record Name of blank quotes like
+      // ""
       writer.write(" \"" + krecord.getId() + "\"");
     }
     writer.write(" {\n");
@@ -71,10 +72,10 @@ public class KlarfWriter18 {
   private String printImageList(Object imageListObject) {
     StringBuilder sb = new StringBuilder();
     if (imageListObject instanceof KlarfImageList kil) {
-    	//A special case with a dedicated 4-arg signature.
-    	sb.append(" ");
-    	sb.append(kil.toString());
-    	return sb.toString();
+      // A special case with a dedicated 4-arg signature.
+      sb.append(" ");
+      sb.append(kil.toString());
+      return sb.toString();
     }
     List<List<String>> imageList = (List<List<String>>) imageListObject;
     if (imageList.isEmpty()) {

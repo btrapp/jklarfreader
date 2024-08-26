@@ -18,7 +18,7 @@ class KlarfReader18JsonRecordTestCase {
   void testEmptyRecord() throws Exception {
     String recordTxt = """
     		Record FileRecord  "1.8" {
-    		} 
+    		}
     		EndOfFile;
     		""";
     Optional<KlarfRecord> k =
@@ -37,11 +37,11 @@ class KlarfReader18JsonRecordTestCase {
   @Test
   void testSimpleRecord() throws Exception {
     String recordTxt =
-    		"""
-    		Record FileRecord  "1.8" { 
-             Field F 1 { A } 
-             Field G 3 {"B C",D,"E"} 
-             } 
+        """
+    		Record FileRecord  "1.8" {
+             Field F 1 { A }
+             Field G 3 {"B C",D,"E"}
+             }
             EndOfFile;
             """;
     KlarfParser18Pojo parser = new KlarfParser18Pojo();
@@ -75,14 +75,14 @@ class KlarfReader18JsonRecordTestCase {
   void testNestedRecord() throws Exception {
     String recordTxt =
         """
-    		Record FileRecord  \"1.8\" { 
-             Field F 1 { A } 
+    		Record FileRecord  \"1.8\" {
+             Field F 1 { A }
              Record NestedRecord \"1\" {
-              Field G 3 {\"B C\",D,\"E\"} 
+              Field G 3 {\"B C\",D,\"E\"}
              }
              Record NestedRecord \"2\" {
-              Field G 3 {\"B C\",D,\"E\"} 
-             } 
+              Field G 3 {\"B C\",D,\"E\"}
+             }
             }
             EndOfFile;
             """;
@@ -126,8 +126,9 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testSimpleLists() throws Exception {
-    String recordTxt = """
-    		Record FileRecord  "1.8" { 
+    String recordTxt =
+        """
+    		Record FileRecord  "1.8" {
              List AList {
               Columns 2 { int32 Foo, float Bar }
               Data 3 {
@@ -176,11 +177,12 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testReqNumberMethods() throws Exception {
-    String recordTxt = """
-    		Record FileRecord  "1.8" { 
-             Field A 1 { 3.14 } 
-             Field B 3 {3,1,4} 
-             } 
+    String recordTxt =
+        """
+    		Record FileRecord  "1.8" {
+             Field A 1 { 3.14 }
+             Field B 3 {3,1,4}
+             }
             EndOfFile;
             """;
     Optional<KlarfRecord> kO =
@@ -200,7 +202,7 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testQuoting() throws Exception {
-    String recordTxt=
+    String recordTxt =
         """
     		Record ARecord  "1.8"
             {
