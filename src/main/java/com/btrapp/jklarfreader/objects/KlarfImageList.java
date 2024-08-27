@@ -13,7 +13,7 @@ public class KlarfImageList {
     @Override
     public String toString() {
       // a,b,c,d,e -> "a","b","c",d,e
-      return "\"" + filePath + "\" \"" + imgType + "\" " + imgIndex + " \"" + imgLabel + "\" ";
+      return "\"" + filePath + "\" \"" + imgType + "\" " + imgIndex + " \"" + imgLabel + "\"";
     }
   }
 

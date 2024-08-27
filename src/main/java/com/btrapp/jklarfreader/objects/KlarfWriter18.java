@@ -93,9 +93,8 @@ public class KlarfWriter18 {
             sb.append(" \"" + o + "\"");
           }
         }
-
-        sb.append("}");
       }
+      sb.append("}");
     }
     return sb.toString();
   }
