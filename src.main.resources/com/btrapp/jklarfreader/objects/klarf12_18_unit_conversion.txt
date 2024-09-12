@@ -1,0 +1,15 @@
+#attr name/col name, klarf 12 column type (all are ints in klarf 18 except area)
+#fields
+SampleSize,int32
+DiePitch,float
+DieOrigin,float
+SampleCenterLocation,float
+AreaPerTest,float
+#lists
+XREL,float
+YREL,float
+XSIZE,float
+YSIZE,float
+DEFECTAREA,float
+DSIZE,float
+AREAPERTEST,float

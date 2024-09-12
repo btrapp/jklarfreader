@@ -56,7 +56,7 @@ public class KlarfTokenizer implements AutoCloseable {
       // ;)
       StringTokenizer st = new StringTokenizer(currentLine, ", \t{}\";", true);
       while (st.hasMoreTokens()) {
-    	token = st.nextToken();
+        token = st.nextToken();
         if (token.equals("\"")) {
           StringBuilder quotedString = new StringBuilder();
           boolean endQuoteNotFound = true;

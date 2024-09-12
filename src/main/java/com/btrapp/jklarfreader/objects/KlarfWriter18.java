@@ -18,7 +18,8 @@ public class KlarfWriter18 {
   private void writeRecord(KlarfRecord krecord, Writer writer, int indent) throws IOException {
     writer.write(spaces(indent) + "Record " + krecord.getName());
     if (krecord.getId() != null && (!krecord.getId().isEmpty())) {
-      // The ID field may be missing, and some loaders don't like Record Name of blank quotes like  "" 
+      // The ID field may be missing, and some loaders don't like Record Name of blank quotes like
+      // ""
       writer.write(" \"" + krecord.getId() + "\"");
     }
     writer.write(" {\n");

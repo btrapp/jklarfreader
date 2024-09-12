@@ -1,7 +1,6 @@
 package com.btrapp.jklarfreader.util;
 
 import com.btrapp.jklarfreader.KlarfReader;
-import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 import com.btrapp.jklarfreader.objects.KlarfList;
 import com.btrapp.jklarfreader.objects.KlarfRecord;
 import java.awt.Color;
@@ -11,6 +10,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -389,8 +389,18 @@ public class KlarfToImage {
   }
 
   public static void drawKlarf(KlarfImageOptions kio) {
-    try (FileInputStream fis = new FileInputStream(kio.klarfIn)) {
-      KlarfRecord klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fis).orElse(null);
+    // KlarfRecord klarf = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fis).orElse(null);
+    try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(kio.klarfIn))) {
+      drawKlarf(kio, bis);
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      System.exit(1);
+    }
+  }
+
+  public static void drawKlarf(KlarfImageOptions kio, BufferedInputStream bis) {
+    try {
+      KlarfRecord klarf = KlarfReader.parseKlarf(bis).orElse(null);
       if (klarf == null) {
         System.err.println("Unable to read klarf");
         System.exit(1);

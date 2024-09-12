@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author btrapp
@@ -108,8 +107,7 @@ public final class KlarfRecord {
    * @param fieldValue the value to set
    */
   public void setNumericField(String fieldName, List<Number> fieldValue) {
-    setField(
-        fieldName, fieldValue.stream().map(Number::toString).toList(), false);
+    setField(fieldName, fieldValue.stream().map(Number::toString).toList(), false);
   }
 
   /**
@@ -132,9 +130,7 @@ public final class KlarfRecord {
    * @return all matching record objects
    */
   public List<KlarfRecord> findRecordsByName(String name) {
-    return records.stream()
-        .filter(r -> name.equalsIgnoreCase(r.getName()))
-        .toList();
+    return records.stream().filter(r -> name.equalsIgnoreCase(r.getName())).toList();
   }
 
   /**
@@ -145,9 +141,7 @@ public final class KlarfRecord {
    * @return all matching list objects
    */
   public List<KlarfList> findListsByName(String name) {
-    return lists.stream()
-        .filter(r -> name.equalsIgnoreCase(r.getName()))
-        .toList();
+    return lists.stream().filter(r -> name.equalsIgnoreCase(r.getName())).toList();
   }
 
   /**
