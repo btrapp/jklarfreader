@@ -71,6 +71,12 @@ public class KlarfWriter18 {
 
   private String printImageList(Object imageListObject) {
     StringBuilder sb = new StringBuilder();
+    if (imageListObject instanceof KlarfImageList kil) {
+      // A special case with a dedicated 4-arg signature.
+      sb.append(" ");
+      sb.append(kil.toString());
+      return sb.toString();
+    }
     List<List<String>> imageList = (List<List<String>>) imageListObject;
     if (imageList.isEmpty()) {
       sb.append(" N");
@@ -87,9 +93,8 @@ public class KlarfWriter18 {
             sb.append(" \"" + o + "\"");
           }
         }
-
-        sb.append("}");
       }
+      sb.append("}");
     }
     return sb.toString();
   }

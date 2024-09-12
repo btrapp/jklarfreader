@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.btrapp.jklarfreader.KlarfReader;
 import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
+import com.btrapp.jklarfreader.objects.KlarfImageList.KlarfImageRow;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -88,6 +90,47 @@ class ImageListTestCase {
     assertFalse(klarfAsString.isEmpty());
     assertTrue(klarfAsString.size() > 50);
     assertTrue(klarfAsString.stream().anyMatch(l -> l.contains("Images 3")));
+    assertTrue(klarfAsString.stream().anyMatch(l -> l.contains("ImageList"))); // Has header
+    assertTrue(klarfAsString.stream().anyMatch(l -> l.contains("EndOfFile;"))); // Has EOF
+  }
+
+  @Test
+  void testKlarfWritebackChangeImages() throws Exception {
+    Optional<KlarfRecord> klarfRecordO = readTestKlarf();
+    assertTrue(klarfRecordO.isPresent());
+
+    KlarfRecord kr = klarfRecordO.get();
+    KlarfRecord wafer =
+        kr.findRecordsByName("LotRecord").get(0).findRecordsByName("WaferRecord").get(0);
+    KlarfList defList = wafer.findListsByName("DefectList").get(0);
+    // Defect 12 has an imagelist we want to overwrite.
+    // Defect 15 has no images we want to add one.
+    List<Object> defectIds = defList.getColumn("DEFECTID");
+    List<Object> imageList = new ArrayList<>();
+    for (int i = 0; i < defectIds.size(); i++) {
+      Integer defectId = (Integer) defectIds.get(i);
+      KlarfImageList kil = new KlarfImageList();
+      if (defectId.intValue() == 12) {
+        kil.setImages(List.of(new KlarfImageRow("img1.jpg", "jpg", 1, "I1")));
+      } else if (defectId.intValue() == 15) {
+        kil.setImages(
+            List.of(
+                new KlarfImageRow("img2.jpg", "jpg", 1, "I1"),
+                new KlarfImageRow("img3.jpg", "jpg", 1, "I2")));
+      }
+      imageList.add(kil);
+    }
+    defList.set("IMAGEINFO", "ImageList", imageList);
+
+    StringWriter sw = new StringWriter();
+    KlarfWriter18 writer = new KlarfWriter18();
+    writer.writeKlarf(klarfRecordO.get(), sw);
+    // System.out.println(sw.toString());
+    List<String> klarfAsString = Arrays.asList(sw.toString().split("\n"));
+    assertFalse(klarfAsString.isEmpty());
+    assertTrue(klarfAsString.size() > 50);
+    assertTrue(klarfAsString.stream().anyMatch(l -> l.contains("Images 1")));
+    assertTrue(klarfAsString.stream().anyMatch(l -> l.contains("Images 2")));
     assertTrue(klarfAsString.stream().anyMatch(l -> l.contains("ImageList"))); // Has header
     assertTrue(klarfAsString.stream().anyMatch(l -> l.contains("EndOfFile;"))); // Has EOF
   }
