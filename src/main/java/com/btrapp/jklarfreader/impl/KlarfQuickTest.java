@@ -1,11 +1,16 @@
 package com.btrapp.jklarfreader.impl;
 
 import com.btrapp.jklarfreader.KlarfReader;
+import com.btrapp.jklarfreader.objects.KlarfList;
 import com.btrapp.jklarfreader.objects.KlarfRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 /**
@@ -35,10 +40,12 @@ public class KlarfQuickTest {
       }
     }
 
-    try (FileInputStream fis = new FileInputStream(klarfFile); ) {
-      Optional<KlarfRecord> kro = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fis);
+    try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(klarfFile)); ) {
+      // Optional<KlarfRecord> kro = KlarfReader.parseKlarf(new KlarfParser18Pojo(), fis);
+      Optional<KlarfRecord> kro = KlarfReader.parseKlarf(bis);
       if (kro.isPresent()) {
         System.out.println("Klarf file read successfully");
+        // KlarfReader.debugPrintKlarfRecord(kro.get(), 0);
         if (jsonFile != null) {
           // We want to write a json file
           ObjectWriter writer = new ObjectMapper().writerWithDefaultPrettyPrinter();
@@ -47,6 +54,32 @@ public class KlarfQuickTest {
       }
     } catch (Exception e) {
       e.printStackTrace();
+    }
+  }
+
+  private static void debugPrintKlarfRecord(KlarfRecord kr, int listCountToDisplay) {
+    System.out.println("name id " + kr.getName() + " " + kr.getId());
+    for (Entry<String, List<String>> e : kr.getFields().entrySet()) {
+      System.out.println("  field " + e.getKey() + " " + e.getValue().toString());
+    }
+    for (KlarfList kl : kr.getLists()) {
+      System.out.println("  list " + kl.getName() + " " + kl.size());
+      for (int i = 0; i < kl.size(); i++) {
+        if (i < listCountToDisplay || listCountToDisplay == -1) {
+          // just show the first few rows
+          System.out.print("    ");
+          Map<String, Object> rowMap = kl.asRowMap(i);
+          for (Entry<String, Object> e : rowMap.entrySet()) {
+            System.out.print(e.getKey() + " " + e.getValue().toString() + "; ");
+          }
+          System.out.println();
+        } else {
+          break;
+        }
+      }
+    }
+    for (KlarfRecord skr : kr.getRecords()) {
+      debugPrintKlarfRecord(skr, listCountToDisplay);
     }
   }
 }
