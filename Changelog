@@ -17,5 +17,9 @@
 0.9.15 - 2021-02-10 : Add basic Klarf writeDow	 support
 0.9.21 - 2023-09-12 : Add KlarfToImage for simple wafermaps
 0.9.22 - 2024-01-09 : Require java 17 or better, Fixed a bug in KlarfList's set(name,type,values)
-0.9.24 - 2024-09-26 : Add KlarfImageList convenience class for pushing imageList updates back into the DefectList
-0.9.25 - 2024-09-26 : Fix issue with Writer for multi-record ImageLists
+0.9.24 - 2024-08-26 : Add KlarfImageList convenience class for pushing imageList updates back into the DefectList
+0.9.25 - 2024-08-26 : Fix issue with Writer for multi-record ImageLists
+0.9.26 - 2024-09-16 : Enable reading Klarf 1.2 format.  (This parser has to be a bit more opinionated about what
+ the right 1.2 format is (required field, required structure) please let us know if its not working for your 
+ toolset and send an example?
+ 
