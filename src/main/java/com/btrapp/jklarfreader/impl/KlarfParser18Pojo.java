@@ -24,7 +24,7 @@ public class KlarfParser18Pojo implements KlarfParserIf18<KlarfRecord> {
    * We need a stack as we need to sorta work our way into inner records and back
    * & forward a few times until we're all done.
    */
-  private Deque<KlarfRecord> recordStack = new ArrayDeque<>();
+  protected Deque<KlarfRecord> recordStack = new ArrayDeque<>();
   // Holds information about the list as we move from definition to contents
   private KlarfList workingList = null;
 

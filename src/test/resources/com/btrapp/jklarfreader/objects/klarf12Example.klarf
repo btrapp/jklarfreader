@@ -1,0 +1,36 @@
+FileVersion 1 2;
+FileTimestamp 07-07-2024 00:01:59;
+InspectionStationID "aVendor" "A" "B";
+OperatorId "userId";
+SampleType WAFER;
+ResultTimestamp 07-07-2024 21:59:59;
+LotID "aLot";
+ClassificationSource "aSource";
+SampleSize 1 300;
+SetupID "aSetup" 05-07-2024 01:01:01;
+StepID "aStep";
+DeviceID "aDevice";
+Product "NA";
+SampleOrientationMarkType NOTCH;
+OrientationMarkLocation DOWN;
+DiePitch 1.123400E4 2.234500E3;
+DieOrigin 0.000000E0 0.000000E0;
+WaferID "aWafer";
+WaferScribe "1";
+Slot 15;
+SampleCenterLocation 5.76540000E3 2.777700E3;
+ClassLookup 1
+ 0 "unclassified";
+InspectionTest 1;
+SampleTestPlan 2
+  -1 -1
+  1 1;
+AreaPerTest 5.5000000000E10;
+DefectRecordSpec 19 DEFECTID XREL YREL XINDEX YINDEX DSIZE CLUSTERNUMBER REPEATERFLAG PRIORFLAG ROUGHBINNUMBER XSIZE YSIZE DEFECTAREA SIBC MAN_SEM DCE CLASSNUMBER TEST IMAGECOUNT;
+DefectList
+1 5.5E3 4.4E3 -1 -1 0.1234000000E0 0 0 0 0 0 0 0 0 0 0 0 1 0
+2 8.1E3 4.1E3 1 1 1.123400E1 0 0 0 0 0 0 0 0 0 0 0 1 0;
+SummarySpec 5 TESTNO NDEFECT DEFDENSITY NDIE NDEFDIE ;
+SummaryList
+ 1 2 0 0 0;
+EndOfFile;
