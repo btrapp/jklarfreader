@@ -21,5 +21,6 @@
 0.9.25 - 2024-08-26 : Fix issue with Writer for multi-record ImageLists
 0.9.26 - 2024-09-16 : Enable reading Klarf 1.2 format.  (This parser has to be a bit more opinionated about what
  the right 1.2 format is (required field, required structure) please let us know if its not working for your 
- toolset and send an example?
+ toolset and send an example? (jrudy)
+0.9.27 - 2024-09-20 : Fix for 1.2 klarfs with repeated defect lists (jrudy)
  
