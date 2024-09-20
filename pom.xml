@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.btrapp</groupId>
 	<artifactId>jklarfreader</artifactId>
-	<version>0.9.26-SNAPSHOT</version>
+	<version>0.9.27-SNAPSHOT</version>
 
 	<name>io.github.btrapp:jklarfreader</name>
 	<description>Library to read a 1.8 format Klarf file into JSON or a POJO</description>
@@ -31,7 +31,7 @@
 		<developer>
 			<id>btrapp</id>
 			<name>Brian Trapp</name>
-			<email>btrapp@alum.rpi.edu</email>
+			<email>brian.trapp@gmail.com</email>
 			<roles>
 				<role>architect</role>
 				<role>developer</role>
