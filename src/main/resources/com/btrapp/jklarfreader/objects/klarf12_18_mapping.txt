@@ -28,6 +28,7 @@ AreaPerTest, Field, Test, AreaPerTest
 ProcessEquipmentIDList, Ignored_Record, Wafer, ProcessEquipmentIDList
 #processes the spec and the next line
 DefectRecordSpec, List, Wafer, DefectList
+DefectList, List, Wafer, DefectListSub
 CLASSLOOKUP, List, Lot, ClassLookupList
 #This is attached to SummaryRecord in the WaferRecord
 SummarySpec, List, Wafer, TestSummaryList
