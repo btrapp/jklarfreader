@@ -23,6 +23,7 @@ public class KlarfReader12<T> {
   private Klarf12Mapper mapper;
   private Map<String, KlarfMappingRecord> klarfMapping;
   private boolean waferRecordFound = false;
+  private Klarf12Spec defectRecordSpec;
 
   public KlarfReader12(KlarfParserIf18<T> parser) throws Exception {
     super();
@@ -62,6 +63,7 @@ public class KlarfReader12<T> {
           break;
         case EndOfFile:
           // done
+          addDefectList();
           parser.endRecord(); // end WaferRecord
           parser.endRecord(); // end LotRecord
           parser.endRecord(); // end FileRecord
@@ -83,6 +85,19 @@ public class KlarfReader12<T> {
           // throw new KlarfException("Missing trailing }", kt, ExceptionCode.GenericError);
           throw new KlarfException("Unexpected value", kt, ExceptionCode.GenericError);
       }
+    }
+  }
+
+  private void addDefectList() {
+    if (defectRecordSpec != null && defectRecordSpec.getRows().size() > 0) {
+      parser.startList(
+          "DefectList",
+          defectRecordSpec.getColNames(),
+          defectRecordSpec.getColTypes18(),
+          defectRecordSpec.getColNames().size(),
+          defectRecordSpec.getRows().size());
+      defectRecordSpec.getRows().forEach(r -> parser.addListRow(r));
+      parser.endList();
     }
   }
 
@@ -324,21 +339,28 @@ public class KlarfReader12<T> {
       boolean defSpec = kmr.klarfKey12().equalsIgnoreCase("DefectRecordSpec") ? true : false;
       if (summSpec) parser.startRecord("SummaryRecord", ""); // it's part of the SummaryRecord
       int colCount = kt.nextIntVal().intValue();
-      for (int i = 0; i < colCount; i++) {
-        String colName = kt.nextVal();
-        String colType[] = listColMapping.getOrDefault(colName, new String[] {"STRING", "STRING"});
-        // System.out.println("colname to type " + colName + " " + colType);
-        colNames.add(colName);
-        colTypes12.add(colType[0]);
-        colTypes18.add(colType[1]);
+      if (defSpec) {
+        defectRecordSpec = new Klarf12Spec(kt.getCurrentLine(), listColMapping);
       }
-      kt.skipTo(END_OF_LINE);
+      if (summSpec || defSpec) {
+        for (int i = 0; i < colCount; i++) {
+          String colName = kt.nextVal();
+          String colType[] =
+              listColMapping.getOrDefault(colName, new String[] {"STRING", "STRING"});
+          // System.out.println("colname to type " + colName + " " + colType);
+          colNames.add(colName);
+          colTypes12.add(colType[0]);
+          colTypes18.add(colType[1]);
+        }
+        kt.skipTo(END_OF_LINE);
+      }
       if (defSpec) kt.skipTo("DefectList");
       if (summSpec) kt.skipTo("SummaryList");
       List<List<Object>> rows = new ArrayList<>();
       String val = null;
       // int colCounter = 1;
       List<Object> row = new ArrayList<>();
+      // System.out.println("at " + kt.getCurrentLine());
       while (!(val = kt.nextVal()).equals(END_OF_LINE)) {
         // System.out.println("cur line " + kt.getCurrentLine());
         String colType12Uc = colTypes12.get(row.size()).toUpperCase();
@@ -384,15 +406,96 @@ public class KlarfReader12<T> {
           // System.out.println("============reset row========");
           // parser.addListRow(row);
           rows.add(row);
+          if (!summSpec) {
+            defectRecordSpec.addRow(row);
+          }
           // colCounter = 1;
           row = new ArrayList<>();
         }
         // colCounter++;
       }
-      parser.startList(kmr.klarfKey18(), colNames, colTypes18, colNames.size(), row.size());
-      rows.forEach(r -> parser.addListRow(r));
-      parser.endList();
-      if (summSpec) parser.endRecord();
+      if (summSpec) {
+        // for defect spec this is handled elsewhere
+        parser.startList(kmr.klarfKey18(), colNames, colTypes18, colNames.size(), rows.size());
+        rows.forEach(r -> parser.addListRow(r));
+        parser.endList();
+      }
+      if (summSpec) {
+        parser.endRecord();
+      }
+
+      return;
+    }
+
+    if (kmr.klarfKey12().equalsIgnoreCase("DefectList")) {
+      if (defectRecordSpec == null) {
+        throw new KlarfException("missing defect record spec");
+      }
+      // System.out.println("processing defect list");
+      colNames = defectRecordSpec.getColNames();
+      int colCount = colNames.size();
+      colTypes12 = defectRecordSpec.getColTypes12();
+      colTypes18 = defectRecordSpec.getColTypes18();
+      String val = null;
+      List<Object> row = new ArrayList<>();
+      // System.out.println("at " + kt.getCurrentLine());
+      while (!(val = kt.nextVal()).equals(END_OF_LINE)) {
+        // System.out.println("cur line " + kt.getCurrentLine());
+        if (row.size() <= colCount) {
+          String colType12Uc = colTypes12.get(row.size()).toUpperCase();
+          String colType18Uc = colTypes18.get(row.size()).toUpperCase();
+          // System.out.println(val + " " + colType12Uc + " " + row.size() + " " +
+          // colNames.get(row.size()));
+          if (colType12Uc.endsWith("LIST")) {
+            List<List<String>> embeddedList = readEmbeddedList(kt);
+            row.add(embeddedList);
+          } else {
+            String colName = colNames.get(row.size());
+            if (mapper.getUnitConversion().containsKey(colName)) {
+              String unitColType = mapper.getUnitConversion().get(colName.toUpperCase());
+              // System.out.println("in " + colName + " " + val + " " + unitColType);
+              String newVal =
+                  convertUnitsToNm(
+                      colName,
+                      val,
+                      unitColType); // the new value should be submitted with the klarf 18 units
+              // System.out.println("  out " + newVal);
+              if (colType18Uc.equalsIgnoreCase("INT32")) {
+                // row.add(Math.round(Float.valueOf(newVal)));//round to int (rounding already
+                // handled
+                // - not needed here)
+                row.add(Integer.valueOf(newVal)); // round to int
+              } else {
+                row.add(Float.valueOf(newVal));
+              }
+            } else {
+              if (colType12Uc.equalsIgnoreCase("INT32")) {
+                row.add(kt.intVal());
+              } else if (colType12Uc.equalsIgnoreCase("FLOAT")) {
+                row.add(kt.floatVal());
+              } else if (colType12Uc.equalsIgnoreCase("STRING")) {
+                row.add(kt.val());
+              } else {
+                // If its not a list, int, or float, it must be a string
+                row.add(val);
+              }
+            }
+          }
+          // System.out.println("val " + val + " row size " + row.size());
+          if (row.size() == colCount) {
+            // System.out.println("============reset row========");
+            // parser.addListRow(row);
+            defectRecordSpec.addRow(row);
+            // colCounter = 1;
+            row = new ArrayList<>();
+          }
+          // colCounter++;
+        }
+      }
+      // System.out.println("rows size " + defectRecordSpec.getRows().size());
+      // parser.startList(kmr.klarfKey18(), colNames, colTypes18, colNames.size(), rows.size());
+      // rows.forEach(r -> parser.addListRow(r));
+      // parser.endList();
       return;
     }
 
@@ -416,5 +519,76 @@ public class KlarfReader12<T> {
       }
     }
     return Collections.emptyList();
+  }
+
+  private static class Klarf12Spec {
+    // DefectRecordSpec 30 DEFECTID X Y XREL YREL XINDEX YINDEX XSIZE YSIZE DEFECTAREA DSIZE
+    // CLASSNUMBER TEST CLUSTERNUMBER ROUGHBINNUMBER FINEBINNUMBER REVIEWSAMPLE CHANNELID
+    // MANSEMCLASS AUTOSEMCLASS MICROSIGCLASS MACROSIGCLASS INTENSITY KILLPROB MACROSIGID EVENTTYPE
+    // ZABS EMRADIUS IMAGECOUNT IMAGELIST ;
+    private String line;
+    private String name;
+    private List<String> colTypes12 = new ArrayList<>();
+    private List<String> colTypes18 = new ArrayList<>();
+    private List<String> colNames = new ArrayList<>();
+    private List<List<Object>> rows = new ArrayList<>();
+
+    Klarf12Spec(String line, Map<String, String[]> listColMapping) throws KlarfException {
+      this.line = line;
+      if (line != null) {
+        String[] tokens = line.split("\\s+");
+        if (tokens.length > 2) {
+          this.name = tokens[0];
+        }
+        // System.out.println(Arrays.asList(tokens).toString());
+        try {
+          int numColumns = Integer.parseInt(tokens[1]);
+          try {
+            for (int i = 0; i < numColumns; i++) {
+              String colName = tokens[i + 2];
+              // System.out.println("col " + tokens[i + 2]);
+              String colType[] =
+                  listColMapping.getOrDefault(colName, new String[] {"STRING", "STRING"});
+              // System.out.println("colname to type " + colName + " " + colType);
+              colNames.add(colName);
+              colTypes12.add(colType[0]);
+              colTypes18.add(colType[1]);
+            }
+          } catch (Exception e) {
+            throw new KlarfException("Bad spec line reading cols" + line);
+          }
+        } catch (NumberFormatException e) {
+          throw new KlarfException("Bad spec line reading num cols" + line);
+        }
+      }
+    }
+
+    private void addRow(List<Object> row) {
+      rows.add(row);
+    }
+
+    public String getLine() {
+      return line;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public List<String> getColTypes12() {
+      return colTypes12;
+    }
+
+    public List<String> getColTypes18() {
+      return colTypes18;
+    }
+
+    public List<String> getColNames() {
+      return colNames;
+    }
+
+    public List<List<Object>> getRows() {
+      return rows;
+    }
   }
 }

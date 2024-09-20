@@ -234,4 +234,28 @@ public class KlarfParserTest {
 
     // write to image
   }
+
+  @Test
+  void testDefectList() throws Exception {
+    Optional<KlarfRecord> klarfRecordOpt =
+        KlarfReader.parseKlarf(
+            new BufferedInputStream(
+                this.getClass().getResourceAsStream("klarf12DefectListExample.klarf")),
+            KlarfFormat.V1_2);
+    assertTrue(klarfRecordOpt.isPresent());
+    assertTrue(klarfRecordOpt.isPresent());
+    Optional<KlarfRecord> lotRecordO =
+        klarfRecordOpt.get().findRecordByNameAndId("LotRecord", "aLot");
+    assertTrue(lotRecordO.isPresent());
+    Optional<KlarfRecord> waferRecordO =
+        lotRecordO.get().findRecordByNameAndId("WaferRecord", "aWafer");
+    assertTrue(waferRecordO.isPresent());
+
+    KlarfRecord firstWafer = waferRecordO.get();
+
+    List<KlarfList> defectLists = firstWafer.findListsByName("DefectList");
+    assertEquals(1, defectLists.size());
+    KlarfList defectList = defectLists.get(0);
+    assertEquals(4, defectList.size());
+  }
 }
