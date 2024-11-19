@@ -11,7 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 
 /** read a 1.2 KLARF and write a 1.8 KLARF */
-public class KlarfConverter {
+public class Klarf12To18Converter {
   private static String usage =
       "Arguments expected: -klarfIn /path/to/read/1.2_klarf -klarfOut /path/to/write/1.8_klarf";
   private static String klarfIn = "";
