@@ -360,7 +360,17 @@ public class KlarfReader12<T> {
         }
         kt.skipTo(END_OF_LINE);
       }
-      if (defSpec) kt.skipTo("DefectList");
+      if (defSpec) {
+        // could be followed by TiffFileName or empty DefectList;
+        if (kt.nextVal().equals("TiffFileName")) {
+          String val = kt.val().toUpperCase();
+          KlarfMappingRecord kmrTiffFileName = getObjectType(val);
+          readField(kt, kmrTiffFileName);
+        }
+        kt.skipTo(
+            "DefectList"); // if we're already at the DefectList, this will not skip to the next one
+                           // - Good!
+      }
       if (summSpec) kt.skipTo("SummaryList");
       List<List<Object>> rows = new ArrayList<>();
       String val = null;
@@ -520,7 +530,7 @@ public class KlarfReader12<T> {
       return Collections.emptyList();
     }
     List<List<String>> outerList = new ArrayList<>(imageQty);
-    List<String> innerList = new ArrayList<>();
+    List<String> innerList = new ArrayList<>(4);
     // set based on the prior TiffFileName field
     String extension = "JPG";
     int lastIndex = lastTiffFileName.lastIndexOf(".");
