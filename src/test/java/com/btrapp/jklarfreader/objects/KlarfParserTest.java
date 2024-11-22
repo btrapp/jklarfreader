@@ -264,7 +264,7 @@ public class KlarfParserTest {
     //	kw.writeKlarf(klarfRecordOpt.get(), fw);
     // }
     kw.writeKlarf(klarfRecordOpt.get(), sw);
-    assertTrue(sw.toString().contains("Field TiffFileName"));
+    assertTrue(!sw.toString().contains("Field TiffFileName"));
     // System.out.println(sw);
   }
 }
