@@ -176,6 +176,7 @@ public class KlarfReader12<T> {
     }
     if (kmr.klarfKey18().equalsIgnoreCase("TiffFileName")) {
       lastTiffFileName = vals.get(0);
+      return; // this field is not set
     }
     parser.setField(kmr.klarfKey18(), vals.size(), vals, isQuoted);
   }
@@ -369,7 +370,7 @@ public class KlarfReader12<T> {
         }
         kt.skipTo(
             "DefectList"); // if we're already at the DefectList, this will not skip to the next one
-                           // - Good!
+        // - Good!
       }
       if (summSpec) kt.skipTo("SummaryList");
       List<List<Object>> rows = new ArrayList<>();
