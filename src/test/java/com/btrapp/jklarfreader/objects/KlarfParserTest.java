@@ -236,7 +236,7 @@ public class KlarfParserTest {
   }
 
   @Test
-  void testDefectList() throws Exception {
+  void testDefectList12() throws Exception {
     Optional<KlarfRecord> klarfRecordOpt =
         KlarfReader.parseKlarf(
             new BufferedInputStream(
@@ -256,6 +256,15 @@ public class KlarfParserTest {
     List<KlarfList> defectLists = firstWafer.findListsByName("DefectList");
     assertEquals(1, defectLists.size());
     KlarfList defectList = defectLists.get(0);
-    assertEquals(4, defectList.size());
+    assertEquals(13, defectList.size());
+
+    KlarfWriter18 kw = new KlarfWriter18();
+    StringWriter sw = new StringWriter();
+    // try (FileWriter fw = new FileWriter(new File("/tmp/testklarf.klarf"))) {
+    //	kw.writeKlarf(klarfRecordOpt.get(), fw);
+    // }
+    kw.writeKlarf(klarfRecordOpt.get(), sw);
+    assertTrue(!sw.toString().contains("Field TiffFileName"));
+    // System.out.println(sw);
   }
 }

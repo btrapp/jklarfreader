@@ -3,7 +3,7 @@ FileVersion, Record, File, FileRecord
 FileTimestamp, Field, File, FileTimestamp
 InspectionStationID, Field, Lot, InspectionStationID
 TiffSpec, Ignored_Field, Lot, TiffSpec
-TiffFileName, Ignored_Field, Lot, TiffFileName
+TiffFileName, Field, Lot, TiffFileName
 SampleType, Field, Lot, SampleType
 ResultTimestamp, Field, Lot, ResultTimestamp
 LotID, Record, Lot, LotRecord
@@ -21,6 +21,7 @@ WaferScribe, Ignored_Field, Wafer, WaferScribeIgnored
 Slot, Field, Wafer, SlotNumber
 SampleCenterLocation, Field, Wafer, SampleCenterLocation
 OrientationInstructions, Field, Wafer, OrientationInstructions
+OrientationInstruction, Field, Wafer, OrientationInstruction
 CoordinatesMirrored, Field, Wafer, CoordinatesMirrored
 InspectionTest, Record, Wafer, TestRecord
 SampleTestPlan, List, Test, SampleTestPlanList
@@ -39,6 +40,7 @@ WAFERSTATUS, Field, Wafer, WaferStatus
 OPERATORID, Field, Wafer, OperatorId
 CLASSIFICATIONSOURCE, Field, Wafer, ClassificationSource
 PRODUCT, Field, Wafer, ProductId
+CustomWaferList, List, Wafer, CustomWaferList
 #which one to use? could have both but fix issue with mapping from klarf18name to datalevel see orgklarf method TODO
 #PRODUCTID, Field, Wafer, ProductId
 EndOfFile, EndOfFile, File, EndOfFile

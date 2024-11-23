@@ -24,6 +24,7 @@ public class KlarfReader12<T> {
   private Map<String, KlarfMappingRecord> klarfMapping;
   private boolean waferRecordFound = false;
   private Klarf12Spec defectRecordSpec;
+  private String lastTiffFileName = "";
 
   public KlarfReader12(KlarfParserIf18<T> parser) throws Exception {
     super();
@@ -173,6 +174,10 @@ public class KlarfReader12<T> {
       }
       vals = newVals;
     }
+    if (kmr.klarfKey18().equalsIgnoreCase("TiffFileName")) {
+      lastTiffFileName = vals.get(0);
+      return; // this field is not set
+    }
     parser.setField(kmr.klarfKey18(), vals.size(), vals, isQuoted);
   }
 
@@ -263,7 +268,8 @@ public class KlarfReader12<T> {
 
     if (kmr.klarfKey12().equalsIgnoreCase("SampleTestPlan")
         || kmr.klarfKey12().equalsIgnoreCase("RemovedDieList")
-        || kmr.klarfKey12().equalsIgnoreCase("ClassLookup")) {
+        || kmr.klarfKey12().equalsIgnoreCase("ClassLookup")
+        || kmr.klarfKey12().equalsIgnoreCase("CustomWaferList")) {
       rowCount = kt.nextIntVal().intValue();
       for (Entry<String, String[]> e : listColMapping.entrySet()) {
         colNames.add(e.getKey());
@@ -278,7 +284,8 @@ public class KlarfReader12<T> {
           String colType12Uc = colTypes12.get(j).toUpperCase();
           String colType18Uc = colTypes18.get(j).toUpperCase();
           if (colType12Uc.endsWith("LIST")) {
-            List<List<String>> embeddedList = readEmbeddedList(kt);
+            String colName = colNames.get(row.size());
+            List<List<String>> embeddedList = readEmbeddedList(kt, colName);
             row.add(embeddedList);
           } else {
             String val = kt.nextVal();
@@ -354,7 +361,17 @@ public class KlarfReader12<T> {
         }
         kt.skipTo(END_OF_LINE);
       }
-      if (defSpec) kt.skipTo("DefectList");
+      if (defSpec) {
+        // could be followed by TiffFileName or empty DefectList;
+        if (kt.nextVal().equals("TiffFileName")) {
+          String val = kt.val().toUpperCase();
+          KlarfMappingRecord kmrTiffFileName = getObjectType(val);
+          readField(kt, kmrTiffFileName);
+        }
+        kt.skipTo(
+            "DefectList"); // if we're already at the DefectList, this will not skip to the next one
+        // - Good!
+      }
       if (summSpec) kt.skipTo("SummaryList");
       List<List<Object>> rows = new ArrayList<>();
       String val = null;
@@ -368,7 +385,8 @@ public class KlarfReader12<T> {
         // System.out.println(val + " " + colType12Uc + " " + row.size() + " " +
         // colNames.get(row.size()));
         if (colType12Uc.endsWith("LIST")) {
-          List<List<String>> embeddedList = readEmbeddedList(kt);
+          String colName = colNames.get(row.size());
+          List<List<String>> embeddedList = readEmbeddedList(kt, colName);
           row.add(embeddedList);
         } else {
           String colName = colNames.get(row.size());
@@ -431,7 +449,6 @@ public class KlarfReader12<T> {
       if (defectRecordSpec == null) {
         throw new KlarfException("missing defect record spec");
       }
-      // System.out.println("processing defect list");
       colNames = defectRecordSpec.getColNames();
       int colCount = colNames.size();
       colTypes12 = defectRecordSpec.getColTypes12();
@@ -445,9 +462,10 @@ public class KlarfReader12<T> {
           String colType12Uc = colTypes12.get(row.size()).toUpperCase();
           String colType18Uc = colTypes18.get(row.size()).toUpperCase();
           // System.out.println(val + " " + colType12Uc + " " + row.size() + " " +
-          // colNames.get(row.size()));
+          //		colNames.get(row.size()));
           if (colType12Uc.endsWith("LIST")) {
-            List<List<String>> embeddedList = readEmbeddedList(kt);
+            String colName = colNames.get(row.size());
+            List<List<String>> embeddedList = readEmbeddedList(kt, colName);
             row.add(embeddedList);
           } else {
             String colName = colNames.get(row.size());
@@ -503,22 +521,40 @@ public class KlarfReader12<T> {
         "Klarf list type not supported " + kmr.klarfKey12(), kt, ExceptionCode.ListFormat);
   }
 
-  private List<List<String>> readEmbeddedList(KlarfTokenizer kt)
+  private List<List<String>> readEmbeddedList(KlarfTokenizer kt, String colName)
       throws IOException, KlarfException {
-    // have not seen a case for this yet - see KlarfReader18 readEmbeddedList if needed
+    // System.out.println("col name is " + colName);
+    // This is for the IMAGELIST
     int imageQty = kt.intVal();
     // System.out.println("read embedded list qty is " + imageQty);
     if (imageQty == 0) {
       return Collections.emptyList();
     }
+    List<List<String>> outerList = new ArrayList<>(imageQty);
+    List<String> innerList = new ArrayList<>(4);
+    // set based on the prior TiffFileName field
+    String extension = "JPG";
+    int lastIndex = lastTiffFileName.lastIndexOf(".");
+    if (lastIndex > 0) extension = lastTiffFileName.substring(lastIndex + 1).toUpperCase();
     for (int i = 0; i < imageQty; i++) {
-      // there are two columns - skip them
-      for (int j = 0; j < 2; j++) {
-        String v = kt.nextVal();
-        // System.out.println("skip " + v);
-      }
+      // loop through each image pair of columns: position within the image for tif and image type
+      innerList.add(lastTiffFileName); // filename
+      innerList.add(extension); // extension
+      innerList.add(kt.nextVal()); // position within the image file
+      innerList.add(kt.nextVal()); // image type
+      outerList.add(new ArrayList<>(innerList));
+      innerList.clear();
     }
-    return Collections.emptyList();
+
+    if (outerList.size() != imageQty) {
+      throw new KlarfException(
+          "List " + colName + " expected len of " + imageQty + " but was " + outerList.size(),
+          kt,
+          ExceptionCode.ListFormat);
+    }
+    return outerList;
+    // throw new KlarfException("End of EmbeddedList not found", kt, ExceptionCode.ListFormat);
+    // return Collections.emptyList();
   }
 
   private static class Klarf12Spec {
@@ -534,6 +570,7 @@ public class KlarfReader12<T> {
     private List<List<Object>> rows = new ArrayList<>();
 
     Klarf12Spec(String line, Map<String, String[]> listColMapping) throws KlarfException {
+      if (line.endsWith(";")) line = line.substring(0, line.length() - 1);
       this.line = line;
       if (line != null) {
         String[] tokens = line.split("\\s+");
@@ -549,7 +586,11 @@ public class KlarfReader12<T> {
               // System.out.println("col " + tokens[i + 2]);
               String colType[] =
                   listColMapping.getOrDefault(colName, new String[] {"STRING", "STRING"});
-              // System.out.println("colname to type " + colName + " " + colType);
+              // System.out.println("colname to type " + colName + " " + colType[0] + " " +
+              // colType[1]);
+              if (colName.equalsIgnoreCase("IMAGELIST"))
+                colName =
+                    "IMAGEINFO"; // klarf 18 seems to call the column IMAGEINFO of type ImageList
               colNames.add(colName);
               colTypes12.add(colType[0]);
               colTypes18.add(colType[1]);
