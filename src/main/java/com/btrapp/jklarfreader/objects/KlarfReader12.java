@@ -7,12 +7,17 @@ import com.btrapp.jklarfreader.objects.KlarfException.ExceptionCode;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class KlarfReader12<T> {
 
@@ -25,6 +30,11 @@ public class KlarfReader12<T> {
   private boolean waferRecordFound = false;
   private Klarf12Spec defectRecordSpec;
   private String lastTiffFileName = "";
+
+  private static DateTimeFormatter DATE_FMT_IN =
+      new DateTimeFormatterBuilder().appendPattern("M-d-y").toFormatter();
+  private static DateTimeFormatter DATE_FMT_OUT = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+  private static Pattern DATE_PATTERN = Pattern.compile("(\\d+)-(\\d+)-(\\d+)");
 
   public KlarfReader12(KlarfParserIf18<T> parser) throws Exception {
     super();
@@ -58,8 +68,7 @@ public class KlarfReader12<T> {
           // System.out.println(val + " " + kdt.toString());
           readField(kt, kmr);
           break;
-        case List:
-          // System.out.println(val + " " + kdt.toString());
+        case List, Ignored_List:
           readList(kt, kmr);
           break;
         case EndOfFile:
@@ -178,6 +187,41 @@ public class KlarfReader12<T> {
       lastTiffFileName = vals.get(0);
       return; // this field is not set
     }
+    if (kmr.klarfKey18().equalsIgnoreCase("OrientationMarkLocation")) {
+      String oml = vals.get(0);
+      String omlDegrees =
+          switch (oml.toUpperCase()) {
+            case "DOWN" -> "0";
+            case "LEFT" -> "90";
+            case "UP" -> "180";
+            case "RIGHT" -> "270";
+            default -> "0";
+          };
+      vals.set(0, omlDegrees);
+    }
+    if (kmr.klarfKey18().equalsIgnoreCase("RecipeID")
+        || kmr.klarfKey18().equalsIgnoreCase("FileTimestamp")
+        || kmr.klarfKey18().equalsIgnoreCase("ResultTimestamp")) {
+      int position =
+          switch (kmr.klarfKey18().toUpperCase()) {
+            case "RECIPEID" -> 1;
+            default -> 0;
+          };
+      String d = vals.get(position);
+      Matcher m = DATE_PATTERN.matcher(d);
+      if (m.matches()) {
+        if (m.group(3).length() == 2) {
+          d = m.group(1) + "-" + m.group(2) + "-20" + m.group(3);
+        }
+        d = LocalDate.parse(d, DATE_FMT_IN).format(DATE_FMT_OUT);
+        vals.set(position, d);
+      }
+    }
+    if (!isQuoted) {
+      if (kmr.isQuoted()) {
+        isQuoted = true;
+      }
+    }
     parser.setField(kmr.klarfKey18(), vals.size(), vals, isQuoted);
   }
 
@@ -260,6 +304,10 @@ public class KlarfReader12<T> {
 
   protected void readList(KlarfTokenizer kt, KlarfMappingRecord kmr)
       throws IOException, KlarfException {
+    if (KlarfDataType.Ignored_List.equals(kmr.klarfDataType())) {
+      kt.skipTo(END_OF_LINE);
+      return;
+    }
     int rowCount = 0; // might not know the row count
     List<String> colTypes12 = new ArrayList<>();
     List<String> colTypes18 = new ArrayList<>();
@@ -269,6 +317,7 @@ public class KlarfReader12<T> {
     if (kmr.klarfKey12().equalsIgnoreCase("SampleTestPlan")
         || kmr.klarfKey12().equalsIgnoreCase("RemovedDieList")
         || kmr.klarfKey12().equalsIgnoreCase("ClassLookup")
+        || kmr.klarfKey12().equalsIgnoreCase("SampleDieMap")
         || kmr.klarfKey12().equalsIgnoreCase("CustomWaferList")) {
       rowCount = kt.nextIntVal().intValue();
       for (Entry<String, String[]> e : listColMapping.entrySet()) {
@@ -288,6 +337,11 @@ public class KlarfReader12<T> {
             List<List<String>> embeddedList = readEmbeddedList(kt, colName);
             row.add(embeddedList);
           } else {
+            String colName = colNames.get(j);
+            if (colName.equalsIgnoreCase("CLASSCODE")) {
+              row.add("");
+              continue;
+            }
             String val = kt.nextVal();
             // System.out.println(val + " " + colTypeUc + " " + row.size() + " " +
             // colNames.get(row.size()));
@@ -306,7 +360,6 @@ public class KlarfReader12<T> {
                   kt,
                   ExceptionCode.ListFormat);
             }
-            String colName = colNames.get(j);
             if (mapper.getUnitConversion().containsKey(colName)) {
               String unitColType = mapper.getUnitConversion().get(colName.toUpperCase());
               String newVal = convertUnitsToNm(colName, val, unitColType);
@@ -541,7 +594,7 @@ public class KlarfReader12<T> {
       innerList.add(lastTiffFileName); // filename
       innerList.add(extension); // extension
       innerList.add(kt.nextVal()); // position within the image file
-      innerList.add(kt.nextVal()); // image type
+      innerList.add(kt.nextVal() + " "); // image type
       outerList.add(new ArrayList<>(innerList));
       innerList.clear();
     }
