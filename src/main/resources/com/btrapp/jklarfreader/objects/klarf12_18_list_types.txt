@@ -62,9 +62,12 @@ SummarySpec,AREAPERTEST,float,float
 #these should be in order as there is no line first defining the columns
 ClassLookup,CLASSNUMBER,int32,int32
 ClassLookup,CLASSNAME,string,string
+ClassLookup,CLASSCODE,string,string
 SampleTestPlan,XINDEX,int32,int32
 SampleTestPlan,YINDEX,int32,int32
 RemovedDieList,XINDEX,int32,int32
 RemovedDieList,YINDEX,int32,int32
 CustomWaferList,NAME,string,string
 CustomWaferList,VALUE,string,string
+SampleDieMap,XINDEX,int32,int32
+SampleDieMap,YINDEX,int32,int32

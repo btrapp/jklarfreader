@@ -1,49 +1,50 @@
-#KLARF 12 name, data type, level, KLARF 18 name
-FileVersion, Record, File, FileRecord
-FileTimestamp, Field, File, FileTimestamp
-InspectionStationID, Field, Lot, InspectionStationID
-TiffSpec, Ignored_Field, Lot, TiffSpec
-TiffFileName, Field, Lot, TiffFileName
-SampleType, Field, Lot, SampleType
-ResultTimestamp, Field, Lot, ResultTimestamp
-LotID, Record, Lot, LotRecord
-SampleSize, Field, Lot, SampleSize
-DeviceID, Field, Lot, DeviceID
-SetupID, Field, Lot, RecipeID
-StepID, Field, Lot, StepID
-ResultsID, Field, Lot, ResultsID
-SampleOrientationMarkType, Field, Lot, SampleOrientationMarkType
-OrientationMarkLocation, Field, Lot, OrientationMarkLocation
-DiePitch, Field, Lot, DiePitch
-DieOrigin, Field, Wafer, DieOrigin
-WaferID, Record, Wafer, WaferRecord
-WaferScribe, Ignored_Field, Wafer, WaferScribeIgnored 
-Slot, Field, Wafer, SlotNumber
-SampleCenterLocation, Field, Wafer, SampleCenterLocation
-OrientationInstructions, Field, Wafer, OrientationInstructions
-OrientationInstruction, Field, Wafer, OrientationInstruction
-CoordinatesMirrored, Field, Wafer, CoordinatesMirrored
-InspectionTest, Record, Wafer, TestRecord
-SampleTestPlan, List, Test, SampleTestPlanList
-AreaPerTest, Field, Test, AreaPerTest
-ProcessEquipmentIDList, Ignored_Record, Wafer, ProcessEquipmentIDList
+#KLARF 12 name, data type, level, KLARF 18 name, Field Is Quoted
+FileVersion, Record, File, FileRecord, NA
+FileTimestamp, Field, File, FileTimestamp, true
+InspectionStationID, Field, Lot, InspectionStationID, true
+TiffSpec, Ignored_Field, Lot, TiffSpec, NA
+TiffFileName, Field, Lot, TiffFileName, true
+SampleType, Field, Lot, SampleType, true
+ResultTimestamp, Field, Lot, ResultTimestamp, true
+LotID, Record, Lot, LotRecord, NA
+SampleSize, Field, Lot, SampleSize, false
+DeviceID, Field, Lot, DeviceID, true
+SetupID, Field, Lot, RecipeID, true
+StepID, Field, Lot, StepID, true
+ResultsID, Field, Lot, ResultsID, true
+SampleOrientationMarkType, Field, Lot, SampleOrientationMarkType, true
+OrientationMarkLocation, Field, Lot, OrientationMarkLocation, false
+DiePitch, Field, Lot, DiePitch, false
+DieOrigin, Field, Wafer, DieOrigin, false
+WaferID, Record, Wafer, WaferRecord, NA
+WaferScribe, Ignored_Field, Wafer, WaferScribeIgnored, NA 
+Slot, Field, Wafer, SlotNumber, false
+SampleCenterLocation, Field, Wafer, SampleCenterLocation, false
+OrientationInstructions, Field, Wafer, OrientationInstructions, true
+OrientationInstruction, Field, Wafer, OrientationInstruction, true
+CoordinatesMirrored, Field, Wafer, CoordinatesMirrored, true
+InspectionTest, Record, Wafer, TestRecord, NA
+SampleDieMap, Ignored_List, Wafer, SampleDieList, NA
+SampleTestPlan, List, Test, SampleTestPlanList, NA
+AreaPerTest, Field, Test, AreaPerTest, false
+ProcessEquipmentIDList, Ignored_Record, Wafer, ProcessEquipmentIDList, NA
 #processes the spec and the next line
-DefectRecordSpec, List, Wafer, DefectList
-DefectList, List, Wafer, DefectListSub
-CLASSLOOKUP, List, Lot, ClassLookupList
+DefectRecordSpec, List, Wafer, DefectList, NA
+DefectList, List, Wafer, DefectListSub, NA
+CLASSLOOKUP, List, Lot, ClassLookupList, NA
 #This is attached to SummaryRecord in the WaferRecord
-SummarySpec, List, Wafer, TestSummaryList
-#SummaryList, List, Wafer, TestSummaryList
-REMOVEDDIELIST, List, Lot, RemovedDieList
-LOTSTATUS, Field, Lot, LotStatus
-WAFERSTATUS, Field, Wafer, WaferStatus
-OPERATORID, Field, Wafer, OperatorId
-CLASSIFICATIONSOURCE, Field, Wafer, ClassificationSource
-PRODUCT, Field, Wafer, ProductId
-CustomWaferList, List, Wafer, CustomWaferList
+SummarySpec, List, Wafer, TestSummaryList, NA
+#SummaryList, List, Wafer, TestSummaryList, NA
+REMOVEDDIELIST, List, Lot, RemovedDieList, NA
+LOTSTATUS, Field, Lot, LotStatus, false
+WAFERSTATUS, Field, Wafer, WaferStatus, true
+OPERATORID, Field, Wafer, OperatorId, true
+CLASSIFICATIONSOURCE, Field, Wafer, ClassificationSource, true
+PRODUCT, Field, Wafer, ProductId, true
+CustomWaferList, List, Wafer, CustomWaferList, NA
 #which one to use? could have both but fix issue with mapping from klarf18name to datalevel see orgklarf method TODO
-#PRODUCTID, Field, Wafer, ProductId
-EndOfFile, EndOfFile, File, EndOfFile
+#PRODUCTID, Field, Wafer, ProductId, true
+EndOfFile, EndOfFile, File, EndOfFile, NA
 ####For organizing klarf objects only#####
-SummaryRecord, Record, Wafer, SummaryRecord
-ConvertTimestampUtc, Field, File, ConvertTimestampUtc
+SummaryRecord, Record, Wafer, SummaryRecord, NA
+ConvertTimestampUtc, Field, File, ConvertTimestampUtc, true
