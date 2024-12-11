@@ -97,7 +97,7 @@ public class KlarfReader {
     // FileVersion 1 2
     is.mark(1000);
     final Pattern pattern18 = Pattern.compile("Record\\s+FileRecord.*1\\.8.*");
-    final Pattern pattern12 = Pattern.compile("FileVersion\\s+1\\s+2.*");
+    final Pattern pattern12 = Pattern.compile("FileVersion\\s+1\\s+[21].*"); // matches 1 1 or 1 2
     final Pattern pattern10 = Pattern.compile("FileVersion\\s+1\\s+0.*");
     Matcher m;
     String line;

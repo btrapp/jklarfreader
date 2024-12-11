@@ -18,6 +18,7 @@ public class Klarf12Mapper {
     Ignored_Record,
     Field,
     List,
+    Ignored_List,
     Ignored_Field,
     Unsupported,
     EndOfFile
@@ -35,11 +36,16 @@ public class Klarf12Mapper {
       String klarfKey12,
       KlarfDataType klarfDataType,
       KlarfDataLevel klarfDataLevel,
-      String klarfKey18) {}
+      String klarfKey18,
+      boolean isQuoted) {}
 
   public static KlarfMappingRecord unsupportedKlarfMappingRecord =
       new KlarfMappingRecord(
-          "UNSUPPORTED", KlarfDataType.Unsupported, KlarfDataLevel.Unsupported, "Unsupported");
+          "UNSUPPORTED",
+          KlarfDataType.Unsupported,
+          KlarfDataLevel.Unsupported,
+          "Unsupported",
+          true);
 
   private List<KlarfMappingRecord> mappingRecords = new ArrayList<>();
   private List<String[]> listColTypes = new ArrayList<>();
@@ -60,13 +66,14 @@ public class Klarf12Mapper {
           if (line.isBlank()) continue;
           if (!line.startsWith("#")) {
             String[] parts = line.split(",");
-            if (parts.length == 4) {
+            if (parts.length == 5) {
               instance.mappingRecords.add(
                   new KlarfMappingRecord(
                       parts[0].trim().toUpperCase(),
                       KlarfDataType.valueOf(parts[1].trim()),
                       KlarfDataLevel.valueOf(parts[2].trim()),
-                      parts[3].trim()));
+                      parts[3].trim(),
+                      parts[4].trim().equalsIgnoreCase("TRUE") ? true : false));
             } else {
               throw new Exception("Error initilizing mapping on line " + line);
             }

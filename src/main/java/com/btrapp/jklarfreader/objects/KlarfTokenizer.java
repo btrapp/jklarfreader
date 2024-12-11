@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class KlarfTokenizer implements AutoCloseable {
-  private int lineNumber = 1;
+  private int lineNumber = 0;
   private BufferedReader br;
   private String token = null;
   private Boolean quotedFlag = null;

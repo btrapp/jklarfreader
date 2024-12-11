@@ -1,25 +1,30 @@
-FileVersion 1 2;
+FileVersion 1 1;
 FileTimestamp 01-02-2024 22:22:22;
 TiffSpec 6.0     G     R;
 TiffFileName a_tif_file.tif;
 InspectionStationID "a" "b" "c";
 SampleType WAFER;
-ResultTimestamp 01-02-2024 22:22:01;
+ResultTimestamp 01-02-24 22:22:01;
 LotID "aLot";
 SampleSize 1 150;
 DeviceID "aDevice";
-SetupID "aSetup" 01-01-2024 22:22:01;
+SetupID "aSetup" 01-01-24 22:22:01;
 StepID "aStep";
 ResultsID "";
 SampleOrientationMarkType FLAT;
 OrientationMarkLocation DOWN;
 DiePitch 2.5000000000e+003 2.5000000000e+003;
 DieOrigin 0.0000000000e+000 0.0000000000e+000;
-WaferID "aWafer";
+WaferID aWafer;
 Slot 9;
 SampleCenterLocation -2.0000000000e+001 2.0000000000e+003;
 ClassLookup 1
   0 "Unclassified";
+SampleDieMap 4
+ 0 1
+ 0 2
+ 0 3
+ 0 4;
 OrientationInstructions "Front";
 OrientationInstruction FRONT;
 CoordinatesMirrored NO;
