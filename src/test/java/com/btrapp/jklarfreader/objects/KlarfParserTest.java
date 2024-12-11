@@ -108,13 +108,23 @@ public class KlarfParserTest {
   }
 
   @Test
+  public void testBadKlarf12DefectListLineNumber() throws Exception {
+    try (BufferedInputStream fis =
+        new BufferedInputStream(this.getClass().getResourceAsStream("bad12DefectList.klarf")); ) {
+      Throwable exception = assertThrows(KlarfException.class, () -> KlarfReader.parseKlarf(fis));
+      assertTrue(
+          exception.getMessage().contains("At line 29"), "Message: " + exception.getMessage());
+    }
+  }
+
+  @Test
   public void testKlarf12Mapper() throws Exception {
     Klarf12Mapper inst = Klarf12Mapper.getInstance();
     Map<String, KlarfMappingRecord> map = inst.getMappingRecordsByKlarf12Key();
     assertEquals(KlarfDataType.EndOfFile, map.get("ENDOFFILE").klarfDataType());
 
     Map<String, String[]> colTypes = inst.getColumnTypesForList("ClassLookup");
-    assertEquals(2, colTypes.size());
+    assertEquals(3, colTypes.size()); // the CLASSCODE column is added
     assertEquals(
         "CLASSNAME", colTypes.entrySet().stream().skip(1).findFirst().orElse(null).getKey());
   }
@@ -265,6 +275,7 @@ public class KlarfParserTest {
     // }
     kw.writeKlarf(klarfRecordOpt.get(), sw);
     assertTrue(!sw.toString().contains("Field TiffFileName"));
-    // System.out.println(sw);
+    assertTrue(firstWafer.findListsByName("SampleDieList").isEmpty());
+    // System.out.println(sw.toString());
   }
 }

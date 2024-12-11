@@ -1,0 +1,36 @@
+FileVersion 1 2;
+FileTimestamp 07-07-77 0:17:07;
+InspectionStationID "aVendor" "A" "B";
+SampleType WAFER;
+ResultTimestamp 07-07-77 07:07:07;
+LotID "aLot";
+SampleSize 1 150;
+DeviceID "aDevice";
+SetupID "" 07-07-75 07:07:07;
+StepID "aStep";
+SampleOrientationMarkType "FLAT";
+OrientationMarkLocation DOWN;
+DiePitch 1.5000000000e+005 1.5000000000e+005;
+DieOrigin 0.0000000000e+000 0.0000000000e+000;
+WaferID "aWafer";
+Slot 1;
+SampleCenterLocation 7.5000000000e+004 7.5000000000e+004;
+ClassLookup 2
+ -1 "Unclassified"
+ 10 "Blork";
+OrientationInstructions "";
+CoordinatesMirrored No;
+InspectionTest 1;
+SampleTestPlan 1
+  0 0 ;
+AreaPerTest 1.11e+010;
+DefectRecordSpec 17 DEFECTID XREL YREL XINDEX YINDEX XSIZE YSIZE DEFECTAREA DSIZE CLASSNUMBER TEST CLUSTERNUMBER ROUGHBINNUMBER FINEBINNUMBER REVIEWSAMPLE IMAGECOUNT IMAGELIST ;
+DefectList
+ 0 1 3500.123 75000.123 0 0 1.111 1.444 25.123 5.000 10 1 0 0 0 0 0 0 ; 
+ProcessEquipmentIDList 1
+  "" ;
+SummarySpec 5
+  TESTNO    NDEFECT    DEFDENSITY    NDIE    NDEFDIE  ;
+SummaryList 
+  1    1    5.11e-007    1    1  ;
+EndOfFile;
