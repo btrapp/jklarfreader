@@ -4,6 +4,7 @@ import com.btrapp.jklarfreader.KlarfParserIf18;
 import com.btrapp.jklarfreader.objects.Klarf12Mapper.KlarfDataType;
 import com.btrapp.jklarfreader.objects.Klarf12Mapper.KlarfMappingRecord;
 import com.btrapp.jklarfreader.objects.KlarfException.ExceptionCode;
+import com.btrapp.jklarfreader.objects.KlarfImageList.KlarfImageRow;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -334,7 +335,7 @@ public class KlarfReader12<T> {
           String colType18Uc = colTypes18.get(j).toUpperCase();
           if (colType12Uc.endsWith("LIST")) {
             String colName = colNames.get(row.size());
-            List<List<String>> embeddedList = readEmbeddedList(kt, colName);
+            KlarfImageList embeddedList = readEmbeddedList(kt, colName);
             row.add(embeddedList);
           } else {
             String colName = colNames.get(j);
@@ -439,7 +440,7 @@ public class KlarfReader12<T> {
         // colNames.get(row.size()));
         if (colType12Uc.endsWith("LIST")) {
           String colName = colNames.get(row.size());
-          List<List<String>> embeddedList = readEmbeddedList(kt, colName);
+          KlarfImageList embeddedList = readEmbeddedList(kt, colName);
           row.add(embeddedList);
         } else {
           String colName = colNames.get(row.size());
@@ -518,7 +519,7 @@ public class KlarfReader12<T> {
           //		colNames.get(row.size()));
           if (colType12Uc.endsWith("LIST")) {
             String colName = colNames.get(row.size());
-            List<List<String>> embeddedList = readEmbeddedList(kt, colName);
+            KlarfImageList embeddedList = readEmbeddedList(kt, colName);
             row.add(embeddedList);
           } else {
             String colName = colNames.get(row.size());
@@ -574,38 +575,37 @@ public class KlarfReader12<T> {
         "Klarf list type not supported " + kmr.klarfKey12(), kt, ExceptionCode.ListFormat);
   }
 
-  private List<List<String>> readEmbeddedList(KlarfTokenizer kt, String colName)
+  private KlarfImageList readEmbeddedList(KlarfTokenizer kt, String colName)
       throws IOException, KlarfException {
     // System.out.println("col name is " + colName);
     // This is for the IMAGELIST
+    KlarfImageList kil = new KlarfImageList();
     int imageQty = kt.intVal();
     // System.out.println("read embedded list qty is " + imageQty);
     if (imageQty == 0) {
-      return Collections.emptyList();
+      return kil;
     }
-    List<List<String>> outerList = new ArrayList<>(imageQty);
-    List<String> innerList = new ArrayList<>(4);
+    List<KlarfImageRow> kilRows = new ArrayList<>();
     // set based on the prior TiffFileName field
     String extension = "JPG";
     int lastIndex = lastTiffFileName.lastIndexOf(".");
     if (lastIndex > 0) extension = lastTiffFileName.substring(lastIndex + 1).toUpperCase();
     for (int i = 0; i < imageQty; i++) {
       // loop through each image pair of columns: position within the image for tif and image type
-      innerList.add(lastTiffFileName); // filename
-      innerList.add(extension); // extension
-      innerList.add(kt.nextVal()); // position within the image file
-      innerList.add(kt.nextVal() + " "); // image type
-      outerList.add(new ArrayList<>(innerList));
-      innerList.clear();
+      // filename, extension, position within the image file, image type
+      KlarfImageRow row =
+          new KlarfImageRow(lastTiffFileName, extension, kt.nextIntVal(), kt.nextVal());
+      kilRows.add(row);
     }
+    kil.setImages(kilRows);
 
-    if (outerList.size() != imageQty) {
+    if (kil.getImages().size() != imageQty) {
       throw new KlarfException(
-          "List " + colName + " expected len of " + imageQty + " but was " + outerList.size(),
+          "List " + colName + " expected len of " + imageQty + " but was " + kil.getImages().size(),
           kt,
           ExceptionCode.ListFormat);
     }
-    return outerList;
+    return kil;
     // throw new KlarfException("End of EmbeddedList not found", kt, ExceptionCode.ListFormat);
     // return Collections.emptyList();
   }
