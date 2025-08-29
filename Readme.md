@@ -5,7 +5,7 @@ This project provides a reader for a 1.8 format Klarf file.
 This work is based on my own black-box, reverse engineering of the format, and is not in any way endorsed by KLA-Tencor, who do provide official commercial support, documentation, 
 and libraries.  If you need/want the real deal, they're very good at what they do and you should contact them.  (https://www.kla-tencor.com/)
 
-Versions 0.9.19 and up required Java 11 or better.
+Versions 0.9.22 and up required Java 17 or better.
 
 ## Important Files
 
