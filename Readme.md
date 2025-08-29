@@ -49,7 +49,7 @@ a fat-jar (containing required dependencies) and run it from the command line:
 
 ```
 mvn clean package
-java -jar target/jklarfreader-0.9.21-SNAPSHOT-jar-with-dependencies.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
+java -jar target/jklarfreader-0.9.30-SNAPSHOT-jar-with-dependencies.jar /path/to/klarf.klarf (optional: /path/to/klarf.json)
 ```
 
 ###Klarf-to-Image
@@ -57,7 +57,7 @@ There's a command line utility to render a klarf to a png (or jpeg).  The image 
 
 ```
 mvn clean package
-java -cp target/jklarfreader-0.9.21-SNAPSHOT-jar-with-dependencies.jar com.btrapp.jklarfreader.util.KlarfToImage -klarf /path/to/my/klarf.KLAR -image /path/to/image.png -imgSizePx 224
+java -cp target/jklarfreader-0.9.30-SNAPSHOT-jar-with-dependencies.jar com.btrapp.jklarfreader.util.KlarfToImage -klarf /path/to/my/klarf.KLAR -image /path/to/image.png -imgSizePx 224
 ```
 
 ## Maven Artifact
@@ -65,7 +65,7 @@ java -cp target/jklarfreader-0.9.21-SNAPSHOT-jar-with-dependencies.jar com.btrap
 <dependency>
   <groupId>com.github.btrapp</groupId>
   <artifactId>jklarfreader</artifactId>
-  <version>0.9.21</version>
+  <version>0.9.30</version>
 </dependency>
 ```
 
