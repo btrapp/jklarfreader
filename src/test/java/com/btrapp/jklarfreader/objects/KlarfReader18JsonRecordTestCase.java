@@ -16,7 +16,8 @@ class KlarfReader18JsonRecordTestCase {
 
   @Test
   void testEmptyRecord() throws Exception {
-    String recordTxt = """
+    String recordTxt =
+        """
     		Record FileRecord  "1.8" {
     		}
     		EndOfFile;
