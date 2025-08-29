@@ -398,18 +398,18 @@ public class KlarfToImage {
     }
   }
 
-  public static void drawKlarf(KlarfImageOptions kio, BufferedInputStream bis) throws Exception{
-	  KlarfRecord klarf = KlarfReader.parseKlarf(bis).orElse(null);
-	  if (klarf == null) {
-	        System.err.println("Unable to read klarf");
-	        System.exit(1);
-	  }
-	  drawKlarf(kio,klarf);
+  public static void drawKlarf(KlarfImageOptions kio, BufferedInputStream bis) throws Exception {
+    KlarfRecord klarf = KlarfReader.parseKlarf(bis).orElse(null);
+    if (klarf == null) {
+      System.err.println("Unable to read klarf");
+      System.exit(1);
+    }
+    drawKlarf(kio, klarf);
   }
 
   public static void drawKlarf(KlarfImageOptions kio, KlarfRecord klarf) {
     try {
-      
+
       KlarfRecord lotRec = klarf.findRecordsByName("LotRecord").stream().findFirst().orElseThrow();
       KlarfRecord waferRec =
           lotRec.findRecordsByName("WaferRecord").stream().findFirst().orElseThrow();
