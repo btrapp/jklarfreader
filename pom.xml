@@ -40,7 +40,7 @@
 			<timezone>+5</timezone>
 		</developer>
 	</developers>
-
+<!--
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -51,7 +51,7 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
-
+-->
 	<properties>
 		<junit.jupiter.version>5.13.4</junit.jupiter.version>
 		<junit.platform.version>1.13.4</junit.platform.version>
@@ -81,12 +81,16 @@
 		</dependency>
 	</dependencies>
 	
-	<build>
+	 <profiles>
+    <profile>
+      <!-- required, used in .github/workflows/sonatype-publish.yml -->
+      <id>sonatypeDeploy</id>
+  <build>
         <plugins>
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.6.0</version>
+                <version>0.8.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
@@ -136,4 +140,6 @@
 
         </plugins>
         </build>
+        </profile>
+        </profiles>
 </project>
