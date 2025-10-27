@@ -10,8 +10,10 @@ import com.btrapp.jklarfreader.KlarfReader;
 import com.btrapp.jklarfreader.KlarfReader.KlarfFormat;
 import com.btrapp.jklarfreader.objects.Klarf12Mapper.KlarfDataType;
 import com.btrapp.jklarfreader.objects.Klarf12Mapper.KlarfMappingRecord;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;

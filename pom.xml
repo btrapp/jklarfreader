@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.btrapp</groupId>
 	<artifactId>jklarfreader</artifactId>
-	<version>0.9.32</version>
+	<version>0.9.33</version>
 
 	<name>io.github.btrapp:jklarfreader</name>
 	<description>Library to read a 1.8 format Klarf file into JSON or a POJO</description>
@@ -53,8 +53,8 @@
 	</distributionManagement>
 -->
 	<properties>
-		<junit.jupiter.version>5.13.4</junit.jupiter.version>
-		<junit.platform.version>1.13.4</junit.platform.version>
+		<junit.jupiter.version>6.0.0</junit.jupiter.version>
+		<junit.platform.version>1.14.0</junit.platform.version>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -68,17 +68,17 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>3.1.4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.13.0</version>
+                    <version>3.14.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.6.3</version>
+                    <version>3.12.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -256,9 +256,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
+			<groupId>tools.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.20.0</version>
+			<version>3.0.1</version>
 		</dependency>
 	</dependencies>
 

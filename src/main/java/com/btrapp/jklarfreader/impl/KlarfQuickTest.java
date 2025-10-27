@@ -3,8 +3,10 @@ package com.btrapp.jklarfreader.impl;
 import com.btrapp.jklarfreader.KlarfReader;
 import com.btrapp.jklarfreader.objects.KlarfList;
 import com.btrapp.jklarfreader.objects.KlarfRecord;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.json.JsonMapper;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +50,7 @@ public class KlarfQuickTest {
         // KlarfReader.debugPrintKlarfRecord(kro.get(), 0);
         if (jsonFile != null) {
           // We want to write a json file
-          ObjectWriter writer = new ObjectMapper().writerWithDefaultPrettyPrinter();
+          ObjectWriter writer = new JsonMapper().writerWithDefaultPrettyPrinter();
           writer.writeValue(jsonFile, kro.get());
         }
       }

@@ -3,8 +3,10 @@ package com.btrapp.jklarfreader.integration;
 import com.btrapp.jklarfreader.KlarfReader;
 import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
 import com.btrapp.jklarfreader.objects.KlarfRecord;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Optional;

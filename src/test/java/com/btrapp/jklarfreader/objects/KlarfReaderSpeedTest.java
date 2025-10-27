@@ -2,7 +2,9 @@ package com.btrapp.jklarfreader.objects;
 
 import com.btrapp.jklarfreader.KlarfReader;
 import com.btrapp.jklarfreader.impl.KlarfParser18Pojo;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import tools.jackson.databind.json.JsonMapper;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.time.Instant;
@@ -21,7 +23,7 @@ public class KlarfReaderSpeedTest {
       Optional<KlarfRecord> klarf = KlarfReader.parseKlarf(parser, new FileInputStream(klarfF));
       File jsonFile = new File("/tmp/" + klarfF.getName() + ".json");
       try {
-        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(jsonFile, klarf.get());
+        new JsonMapper().writerWithDefaultPrettyPrinter().writeValue(jsonFile, klarf.get());
       } catch (Exception ex) {
         ex.printStackTrace();
       }
