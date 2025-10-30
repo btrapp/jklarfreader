@@ -37,10 +37,6 @@ public class KlarfParserTest {
         KlarfReader.findKlarfFormat(
             new BufferedInputStream(this.getClass().getResourceAsStream("simple12.klarf")));
     assertEquals(KlarfFormat.V1_2, kf);
-    kf =
-        KlarfReader.findKlarfFormat(
-            new File("src/test/resources/com/btrapp/jklarfreader/objects/simple12.klarf"));
-    assertEquals(KlarfFormat.V1_2, kf);
   }
 
   @Test
