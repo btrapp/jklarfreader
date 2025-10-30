@@ -198,9 +198,6 @@ public final class KlarfList {
 
   public void setColumnNames(List<String> columnNames) {
     this.columnNames = Collections.unmodifiableList(columnNames);
-    for (String colName : columnNames) {
-      colMap.computeIfAbsent(colName, l -> new ArrayList<>());
-    }
   }
 
   /**
