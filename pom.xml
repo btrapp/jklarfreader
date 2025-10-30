@@ -53,7 +53,7 @@
 	</distributionManagement>
 -->
 	<properties>
-		<junit.jupiter.version>6.0.0</junit.jupiter.version>
+		<junit.jupiter.version>5.14.0</junit.jupiter.version>
 		<junit.platform.version>1.14.0</junit.platform.version>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
