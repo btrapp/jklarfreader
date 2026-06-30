@@ -43,11 +43,6 @@ public class KlarfParser12Pojo extends KlarfParser18Pojo implements KlarfParserI
    * @return
    */
   public KlarfRecord organizeKlarf(KlarfRecord kr) {
-    // System.out.println("in org klarf");
-    if (false) {
-      return kr;
-    }
-    // System.out.println(kr.getName());
     KlarfRecord fileRecord =
         kr; // kr.findRecordsByName("FileRecord").stream().findFirst().orElseThrow();
     KlarfRecord lotRecord =
