@@ -132,6 +132,8 @@ public class KlarfReader18<T> {
             row.add(kt.intVal());
           } else if (colTypeUc.equalsIgnoreCase("FLOAT")) {
             row.add(kt.floatVal());
+          } else if (colTypeUc.equalsIgnoreCase("DOUBLE")) {
+            row.add(kt.doubleVal());
           } else if (colTypeUc.equalsIgnoreCase("STRING")) {
             row.add(kt.val());
           } else {
