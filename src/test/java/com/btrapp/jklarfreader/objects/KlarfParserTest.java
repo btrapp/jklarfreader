@@ -1,7 +1,7 @@
 package com.btrapp.jklarfreader.objects;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,10 +11,6 @@ import com.btrapp.jklarfreader.KlarfReader;
 import com.btrapp.jklarfreader.KlarfReader.KlarfFormat;
 import com.btrapp.jklarfreader.objects.Klarf12Mapper.KlarfDataType;
 import com.btrapp.jklarfreader.objects.Klarf12Mapper.KlarfMappingRecord;
-
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.ObjectWriter;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -29,6 +25,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.json.JsonMapper;
 
 public class KlarfParserTest {
   @Test
@@ -275,5 +274,51 @@ public class KlarfParserTest {
     assertTrue(!sw.toString().contains("Field TiffFileName"));
     assertTrue(firstWafer.findListsByName("SampleDieList").isEmpty());
     // System.out.println(sw.toString());
+  }
+
+  @Test
+  void testDefectListDataType18() throws Exception {
+    try (BufferedInputStream fis =
+        new BufferedInputStream(this.getClass().getResourceAsStream("simple18.klarf")); ) {
+      Optional<KlarfRecord> klarfRecord = KlarfReader.parseKlarf(fis);
+      assertTrue(klarfRecord.isPresent());
+      Optional<KlarfRecord> lotRecord =
+          klarfRecord.get().findRecordByNameAndId("LotRecord", "aLot.String");
+      assertTrue(lotRecord.isPresent());
+      Optional<KlarfRecord> waferRecord =
+          lotRecord.get().findRecordByNameAndId("WaferRecord", "SecondWaferId");
+      assertTrue(waferRecord.isPresent());
+      List<KlarfList> defectLists = waferRecord.get().findListsByName("DefectList");
+      assertTrue(defectLists.size() == 1);
+      KlarfList defectList = defectLists.stream().findFirst().get();
+      List<Object> intCol = defectList.getColumn("DEFECTID");
+      assertEquals(Integer.valueOf(2), intCol.get(0));
+      List<Object> floatCol = defectList.getColumn("DEFECTAREA");
+      assertEquals(Float.valueOf(1159.0f), floatCol.get(0));
+      List<Object> stringCol = defectList.getColumn("MYTAG");
+      assertEquals("HELLO", stringCol.get(0));
+      List<Object> doubleCol = defectList.getColumn("MYVAL");
+      assertEquals(Double.valueOf("0.987654"), doubleCol.get(0));
+
+      KlarfWriter18 kw = new KlarfWriter18();
+      StringWriter sw = new StringWriter();
+      kw.writeKlarf(klarfRecord.get(), sw);
+      assertTrue(sw.toString().contains("\"HELLO\" 0.987654"));
+      assertTrue(sw.toString().contains("Field FileTimestamp 2 {\"12-12-1972\",\"16:27:59\"}"));
+
+      if (false) {
+        JsonMapper mapper = JsonMapper.builder().build();
+        String json = mapper.writeValueAsString(klarfRecord.get());
+        assertFalse(json.isEmpty());
+        KlarfRecord klarfRecord2 = mapper.readValue(json, KlarfRecord.class);
+        StringWriter sw2 = new StringWriter();
+        kw.writeKlarf(klarfRecord2, sw2);
+        assertTrue(
+            sw2.toString()
+                .contains(
+                    "Field FileTimestamp 2 {\"12-12-1972\",\"16:27:59\"}")); // isQuoted not
+                                                                             // retained in json
+      }
+    }
   }
 }
