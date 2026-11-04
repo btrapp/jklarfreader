@@ -52,7 +52,7 @@ public class KlarfWriter18 {
       sb.append(pad + "  ");
       for (int j = 0; j < row.size(); j++) {
         String colType = list.getColumnTypes().get(j);
-        if ("int32".equals(colType) || "float".equals(colType)) {
+        if ("int32".equals(colType) || "float".equals(colType) || "double".equals(colType)) {
           // No quotes
           sb.append(" " + row.get(j));
         } else if ("ImageList".equalsIgnoreCase(colType)) {

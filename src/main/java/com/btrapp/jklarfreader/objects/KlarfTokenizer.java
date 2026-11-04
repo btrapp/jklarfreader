@@ -174,4 +174,17 @@ public class KlarfTokenizer implements AutoCloseable {
           ExceptionCode.NumberFormat);
     }
   }
+
+  public Double doubleVal() throws KlarfException {
+    String str = val();
+    if (isNa(str)) return null;
+    try {
+      return Double.valueOf(str);
+    } catch (NumberFormatException nfe) {
+      throw new KlarfException(
+          "Value '" + str + "' was expected to be a double but was not.",
+          this,
+          ExceptionCode.NumberFormat);
+    }
+  }
 }

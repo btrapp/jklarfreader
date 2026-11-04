@@ -95,7 +95,7 @@ Record FileRecord  "1.8"
 
       List DefectList
       {
-        Columns 41 { int32 DEFECTID,  int32 XREL,  int32 YREL,  int32 XINDEX,  int32 YINDEX,  
+        Columns 43 { int32 DEFECTID,  int32 XREL,  int32 YREL,  int32 XINDEX,  int32 YINDEX,  
         int32 XSIZE,  int32 YSIZE,  float DEFECTAREA,  int32 DSIZE,  int32 CLASSNUMBER,  
         int32 TEST,  int32 ROUGHBINNUMBER,  int32 FINEBINNUMBER,  int32 SAMPLEBINNUMBER,  float CONTRAST,  
         int32 CHANNELID,  int32 MANSEMCLASS,  int32 AUTOONSEMCLASS,  int32 MICROSIGCLASS,  int32 MACROSIGCLASS,  
@@ -103,12 +103,12 @@ Record FileRecord  "1.8"
         int32 MACROSIGID,  int32 REGIONID,  int32 EVENTTYPE,  int32 EBRLINE,  
         int32 POLARITY,  float CRITICALAREA,  int32 MANOPTCLASS,  float PHI,  int32 DBCLASS,  
         int32 DBGROUP,  float DBCRITICALITYINDEX,  float CELLSIZE,  int32 CAREAREAGROUPCODE,  float PCI,  
-        float LINECOMPLEXITY,  float DCIRANGE  }
+        float LINECOMPLEXITY,  float DCIRANGE, string MYTAG, double MYVAL  }
         Data 1
         {
           2 1155701 2494813 -14 13 61 61 1159.0 62 1 1 0 0 0 0.0000 0 0 0 0 0 0 0 0 0 
             0.0000 0 0 0 0  0 0.0000 0 0.0 0 0 0.0000 0.000000 0 0.0000 0.0000 
-            0.0000 ;
+            0.0000 "HELLO" 0.987654 ;
         }
       }
       Record TestRecord "1"
