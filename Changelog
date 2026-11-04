@@ -24,4 +24,5 @@
  toolset and send an example? (jrudy)
 0.9.27 - 2024-09-20 : Fix for 1.2 klarfs with repeated defect lists (jrudy)
 0.9.34 - 2026-06-30 : Mainly moving dependencies along
+0.9.38 - 2026-11-04 : PR from J. Rudy to allow support for "double" types
  
